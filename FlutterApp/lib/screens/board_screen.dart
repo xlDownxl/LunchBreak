@@ -6,6 +6,10 @@ import 'new_post_screen.dart';
 import 'feed_screen.dart';
 import '../models/board_post.dart';
 import 'friend_list_screen.dart';
+import 'board_base_screen.dart';
+import 'board_created_events_screen.dart';
+import 'board_my_posts_screen.dart';
+import 'favorite_screen.dart';
 
 class BoardScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -15,24 +19,41 @@ class BoardScreen extends StatefulWidget {
 }
 
 class _BoardScreenState extends State<BoardScreen> {
+  int _selectedPageIndex = 0;
+
+  List<Widget> _children(deviceHeight) => [
+        BoardBaseScreen(deviceHeight),
+        BoardEventCreatedScreen(),
+        BoardMyPostsScreen(),
+        FavoriteScreen(),
+      ];
+
   var init = true;
   var userId;
-  //final _firebaseMessaging = FirebaseMessaging();
 
-  final List<BoardPost> postList = [BoardPost(), BoardPost(), BoardPost()];
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _selectPage(int index) {
+    setState(() {
+      _selectedPageIndex = index;
+    });
+  }
 
   @override
   void dispose() {
     super.dispose();
   }
 
-  @override
+/*  @override
   void initState() {
     FirebaseAuth.instance.currentUser().then((user) {
       userId = user.uid;
     });
     super.initState();
-  }
+  } */
 
   void setupPushNotifications() {
     /*  _firebaseMessaging.configure(
@@ -86,26 +107,15 @@ class _BoardScreenState extends State<BoardScreen> {
         ),
       ],
     );
+
     final deviceHeight = MediaQuery.of(context).size.height -
         appBar.preferredSize.height -
         MediaQuery.of(context).padding.top;
+    final List<Widget> children = _children(deviceHeight);
 
     return Scaffold(
       appBar: appBar,
-      body: Container(
-        height: deviceHeight,
-        child: GridView.builder(
-          padding: const EdgeInsets.all(10.0),
-          itemCount: postList.length,
-          itemBuilder: (ctx, i) => BoardPostGridElement(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 2 / 2,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-          ),
-        ),
-      ),
+      body: children[_selectedPageIndex],
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           backgroundColor: Theme.of(context).primaryColor,
@@ -113,8 +123,11 @@ class _BoardScreenState extends State<BoardScreen> {
             Navigator.pushNamed(context, NewPostScreen.routeName);
           }),
       bottomNavigationBar: BottomNavigationBar(
-        //onTap: () {}, // new
-        //currentIndex: _currentIndex, // new
+        //unselectedItemColor: Colors.white,
+        selectedItemColor: Theme.of(context).accentColor,
+        currentIndex: _selectedPageIndex,
+        type: BottomNavigationBarType.fixed,
+        onTap: _selectPage,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -127,6 +140,10 @@ class _BoardScreenState extends State<BoardScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.mail),
             title: Text('Created Events'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star),
+            title: Text('Favorites'),
           ),
         ],
       ),
