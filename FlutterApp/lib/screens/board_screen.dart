@@ -73,12 +73,6 @@ class _BoardScreenState extends State<BoardScreen> {
       title: Text('Stock Alarm'),
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.plus_one),
-          onPressed: () {
-            Navigator.pushNamed(context, NewPostScreen.routeName);
-          },
-        ),
-        IconButton(
           icon: Icon(Icons.more),
           onPressed: () {
             Navigator.pushNamed(context, FeedScreen.routeName);
@@ -92,20 +86,49 @@ class _BoardScreenState extends State<BoardScreen> {
         ),
       ],
     );
-    final deviceHeight = MediaQuery.of(context).size.height;
+    final deviceHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
 
     return Scaffold(
       appBar: appBar,
-      body: GridView.builder(
-        padding: const EdgeInsets.all(10.0),
-        itemCount: postList.length,
-        itemBuilder: (ctx, i) => BoardPostGridElement(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
+      body: Container(
+        height: deviceHeight,
+        child: GridView.builder(
+          padding: const EdgeInsets.all(10.0),
+          itemCount: postList.length,
+          itemBuilder: (ctx, i) => BoardPostGridElement(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 2 / 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+          ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          backgroundColor: Theme.of(context).primaryColor,
+          onPressed: () {
+            Navigator.pushNamed(context, NewPostScreen.routeName);
+          }),
+      bottomNavigationBar: BottomNavigationBar(
+        //onTap: () {}, // new
+        //currentIndex: _currentIndex, // new
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Today'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.mail),
+            title: Text('My Events'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.mail),
+            title: Text('Created Events'),
+          ),
+        ],
       ),
     );
   }
