@@ -5,7 +5,7 @@ class NewPostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("NEw Post")),
+      appBar: AppBar(title: Text("New Post")),
       body: Center(
         child: Text("post form"),
       ),

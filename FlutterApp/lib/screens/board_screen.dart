@@ -10,6 +10,7 @@ import 'board_base_screen.dart';
 import 'board_created_events_screen.dart';
 import 'board_my_posts_screen.dart';
 import 'favorite_screen.dart';
+import '../design/socicon_icons.dart';
 
 class BoardScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -134,11 +135,11 @@ class _BoardScreenState extends State<BoardScreen> {
             title: Text('Today'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
+            icon: Icon(Socicon.event),
             title: Text('My Events'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
+            icon: Icon(Socicon.bullhorn),
             title: Text('Created Events'),
           ),
           BottomNavigationBarItem(
