@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:bubble/bubble.dart';
 import '../widgets/participant_avatar.dart';
 
+import '../design/balloon_new_icons.dart';
+
 class PostDetailScreen extends StatefulWidget {
   static const routeName = "/post_detail";
 
@@ -31,6 +33,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     final deviceHeight = MediaQuery.of(context).size.height -
         appBar.preferredSize.height -
         MediaQuery.of(context).padding.top;
+
+    //TODO think about showing owner
 
     return Scaffold(
       appBar: appBar,
@@ -63,7 +67,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       ),
                       Expanded(
                         child: Container(
-                          padding: EdgeInsets.only(left: 14),
+                          padding:
+                              EdgeInsets.only(left: 14, bottom: 20, top: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -83,25 +88,53 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                 color: Colors.black,
                                 height: 10,
                               ),*/
-                              FittedBox(
-                                child: Text(
-                                  "Room 3000",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.underline,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  FittedBox(
+                                    child: Text(
+                                      "Location",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  FittedBox(
+                                    child: Text(
+                                      "Room 3000",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        //decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              FittedBox(
-                                child: Text(
-                                  "500 Yen",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.underline,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  FittedBox(
+                                    child: Text(
+                                      "Fee",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  FittedBox(
+                                    child: Text(
+                                      "100 Yen",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        //decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -110,6 +143,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                     ],
                   ),
                 ),
+                /*  Divider(
+                  height: 1,
+                  //thickness: 1,
+                  color: Colors.black,
+                ), */
                 Expanded(
                   child: Container(
                     padding: EdgeInsets.only(bottom: 20),
@@ -269,7 +307,10 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                             style: TextStyle(fontSize: 30),
                           ),
                         ),
-                        Icon(Icons.arrow_forward),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Icon(BalloonNew.balloonicon),
                       ],
                     ),
                     onPressed: () {
