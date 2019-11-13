@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:bubble/bubble.dart';
-import '../design/balloon_new_icons.dart';
-import '../widgets/detail_picker.dart';
-import 'package:numberpicker/numberpicker.dart';
-import '../widgets/title_picture_widget.dart';
+import '../widgets/add_screen_title_picture_widget.dart';
+import '../widgets/add_screen_bottom_bar.dart';
+import '../widgets/add_screen_information_pickers.dart';
+import '../widgets/add_screen_description.dart';
+import '../models/board_post.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart';
+import '../models/user.dart';
 
 class NewPostScreen extends StatefulWidget {
   static const routeName = "/new_post";
@@ -15,9 +18,17 @@ class NewPostScreen extends StatefulWidget {
 class _NewPostScreenState extends State<NewPostScreen> {
   bool _favorite = false;
 
-  var _form = GlobalKey();
+  var _form = GlobalKey<FormState>();
   int _value = 5;
   bool showMemberPicker = false;
+
+  BoardPost newPost;
+
+  @override
+  void initState() {
+    //newPost = BoardPost();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,122 +41,54 @@ class _NewPostScreenState extends State<NewPostScreen> {
         appBar.preferredSize.height -
         MediaQuery.of(context).padding.top;
 
-    return Scaffold(
-      appBar: appBar,
-      body: Container(
-        height: deviceHeight,
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: deviceHeight * 0.9,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: deviceHeight * 0.3,
-                      //fit: FlexFit.tight,
-                      child: TitlePictureWidget(),
-                    ),
-                    Container(
-                      height: deviceHeight * 0.2,
-                      padding: EdgeInsets.only(bottom: 20),
-                      //constraints: BoxConstraints.expand(),
-                      child: Bubble(
-                        margin: BubbleEdges.only(top: 14),
-                        //nipOffset: 50,
-                        nipHeight: 30,
-                        nipWidth: 10,
-                        //alignment: Alignment.topLeft,
-                        nip: BubbleNip.leftTop,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            labelText: "Enter a Description",
-                          ),
-                          maxLines: 5,
-                        ),
-                      ),
-                    ),
-                    DetailPicker(),
-                    DetailPicker(),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              color: Theme.of(context).primaryColor,
-              height: deviceHeight * 0.1,
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Flexible(
-                    child: Row(
-                      children: <Widget>[
-                        Icon(Icons.arrow_back),
-                        Text(
-                          "Cancel",
-                          style: TextStyle(fontSize: 24),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Flexible(
-                    child: SizedBox(),
-                    fit: FlexFit.tight,
-                  ),
-                  Flexible(
-                    child: OutlineButton(
-                      //shape: RoundedRectangleBorder(
-                      //  borderRadius: BorderRadius.circular(30.0)),
-                      //highlightColor: Colors.black,
-                      shape: StadiumBorder(),
-                      textColor: Colors.blue,
-
-                      borderSide: BorderSide(
-                          color: Colors.blue,
-                          style: BorderStyle.solid,
-                          width: 1),
-                      //shape: CircleBorder(side: BorderSide(style: BorderStyle.solid)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+    String ownerId = Provider.of<User>(context).id;
+    return ChangeNotifierProvider.value(
+      value: BoardPost(ownerId),
+      child: Scaffold(
+        appBar: appBar,
+        body: SingleChildScrollView(
+          child: Container(
+            height: deviceHeight,
+            child: Column(
+              children: <Widget>[
+                Form(
+                  key: _form,
+                  child: Container(
+                    height: deviceHeight * 0.9,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Flexible(
-                            flex: 3,
-                            child: Container(
-                              margin: EdgeInsets.only(right: 4),
-                              child: FittedBox(
-                                child: Text(
-                                  "Create",
-                                  style: TextStyle(fontSize: 30),
-                                ),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
+                          Container(
+                            padding: EdgeInsets.all(15),
+                            height: deviceHeight * 0.4,
+                            //fit: FlexFit.tight,
+                            child: TitlePictureWidget(newPost),
                           ),
-                          Flexible(
-                            flex: 1,
-                            child: Icon(BalloonNew.balloonicon),
-                            fit: FlexFit.loose,
+                          Container(
+                            height: deviceHeight * 0.2,
+                            padding: EdgeInsets.only(bottom: 20),
+                            //constraints: BoxConstraints.expand(),
+                            child: AddScreenDescription(),
                           ),
+                          SizedBox(
+                            height: deviceHeight * 0.05,
+                          ),
+                          AddScreenInformationPicker(newPost),
                         ],
                       ),
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext ctx) {
-                              return AlertDialog(
-                                title: Text(
-                                    "Created the Event"), // TODO Snackbar saying "send invitations" as a link
-                              );
-                            });
-                      },
-                      color: Colors.red,
                     ),
                   ),
-                ],
-              ),
+                ),
+                Container(
+                  color: Theme.of(context).primaryColor,
+                  height: deviceHeight * 0.1,
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: AddScreenBottomBar(_form),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

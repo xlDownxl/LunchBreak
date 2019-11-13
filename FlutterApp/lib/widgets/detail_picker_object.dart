@@ -1,14 +1,29 @@
+import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 class DetailPicker extends StatefulWidget {
+  final title;
+  final initialValue;
+  final minValue;
+  final maxValue;
+
+  DetailPicker(this.title, this.initialValue, this.minValue, this.maxValue);
+
   @override
   _DetailPickerState createState() => _DetailPickerState();
 }
 
 class _DetailPickerState extends State<DetailPicker> {
-  int _value = 5;
-  var showMemberPicker = false;
+  int _value;
+  bool showMemberPicker = false;
+
+  @override
+  void initState() {
+    _value = widget.initialValue;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,7 +45,7 @@ class _DetailPickerState extends State<DetailPicker> {
                 children: <Widget>[
                   Flexible(
                     child: Text(
-                      "aktiv",
+                      widget.title,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -48,8 +63,8 @@ class _DetailPickerState extends State<DetailPicker> {
               ? Container(
                   child: NumberPicker.integer(
                       initialValue: _value,
-                      minValue: 1,
-                      maxValue: 100,
+                      minValue: widget.minValue,
+                      maxValue: widget.maxValue,
                       onChanged: (newValue) {
                         setState(() {
                           _value = newValue;

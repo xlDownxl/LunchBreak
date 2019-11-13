@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:bubble/bubble.dart';
 import '../widgets/participant_avatar.dart';
-
+import '../models/board_post.dart';
 import '../design/balloon_new_icons.dart';
+import 'package:provider/provider.dart';
+import '../models/board_posts.dart';
 
 class PostDetailScreen extends StatefulWidget {
   static const routeName = "/post_detail";
@@ -16,6 +18,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final postId = ModalRoute.of(context).settings.arguments as String;
+    final post = Provider.of<BoardPosts>(context).findById(postId);
+
     var appBar = AppBar(
       title: Text("Post Details"),
       actions: <Widget>[
@@ -75,7 +80,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                             children: <Widget>[
                               FittedBox(
                                 child: Text(
-                                  "English Lunch",
+                                  post.title,
                                   style: TextStyle(
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold,
@@ -102,7 +107,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                   ),
                                   FittedBox(
                                     child: Text(
-                                      "Room 3000",
+                                      post.location,
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -126,7 +131,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                                   ),
                                   FittedBox(
                                     child: Text(
-                                      "100 Yen",
+                                      post.fee.toString(),
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -159,7 +164,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                       nipWidth: 10,
                       //alignment: Alignment.topLeft,
                       nip: BubbleNip.leftTop,
-                      child: Text("Message"),
+                      child: Text(post.description),
                     ),
                   ),
                 ),

@@ -11,6 +11,8 @@ import 'board_created_events_screen.dart';
 import 'board_my_posts_screen.dart';
 import 'favorite_screen.dart';
 import '../design/socicon_icons.dart';
+import 'package:provider/provider.dart';
+import '../models/board_posts.dart';
 
 class BoardScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -21,6 +23,9 @@ class BoardScreen extends StatefulWidget {
 
 class _BoardScreenState extends State<BoardScreen> {
   int _selectedPageIndex = 0;
+
+  final GlobalKey<ScaffoldState> _scaffoldstate =
+      new GlobalKey<ScaffoldState>();
 
   List<Widget> _children(deviceHeight) => [
         BoardBaseScreen(deviceHeight),
@@ -89,6 +94,28 @@ class _BoardScreenState extends State<BoardScreen> {
     super.didChangeDependencies();
   }
 
+  Future navigateToSubPage(context) async {
+    var created = await Navigator.pushNamed(context, NewPostScreen.routeName)
+        as Map<String, Object>;
+    if (created["created"]) {
+      _scaffoldstate.currentState.showSnackBar(
+        SnackBar(
+          content: Text(
+            'Added new Event!',
+          ),
+          duration: Duration(seconds: 3),
+          action: SnackBarAction(
+            label: 'UNDO',
+            onPressed: () {
+              Provider.of<BoardPosts>(context, listen: false)
+                  .removePost(created["postId"]);
+            },
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
@@ -115,13 +142,14 @@ class _BoardScreenState extends State<BoardScreen> {
     final List<Widget> children = _children(deviceHeight);
 
     return Scaffold(
+      key: _scaffoldstate,
       appBar: appBar,
       body: children[_selectedPageIndex],
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () {
-            Navigator.pushNamed(context, NewPostScreen.routeName);
+            navigateToSubPage(context); //TODO
           }),
       bottomNavigationBar: BottomNavigationBar(
         //unselectedItemColor: Colors.white,

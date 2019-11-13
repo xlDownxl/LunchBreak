@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
 import '../screens/post_detail_screen.dart';
+import '../models/board_post.dart';
+import 'package:provider/provider.dart';
+import '../models/board_posts.dart';
 
 class BoardPostGridElement extends StatefulWidget {
+  String boardPostId;
+  BoardPostGridElement(this.boardPostId);
+
   @override
   _BoardPostGridElementState createState() => _BoardPostGridElementState();
 }
 
 class _BoardPostGridElementState extends State<BoardPostGridElement> {
-  bool favorite = true;
+  BoardPost post;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    post = Provider.of<BoardPosts>(context).findById(widget.boardPostId);
     return LayoutBuilder(
       builder: (context, constraints) {
         return GestureDetector(
           onTap: () {
-            Navigator.of(context).pushNamed(PostDetailScreen.routeName);
+            Navigator.of(context)
+                .pushNamed(PostDetailScreen.routeName, arguments: post.id);
           },
           child: Container(
             decoration: BoxDecoration(
@@ -41,12 +53,12 @@ class _BoardPostGridElementState extends State<BoardPostGridElement> {
                               Container(
                                 child: FittedBox(
                                   child: GestureDetector(
-                                    child: favorite
+                                    child: post.favorite
                                         ? Icon(Icons.star)
                                         : Icon(Icons.star_border),
                                     onTap: () {
                                       setState(() {
-                                        favorite = !favorite;
+                                        post.favorite = !post.favorite;
                                       });
                                     },
                                   ),
@@ -84,7 +96,7 @@ class _BoardPostGridElementState extends State<BoardPostGridElement> {
                                     FittedBox(
                                       fit: BoxFit.fill,
                                       child: Text(
-                                        "English Lunch",
+                                        post.title,
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -100,7 +112,7 @@ class _BoardPostGridElementState extends State<BoardPostGridElement> {
                                           fontWeight: FontWeight.bold),
                                     ),
                                     FittedBox(
-                                      child: Text("Burger King"),
+                                      child: Text(post.location),
                                       fit: BoxFit.fill,
                                     ),
                                     Divider(
@@ -111,7 +123,7 @@ class _BoardPostGridElementState extends State<BoardPostGridElement> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    Text("500 Yen")
+                                    Text(post.fee.toString())
                                   ],
                                 ),
                               ),

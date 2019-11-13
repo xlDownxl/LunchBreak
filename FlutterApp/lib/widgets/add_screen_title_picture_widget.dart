@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import '../models/board_post.dart';
+import 'package:provider/provider.dart';
 
 class TitlePictureWidget extends StatefulWidget {
+  BoardPost newPost;
+  TitlePictureWidget(this.newPost);
+
   @override
   _TitlePictureWidgetState createState() => _TitlePictureWidgetState();
 }
 
 class _TitlePictureWidgetState extends State<TitlePictureWidget> {
   bool _uploadedPicture = false;
+  var newPost;
 
   @override
   Widget build(BuildContext context) {
+    newPost = Provider.of<BoardPost>(context, listen: false);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -47,8 +54,9 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
           ),
         )),
         Expanded(
+          //TODO use constraints to size title, location and fee input
           child: Container(
-            padding: EdgeInsets.only(left: 14, bottom: 20, top: 20),
+            padding: EdgeInsets.only(left: 14, bottom: 10, top: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -60,12 +68,17 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                       child: Text(
                         "Title",
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           decoration: TextDecoration.underline,
                         ),
                       ),
                     ),
-                    TextFormField(),
+                    TextFormField(
+                      onSaved: (value) {
+                        print(value);
+                        newPost.title = value;
+                      },
+                    ),
                   ],
                 ),
                 /* Divider(
@@ -80,12 +93,17 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                       child: Text(
                         "Location",
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           decoration: TextDecoration.underline,
                         ),
                       ),
                     ),
-                    TextFormField(),
+                    TextFormField(
+                      onSaved: (value) {
+                        print(value);
+                        newPost.location = value;
+                      },
+                    ),
                   ],
                 ),
                 Column(
@@ -95,12 +113,17 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                       child: Text(
                         "Fee",
                         style: TextStyle(
-                          fontSize: 14,
+                          fontSize: 12,
                           decoration: TextDecoration.underline,
                         ),
                       ),
                     ),
-                    TextFormField(),
+                    TextFormField(
+                      onSaved: (value) {
+                        print(value);
+                        newPost.fee = double.parse(value);
+                      },
+                    ),
                   ],
                 ),
               ],
