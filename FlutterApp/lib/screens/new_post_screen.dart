@@ -42,8 +42,8 @@ class _NewPostScreenState extends State<NewPostScreen> {
         MediaQuery.of(context).padding.top;
 
     String ownerId = Provider.of<User>(context).id;
-    return ChangeNotifierProvider.value(
-      value: BoardPost(ownerId),
+    return ChangeNotifierProvider(
+      builder: (_) => BoardPost(ownerId),
       child: Scaffold(
         appBar: appBar,
         body: SingleChildScrollView(

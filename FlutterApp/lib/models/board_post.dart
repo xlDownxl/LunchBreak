@@ -1,6 +1,7 @@
 import 'user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class BoardPost with ChangeNotifier {
   String id;
@@ -11,23 +12,69 @@ class BoardPost with ChangeNotifier {
   int _memberLimit;
   String _location;
   List<User> _users;
-  String _ownerId;
+  //String _ownerId;
   bool _favorite;
+  bool _owner;
+  DateTime _date;
 
-  bool get favorite => _favorite;
+  toJson() {
+    return {
+      "id": id,
+      "title": _title,
+      "fee": _fee,
+      "description": _description,
+      "language": _language,
+      "memberLimit": memberLimit,
+      "location": _location,
+      "users": {},
+      "date": dateInDatabaseFormat,
+    };
+  }
 
-  set favorite(bool value) {
-    _favorite = value;
+  BoardPost.fromMap(Map snapshot, userId) {
+    id = snapshot['id'] ?? '';
+    _title = snapshot['title'] ?? '';
+    _location = snapshot['location'] ?? '';
+    _fee = snapshot['fee'].toDouble() ?? '';
+    _description = snapshot['description'] ?? '';
+    _memberLimit = snapshot['memberLimit'] ?? '';
+    _users = [];
+    _language = snapshot['language'] ?? '';
+    _favorite = false;
+    _owner = false;
+  }
+
+  void toggleFavorite(userId) async {
+    if (!_favorite) {
+      FirebaseDatabase.instance
+          .reference()
+          .child("Users")
+          .child(userId)
+          .child("favorites")
+          .update({
+        this.id: this.title,
+      });
+      _favorite = true;
+      notifyListeners();
+    } else {
+      FirebaseDatabase.instance
+          .reference()
+          .child("Users")
+          .child(userId)
+          .child("favorites")
+          .child(this.id)
+          .remove();
+      this._favorite = false;
+      notifyListeners();
+    }
   }
 
   BoardPost(String ownerId) {
-    this.id = DateTime.now().toString();
-    this._ownerId = ownerId;
     this._favorite = false;
   }
 
   BoardPost.getExample() {
-    this.id = "idexample";
+    //this.id = "idexample";
     this._title = "Example Title";
     this._fee = 500;
     this._description =
@@ -35,10 +82,26 @@ class BoardPost with ChangeNotifier {
     this._language = "English";
     this._location = "Room 3000";
     this._memberLimit = 5;
-    this.ownerId = "owner1id";
+    this._owner = true;
     this._users = [];
     this._favorite = false;
   }
+
+  int get dateInDatabaseFormat {
+    return _date.millisecondsSinceEpoch;
+  }
+
+  bool get favorite => _favorite;
+
+  set favorite(bool value) {
+    _favorite = value;
+  }
+
+  DateTime get date => _date;
+
+  set date(DateTime value) {
+    _date = value;
+  } //TODO handle owner at writing post
 
   String toString() {
     return "Title: $_title, Location: $location, Fee: $fee";
@@ -68,10 +131,10 @@ class BoardPost with ChangeNotifier {
     _description = value;
   }
 
-  String get ownerId => _ownerId;
+  bool get owner => _owner;
 
-  set ownerId(String value) {
-    _ownerId = value;
+  set owner(bool value) {
+    _owner = value;
   }
 
   String get language => _language;

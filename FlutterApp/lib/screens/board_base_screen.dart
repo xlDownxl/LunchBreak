@@ -26,7 +26,11 @@ class _BoardBaseScreenState extends State<BoardBaseScreen> {
       child: GridView.builder(
         padding: const EdgeInsets.all(10.0),
         itemCount: postList.length,
-        itemBuilder: (ctx, i) => BoardPostGridElement(postList[i].id),
+        itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+          child: BoardPostGridElement(postList[i].id),
+          value: postList[i],
+        ),
+        //TODO hier ansetzen
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 2 / 2,

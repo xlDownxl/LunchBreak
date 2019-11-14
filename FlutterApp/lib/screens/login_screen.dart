@@ -4,6 +4,7 @@ import 'board_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/board_posts.dart';
 import '../models/user.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -12,45 +13,107 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
+  var username;
+  var password;
+  var email;
+  final _formKey = GlobalKey<FormState>();
+
+  Future register() {
+    if (username == null) {
+      throw StepState.error;
+    }
+    if (username == "") {
+      throw StepState.error;
+    }
+    setState(() {
+      _isLoading = true;
+    }); //TODO give possibility of a normal name
+    return FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((result) {
+      return setupUserInFirebase(context).then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.pushNamed(context, BoardScreen.routeName);
+      });
+    }).catchError((error) {
+      setState(() {
+        _isLoading = false;
+      });
+      print(error);
+    }); //TODO handle error
+  }
+
+  Future setupUserInFirebase(context) async {
+    var user = await FirebaseAuth.instance.currentUser();
+
+    Provider.of<User>(context, listen: false).id = user.uid;
+    Provider.of<User>(context, listen: false).username = username;
+
+    return FirebaseDatabase.instance
+        .reference()
+        .child("Users")
+        .child(user.uid)
+        .set({
+      "email": user.email,
+      "id": user.uid,
+      "username": username,
+    }).then((_) {
+      return Provider.of<BoardPosts>(context, listen: false)
+          .connectToFirebase();
+    });
+  }
+
+  Future login() {
+    setState(() {
+      _isLoading = true;
+    }); //TODO give possibility of a normal name
+    return FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((_) async {
+      var user = await FirebaseAuth.instance.currentUser();
+
+      await FirebaseDatabase.instance
+          .reference()
+          .child("Users")
+          .child(user.uid)
+          .once()
+          .then((snapshot) {
+        var username = snapshot.value["username"];
+        var userProvider = Provider.of<User>(context, listen: false);
+        userProvider.username = username;
+        userProvider.id = user.uid;
+      });
+
+      await Provider.of<BoardPosts>(context, listen: false).connectToFirebase();
+    }).then((_) {
+      setState(() {
+        _isLoading = false;
+      });
+      Navigator.pushNamed(context, BoardScreen.routeName);
+    }).catchError((error) {
+      print(error);
+      setState(() {
+        _isLoading = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
+      appBar: AppBar(title: Text("Register")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             FlatButton(
               onPressed: () {
-                setState(() {
-                  _isLoading = true;
-                });
-                FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                        //TODO Loading Circle
-                        email: "lol@fefe.de",
-                        password: "1234567")
-                    .then((result) {
-                  Provider.of<User>(context, listen: false).id =
-                      "id1"; //TODO give possibility of a normal name
-                  Provider.of<BoardPosts>(context, listen: false)
-                      .connectToFirebase()
-                      .then((value) {
-                    setState(() {
-                      _isLoading = false;
-                    });
-
-                    Navigator.pushNamed(context, BoardScreen.routeName);
-                  });
-                }).catchError((error) {
-                  setState(() {
-                    _isLoading = false;
-                  });
-                  print(error);
-                }); //TODO handle error
+                _formKey.currentState.save();
+                register();
               },
-              child: Text("Login"),
+              child: Text("Register"),
               color: Theme.of(context).primaryColor,
             ),
             _isLoading
@@ -58,6 +121,46 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: CircularProgressIndicator(),
                   )
                 : Container(),
+            FlatButton(
+              onPressed: () {
+                _formKey.currentState.save();
+                login();
+              },
+              child: Text("Login"),
+              color: Theme.of(context).primaryColor,
+            ),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "email",
+                    ),
+                    initialValue: "lo2lkek@gmd.de",
+                    onSaved: (value) {
+                      email = value;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(labelText: "password"),
+                    initialValue: "123456",
+                    onSaved: (value) {
+                      password = value;
+                    },
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "username",
+                    ),
+                    initialValue: "damnboy",
+                    onSaved: (value) {
+                      username = value;
+                    },
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

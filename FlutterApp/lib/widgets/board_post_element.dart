@@ -3,6 +3,7 @@ import '../screens/post_detail_screen.dart';
 import '../models/board_post.dart';
 import 'package:provider/provider.dart';
 import '../models/board_posts.dart';
+import '../models/user.dart';
 
 class BoardPostGridElement extends StatefulWidget {
   String boardPostId;
@@ -21,7 +22,8 @@ class _BoardPostGridElementState extends State<BoardPostGridElement> {
 
   @override
   Widget build(BuildContext context) {
-    post = Provider.of<BoardPosts>(context).findById(widget.boardPostId);
+    post = Provider.of<BoardPosts>(context)
+        .findById(widget.boardPostId); //TODO hier anderen provider nehmen
     return LayoutBuilder(
       builder: (context, constraints) {
         return GestureDetector(
@@ -58,7 +60,8 @@ class _BoardPostGridElementState extends State<BoardPostGridElement> {
                                         : Icon(Icons.star_border),
                                     onTap: () {
                                       setState(() {
-                                        post.favorite = !post.favorite;
+                                        post.toggleFavorite(
+                                            Provider.of<User>(context).id);
                                       });
                                     },
                                   ),

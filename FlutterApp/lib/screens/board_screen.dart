@@ -31,7 +31,7 @@ class _BoardScreenState extends State<BoardScreen> {
         BoardBaseScreen(deviceHeight),
         BoardEventCreatedScreen(),
         BoardMyPostsScreen(),
-        FavoriteScreen(),
+        FavoriteScreen(deviceHeight),
       ];
 
   var init = true;
@@ -52,14 +52,6 @@ class _BoardScreenState extends State<BoardScreen> {
   void dispose() {
     super.dispose();
   }
-
-/*  @override
-  void initState() {
-    FirebaseAuth.instance.currentUser().then((user) {
-      userId = user.uid;
-    });
-    super.initState();
-  } */
 
   void setupPushNotifications() {
     /*  _firebaseMessaging.configure(

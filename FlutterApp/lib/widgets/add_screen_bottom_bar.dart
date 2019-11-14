@@ -3,6 +3,7 @@ import '../design/balloon_new_icons.dart';
 import 'package:provider/provider.dart';
 import '../models/board_post.dart';
 import '../models/board_posts.dart';
+import '../models/user.dart';
 
 class AddScreenBottomBar extends StatefulWidget {
   final form;
@@ -20,11 +21,7 @@ class _AddScreenBottomBarState extends State<AddScreenBottomBar> {
   void createEvent() {
     widget.form.currentState.save();
     newPost = Provider.of<BoardPost>(context, listen: false);
-    print(newPost.toString());
-    print(newPost.language);
-    print(newPost.memberLimit);
-    print(newPost.description);
-    posts.addPost(newPost);
+    posts.createPost(newPost, Provider.of<User>(context).id);
   }
 
   Future<ConfirmAction> _asyncConfirmDialog(BuildContext context) async {

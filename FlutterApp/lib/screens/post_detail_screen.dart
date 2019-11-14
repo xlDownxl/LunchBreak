@@ -5,6 +5,7 @@ import '../models/board_post.dart';
 import '../design/balloon_new_icons.dart';
 import 'package:provider/provider.dart';
 import '../models/board_posts.dart';
+import '../models/user.dart';
 
 class PostDetailScreen extends StatefulWidget {
   static const routeName = "/post_detail";
@@ -14,8 +15,7 @@ class PostDetailScreen extends StatefulWidget {
 }
 
 class _PostDetailScreenState extends State<PostDetailScreen> {
-  bool _favorite = false;
-
+  bool _editMode = false;
   @override
   Widget build(BuildContext context) {
     final postId = ModalRoute.of(context).settings.arguments as String;
@@ -25,10 +25,37 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       title: Text("Post Details"),
       actions: <Widget>[
         IconButton(
-          icon: _favorite ? Icon(Icons.star) : Icon(Icons.star_border),
+          icon: post.favorite ? Icon(Icons.star) : Icon(Icons.star_border),
           onPressed: () {
             setState(() {
-              _favorite = !_favorite;
+              post.toggleFavorite(Provider.of<User>(context).id);
+            });
+          },
+        ),
+        IconButton(
+          icon: post.owner
+              ? Icon(Icons.edit)
+              : Opacity(
+                  child: Icon(Icons.edit),
+                  opacity: 0.2,
+                ),
+          onPressed: () {
+            setState(() {
+              _editMode = true;
+            });
+          },
+        ),
+        IconButton(
+          icon: post.owner
+              ? Icon(Icons.delete)
+              : Opacity(
+                  child: Icon(Icons.delete),
+                  opacity: 0.2,
+                ),
+          onPressed: () {
+            setState(() {
+              Provider.of<BoardPosts>(context).removePost(postId);
+              Navigator.pop(context);
             });
           },
         ),
