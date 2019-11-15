@@ -14,6 +14,14 @@ class _LanguagePickerState extends State<LanguagePicker> {
   var options = ["English", "Japanese"];
 
   @override
+  void initState() {
+    if (widget.newPost.language == null) {
+      _val = widget.newPost.language;
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     //var newPost = Provider.of<BoardPost>(context, listen: false);
     widget.newPost.language = _val;
@@ -25,7 +33,9 @@ class _LanguagePickerState extends State<LanguagePicker> {
             hint: Container(
               width: constraints.maxWidth - 24, //24 = arrow size
               child: FittedBox(
-                child: const Text("Choose a Stocksymbol"),
+                child: const Text(
+                  "Language",
+                ),
                 fit: BoxFit.fill,
               ),
             ),
@@ -39,7 +49,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
             onChanged: (newValue) {
               setState(() {
                 _val = newValue;
-                widget.newPost.location = _val;
+                widget.newPost.language = _val;
               });
             },
           );

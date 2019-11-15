@@ -17,6 +17,7 @@ class AddScreenDescription extends StatelessWidget {
       //alignment: Alignment.topLeft,
       nip: BubbleNip.leftTop,
       child: TextFormField(
+        initialValue: newPost.description,
         onSaved: (value) {
           newPost.description = value;
         },

@@ -16,7 +16,7 @@ class AddScreenInformationPicker extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10),
         child: Column(
           children: <Widget>[
-            DetailPickerNumber("Member Number", 5, 1, 100, newPost),
+            DetailPickerNumber("Member Number", 1, 100, newPost),
             LanguagePicker(newPost),
           ],
         ),

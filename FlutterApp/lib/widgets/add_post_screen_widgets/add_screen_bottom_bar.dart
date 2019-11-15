@@ -8,7 +8,8 @@ import '../../models/user.dart';
 class AddScreenBottomBar extends StatefulWidget {
   final form;
   var newPost;
-  AddScreenBottomBar(this.form, this.newPost);
+  bool _editMode;
+  AddScreenBottomBar(this.form, this.newPost, this._editMode);
 
   @override
   _AddScreenBottomBarState createState() => _AddScreenBottomBarState();
@@ -102,10 +103,15 @@ class _AddScreenBottomBarState extends State<AddScreenBottomBar> {
                   child: Container(
                     margin: EdgeInsets.only(right: 4),
                     child: FittedBox(
-                      child: Text(
-                        "Create",
-                        style: TextStyle(fontSize: 30),
-                      ),
+                      child: !widget._editMode
+                          ? Text(
+                              "Create",
+                              style: TextStyle(fontSize: 30),
+                            )
+                          : Text(
+                              "Save",
+                              style: TextStyle(fontSize: 30),
+                            ),
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -118,10 +124,15 @@ class _AddScreenBottomBarState extends State<AddScreenBottomBar> {
               ],
             ),
             onPressed: () {
-              createEvent(); //check firebase id generierung -> wenn push was macht dann die id generierung in createvent
-              //auslagern damit nur id kreiert wird wenn der kreieren button gedrückt wird
-              Navigator.pop(
-                  context, {"created": true, "postId": widget.newPost.id});
+              if (!widget._editMode) {
+                createEvent(); //check firebase id generierung -> wenn push was macht dann die id generierung in createvent
+                //auslagern damit nur id kreiert wird wenn der kreieren button gedrückt wird
+
+                Navigator.pop(
+                    context, {"created": true, "postId": widget.newPost.id});
+              } else {
+                // TODO Update Event
+              }
             },
             color: Colors.red,
           ),

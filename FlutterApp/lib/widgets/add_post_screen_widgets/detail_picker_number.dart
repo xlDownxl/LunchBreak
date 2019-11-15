@@ -5,13 +5,12 @@ import '../../models/board_post.dart';
 
 class DetailPickerNumber extends StatefulWidget {
   final title;
-  final initialValue;
+
   final minValue;
   final maxValue;
   var newPost;
 
-  DetailPickerNumber(this.title, this.initialValue, this.minValue,
-      this.maxValue, this.newPost);
+  DetailPickerNumber(this.title, this.minValue, this.maxValue, this.newPost);
 
   @override
   _DetailPickerNumberState createState() => _DetailPickerNumberState();
@@ -23,7 +22,7 @@ class _DetailPickerNumberState extends State<DetailPickerNumber> {
 
   @override
   void initState() {
-    _value = widget.initialValue;
+    _value = widget.newPost.memberLimit;
     super.initState();
   }
 

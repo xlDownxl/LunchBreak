@@ -6,6 +6,8 @@ import '../widgets/add_post_screen_widgets/add_screen_description.dart';
 import '../models/board_post.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart';
+import 'package:flutter/foundation.dart';
+import '../models/board_posts.dart';
 
 class NewPostScreen extends StatefulWidget {
   static const routeName = "/new_post";
@@ -20,11 +22,20 @@ class _NewPostScreenState extends State<NewPostScreen> {
 
   BoardPost newPost;
   bool init = true;
+  bool _editMode =
+      false; //TODO Set all initial values to newPost.value + set all values to "" isntead of null in constructor
 
   @override
   void didChangeDependencies() {
     if (init) {
-      newPost = BoardPost(Provider.of<User>(context).id);
+      var postId = ModalRoute.of(context).settings.arguments;
+      if (postId != null) {
+        _editMode = true;
+        newPost = Provider.of<BoardPosts>(context).findById(postId);
+      } else {
+        _editMode = false;
+        newPost = BoardPost(Provider.of<User>(context).id);
+      }
       init = false;
     }
     super.didChangeDependencies();
@@ -82,7 +93,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                 color: Theme.of(context).primaryColor,
                 height: deviceHeight * 0.1,
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                child: AddScreenBottomBar(_form, newPost),
+                child: AddScreenBottomBar(_form, newPost, _editMode),
               ),
             ],
           ),

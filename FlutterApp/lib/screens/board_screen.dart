@@ -30,7 +30,7 @@ class _BoardScreenState extends State<BoardScreen> {
   List<Widget> _children(deviceHeight) => [
         BoardBaseScreen(deviceHeight),
         BoardEventCreatedScreen(),
-        BoardMyPostsScreen(),
+        BoardMyPostsScreen(deviceHeight),
         FavoriteScreen(deviceHeight),
       ];
 

@@ -8,6 +8,7 @@ import '../widgets/post_detail_screen_widgets/post_detail_description.dart';
 import '../widgets/post_detail_screen_widgets/post_detail_member_view.dart';
 import '../widgets/post_detail_screen_widgets/items_and_map.dart';
 import '../widgets/post_detail_screen_widgets/post_detail_bottom_bar.dart';
+import 'add_post_screen.dart';
 
 class PostDetailScreen extends StatefulWidget {
   static const routeName = "/post_detail";
@@ -42,9 +43,12 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   opacity: 0.2,
                 ),
           onPressed: () {
-            setState(() {
-              _editMode = true;
-            });
+            if (post.owner) {
+              setState(() {
+                Navigator.pushNamed(context, NewPostScreen.routeName,
+                    arguments: post.id);
+              });
+            }
           },
         ),
         IconButton(
@@ -56,8 +60,10 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 ),
           onPressed: () {
             setState(() {
-              Provider.of<BoardPosts>(context).removePost(postId);
-              Navigator.pop(context);
+              if (post.owner) {
+                Provider.of<BoardPosts>(context).removePost(postId);
+                Navigator.pop(context);
+              }
             });
           },
         ),

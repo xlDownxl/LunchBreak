@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
       "username": username,
     }).then((_) {
       return Provider.of<BoardPosts>(context, listen: false)
-          .connectToFirebase();
+          .connectToFirebase(Provider.of<User>(context, listen: false).id);
     });
   }
 
@@ -86,12 +86,13 @@ class _LoginScreenState extends State<LoginScreen> {
         userProvider.id = user.uid;
       });
 
-      await Provider.of<BoardPosts>(context, listen: false).connectToFirebase();
+      await Provider.of<BoardPosts>(context, listen: false)
+          .connectToFirebase(Provider.of<User>(context, listen: false).id);
     }).then((_) {
       setState(() {
         _isLoading = false;
       });
-      Navigator.pushNamed(context, BoardScreen.routeName);
+      Navigator.pushReplacementNamed(context, BoardScreen.routeName);
     }).catchError((error) {
       print(error);
       setState(() {

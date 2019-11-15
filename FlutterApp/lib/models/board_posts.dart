@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class BoardPosts with ChangeNotifier {
   List<BoardPost> _items = [BoardPost.getExample()];
+  List _participations = [];
 
   List<BoardPost> items() {
     return _items;
@@ -17,17 +18,32 @@ class BoardPosts with ChangeNotifier {
     }).toList();
   }
 
-  Future connectToFirebase() async {
-    var user = await FirebaseAuth.instance.currentUser();
-    var userId = user.uid;
+  List<BoardPost> participating() {
+    return _items.where((post) {
+      return post.participating || post.owner;
+    }).toList();
+  }
+
+  Future connectToFirebase(userId) async {
+    await FirebaseDatabase.instance
+        .reference()
+        .child("Users")
+        .child(userId)
+        .child("participations")
+        .once()
+        .then((posts) {
+      if (posts.value != null) {
+        posts.value.forEach((key, value) {
+          _participations.add(key);
+        });
+      }
+    });
 
     return FirebaseDatabase.instance
         .reference()
         .child("Posts")
         .once()
         .then((snapshot) {
-      //snapshot.value.foreach((post) {
-      print(snapshot.key);
       if (snapshot.value != null) {
         snapshot.value.forEach((key, value) async {
           print(key);
@@ -64,6 +80,9 @@ class BoardPosts with ChangeNotifier {
               });
             }
           });
+          if (_participations.contains(newPost.id)) {
+            newPost.participating = true;
+          }
           _items.add(newPost);
           notifyListeners();
         });
@@ -113,9 +132,14 @@ class BoardPosts with ChangeNotifier {
   }
 
   BoardPost findById(String id) {
-    return _items.firstWhere((post) {
-      return post.id == id;
-    });
+    try {
+      return _items.firstWhere((post) {
+        return post.id == id;
+      });
+    } catch (error) {
+      print("no item with this ID");
+      throw DiagnosticLevel.error;
+    }
   }
 
   void removePost(String postId) async {

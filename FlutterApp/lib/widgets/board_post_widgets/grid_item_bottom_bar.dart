@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../screens/post_detail_screen.dart';
+import 'package:provider/provider.dart';
+import '../../models/board_post.dart';
+import '../../models/user.dart';
 
 class GridItemBottomBar extends StatelessWidget {
   @override
@@ -55,11 +58,13 @@ class GridItemBottomBar extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
+                    var post = Provider.of<BoardPost>(context);
+                    post.toggleParticipating(Provider.of<User>(context).id);
                     showDialog(
                         context: context,
                         builder: (BuildContext ctx) {
-                          return AlertDialog(
-                            title: Text("Joined the Event"),
+                          return SimpleDialog(
+                            title: Text("Joined ${post.title}!"),
                           );
                         });
                   },

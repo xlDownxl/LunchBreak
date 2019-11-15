@@ -15,6 +15,7 @@ class BoardPost with ChangeNotifier {
   bool _favorite;
   bool _owner;
   DateTime _date;
+  bool _participating;
 
   toJson() {
     return {
@@ -41,7 +42,12 @@ class BoardPost with ChangeNotifier {
     _language = snapshot['language'] ?? '';
     _favorite = false;
     _owner = false;
-  }
+    _date = DateTime.now(); //TODO implement time
+    _participating =
+        false; //TODO logic that takes the participated event key list from firebase and puts the right
+  } //participating attributes to true
+  //also the logic for changing it to true and in the database by click
+  //TODO cancel button und back arrows überarbeiten
 
   void toggleFavorite(userId) async {
     if (!_favorite) {
@@ -68,11 +74,56 @@ class BoardPost with ChangeNotifier {
     }
   }
 
+  void toggleParticipating(userId) {
+    if (!_participating) {
+      FirebaseDatabase.instance
+          .reference()
+          .child("Users")
+          .child(userId)
+          .child("participations")
+          .update({
+        this.id: this.dateInDatabaseFormat,
+      });
+      FirebaseDatabase.instance
+          .reference()
+          .child("Posts")
+          .child(id)
+          .child("participants")
+          .update({
+        userId: 1,
+      });
+
+      _participating = true;
+    } else {
+      FirebaseDatabase.instance
+          .reference()
+          .child("Users")
+          .child(userId)
+          .child("participations")
+          .child(this.id)
+          .remove();
+      FirebaseDatabase.instance
+          .reference()
+          .child("Posts")
+          .child(id)
+          .child("participants")
+          .child(userId)
+          .remove();
+
+      _participating = false;
+    }
+  }
+
   BoardPost(String ownerId) {
     this._favorite = false;
+    this._owner = true;
+    this._date = DateTime.now();
+    this._participating = true;
+    this.memberLimit = 5;
   }
 
   BoardPost.getExample() {
+    this._participating = true;
     //this.id = "idexample";
     this._title = "Example Title";
     this._fee = 500;
@@ -81,9 +132,11 @@ class BoardPost with ChangeNotifier {
     this._language = "English";
     this._location = "Room 3000";
     this._memberLimit = 5;
-    this._owner = true;
+    this._owner = false;
     this._users = [];
     this._favorite = false;
+    this._participating = false;
+    this.date = DateTime.now();
   }
 
   int get dateInDatabaseFormat {
@@ -146,6 +199,12 @@ class BoardPost with ChangeNotifier {
 
   set memberLimit(int value) {
     _memberLimit = value;
+  }
+
+  bool get participating => _participating;
+
+  set participating(bool value) {
+    _participating = value;
   }
 
   List<User> get users => _users;

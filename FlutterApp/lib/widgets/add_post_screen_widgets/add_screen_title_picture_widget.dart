@@ -72,6 +72,7 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                       ),
                     ),
                     TextFormField(
+                      initialValue: widget.newPost.title,
                       onSaved: (value) {
                         print(value);
                         widget.newPost.title = value;
@@ -97,6 +98,7 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                       ),
                     ),
                     TextFormField(
+                      initialValue: widget.newPost.location,
                       onSaved: (value) {
                         print(value);
                         widget.newPost.location = value;
@@ -117,6 +119,9 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                       ),
                     ),
                     TextFormField(
+                      initialValue: widget.newPost.fee == null
+                          ? ""
+                          : widget.newPost.fee.toString(),
                       onSaved: (value) {
                         print(value);
                         widget.newPost.fee = double.parse(value);
