@@ -1,6 +1,5 @@
 import 'user.dart';
 import 'package:flutter/foundation.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class BoardPost with ChangeNotifier {

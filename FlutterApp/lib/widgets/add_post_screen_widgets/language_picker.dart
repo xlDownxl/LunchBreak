@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/board_post.dart';
+import '../../models/board_post.dart';
 
 class LanguagePicker extends StatefulWidget {
+  var newPost;
+  LanguagePicker(this.newPost);
   @override
   _LanguagePickerState createState() => _LanguagePickerState();
 }
@@ -13,8 +15,8 @@ class _LanguagePickerState extends State<LanguagePicker> {
 
   @override
   Widget build(BuildContext context) {
-    var newPost = Provider.of<BoardPost>(context, listen: false);
-    newPost.language = _val;
+    //var newPost = Provider.of<BoardPost>(context, listen: false);
+    widget.newPost.language = _val;
     return Container(
       padding: EdgeInsets.all(10),
       child: LayoutBuilder(
@@ -37,7 +39,7 @@ class _LanguagePickerState extends State<LanguagePicker> {
             onChanged: (newValue) {
               setState(() {
                 _val = newValue;
-                newPost.location = _val;
+                widget.newPost.location = _val;
               });
             },
           );

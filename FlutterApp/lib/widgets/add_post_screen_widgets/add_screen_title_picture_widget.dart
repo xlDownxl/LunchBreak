@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/board_post.dart';
+import '../../models/board_post.dart';
 import 'package:provider/provider.dart';
 
 class TitlePictureWidget extends StatefulWidget {
@@ -12,11 +12,9 @@ class TitlePictureWidget extends StatefulWidget {
 
 class _TitlePictureWidgetState extends State<TitlePictureWidget> {
   bool _uploadedPicture = false;
-  var newPost;
 
   @override
   Widget build(BuildContext context) {
-    newPost = Provider.of<BoardPost>(context, listen: false);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -76,7 +74,7 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                     TextFormField(
                       onSaved: (value) {
                         print(value);
-                        newPost.title = value;
+                        widget.newPost.title = value;
                       },
                     ),
                   ],
@@ -101,7 +99,7 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                     TextFormField(
                       onSaved: (value) {
                         print(value);
-                        newPost.location = value;
+                        widget.newPost.location = value;
                       },
                     ),
                   ],
@@ -121,7 +119,7 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                     TextFormField(
                       onSaved: (value) {
                         print(value);
-                        newPost.fee = double.parse(value);
+                        widget.newPost.fee = double.parse(value);
                       },
                     ),
                   ],

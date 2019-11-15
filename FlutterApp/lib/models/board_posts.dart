@@ -75,12 +75,12 @@ class BoardPosts with ChangeNotifier {
 
   //TODO WRITE FAVORITES TO DATABASE
 
-  Future createPost(post, String creator) {
+  void createPost(post, String creator) {
     var ref = FirebaseDatabase.instance.reference().child("Posts").push();
     post.id = ref.key;
     post.date = DateTime.now(); //TODO datumseingabe
-    return ref.set(post.toJson()).then((_) {
-      return FirebaseDatabase.instance
+    ref.set(post.toJson()).then((_) {
+      FirebaseDatabase.instance
           .reference()
           .child("Users")
           .child(creator)

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../widgets/board_post_element.dart';
-import 'new_post_screen.dart';
+import 'package:FST.LunchApp/widgets/board_post_widgets/board_post_grid_element.dart';
+import 'add_post_screen.dart';
 import 'feed_screen.dart';
 import '../models/board_post.dart';
 import 'friend_list_screen.dart';
-import 'board_base_screen.dart';
+import 'board_today_screen.dart';
 import 'board_created_events_screen.dart';
 import 'board_my_posts_screen.dart';
 import 'favorite_screen.dart';

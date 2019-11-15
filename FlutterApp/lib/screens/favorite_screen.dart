@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/board_post_element.dart';
+import 'package:FST.LunchApp/widgets/board_post_widgets/board_post_grid_element.dart';
 import '../models/board_posts.dart';
 import '../models/board_post.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +20,10 @@ class FavoriteScreen extends StatelessWidget {
       child: GridView.builder(
         padding: const EdgeInsets.all(10.0),
         itemCount: postList.length,
-        itemBuilder: (ctx, i) => BoardPostGridElement(postList[i].id),
+        itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+          child: BoardPostGridElement(),
+          value: postList[i],
+        ),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 2 / 2,

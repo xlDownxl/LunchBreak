@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../widgets/detail_picker_number.dart';
-import '../widgets/language_picker.dart';
-import '../models/board_post.dart';
+import 'package:FST.LunchApp/widgets/add_post_screen_widgets/detail_picker_number.dart';
+import 'package:FST.LunchApp/widgets/add_post_screen_widgets/language_picker.dart';
+import '../../models/board_post.dart';
 import 'package:provider/provider.dart';
 
 class AddScreenInformationPicker extends StatelessWidget {
-  final BoardPost newPost;
+  BoardPost newPost;
   AddScreenInformationPicker(this.newPost);
 
   @override
@@ -16,8 +16,8 @@ class AddScreenInformationPicker extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 10),
         child: Column(
           children: <Widget>[
-            DetailPickerNumber("Member Number", 5, 1, 100),
-            LanguagePicker(),
+            DetailPickerNumber("Member Number", 5, 1, 100, newPost),
+            LanguagePicker(newPost),
           ],
         ),
       ),

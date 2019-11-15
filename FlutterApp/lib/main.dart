@@ -5,7 +5,7 @@ import 'screens/board_screen.dart';
 import 'screens/post_detail_screen.dart';
 import 'screens/friend_list_screen.dart';
 import 'screens/feed_screen.dart';
-import 'screens/new_post_screen.dart';
+import 'screens/add_post_screen.dart';
 import 'models/board_posts.dart';
 import 'models/user.dart';
 
@@ -35,7 +35,9 @@ class MyApp extends StatelessWidget {
           BoardScreen.routeName: (ctx) => BoardScreen(),
           FeedScreen.routeName: (ctx) => FeedScreen(),
           FriendListScreen.routeName: (ctx) => FriendListScreen(),
-          PostDetailScreen.routeName: (ctx) => PostDetailScreen(),
+          PostDetailScreen.routeName: (ctx) {
+            return PostDetailScreen();
+          },
           NewPostScreen.routeName: (ctx) => NewPostScreen(),
         },
       ),

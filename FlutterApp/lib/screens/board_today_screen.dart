@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/board_post.dart';
-import '../widgets/board_post_element.dart';
+import 'package:FST.LunchApp/widgets/board_post_widgets/board_post_grid_element.dart';
 import '../models/board_posts.dart';
 import '../models/board_post.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +27,7 @@ class _BoardBaseScreenState extends State<BoardBaseScreen> {
         padding: const EdgeInsets.all(10.0),
         itemCount: postList.length,
         itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-          child: BoardPostGridElement(postList[i].id),
+          child: BoardPostGridElement(),
           value: postList[i],
         ),
         //TODO hier ansetzen

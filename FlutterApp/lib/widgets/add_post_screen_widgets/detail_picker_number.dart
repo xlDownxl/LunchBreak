@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:provider/provider.dart';
-import '../models/board_post.dart';
+import '../../models/board_post.dart';
 
 class DetailPickerNumber extends StatefulWidget {
   final title;
   final initialValue;
   final minValue;
   final maxValue;
+  var newPost;
 
-  DetailPickerNumber(
-      this.title, this.initialValue, this.minValue, this.maxValue);
+  DetailPickerNumber(this.title, this.initialValue, this.minValue,
+      this.maxValue, this.newPost);
 
   @override
   _DetailPickerNumberState createState() => _DetailPickerNumberState();
@@ -28,8 +29,7 @@ class _DetailPickerNumberState extends State<DetailPickerNumber> {
 
   @override
   Widget build(BuildContext context) {
-    var newPost = Provider.of<BoardPost>(context, listen: false);
-    newPost.memberLimit = _value;
+    widget.newPost.memberLimit = _value;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -70,7 +70,7 @@ class _DetailPickerNumberState extends State<DetailPickerNumber> {
                     onChanged: (newValue) {
                       setState(() {
                         _value = newValue;
-                        newPost.memberLimit = _value;
+                        widget.newPost.memberLimit = _value;
                       });
                     }),
               )
