@@ -5,12 +5,15 @@ import '../../models/board_post.dart';
 import '../../models/user.dart';
 
 class GridItemBottomBar extends StatelessWidget {
+  final postId;
+  GridItemBottomBar(this.postId);
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed(
-          PostDetailScreen.routeName,
+          PostDetailScreen.routeName, arguments: postId, //TODO pass post ID !!
         );
         //arguments: product.id,);
       },

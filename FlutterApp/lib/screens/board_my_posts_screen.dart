@@ -5,6 +5,7 @@ import '../widgets/board_post_widgets/board_post_grid_element.dart';
 import '../models/board_posts.dart';
 import '../models/board_post.dart';
 import 'package:provider/provider.dart';
+import '../models/user.dart';
 
 class BoardMyPostsScreen extends StatelessWidget {
   final deviceHeight;
@@ -12,7 +13,8 @@ class BoardMyPostsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<BoardPost> postList = Provider.of<BoardPosts>(context).participating();
+    List<BoardPost> postList = Provider.of<BoardPosts>(context)
+        .participating(Provider.of<User>(context).id);
 
     return Container(
       height: deviceHeight,

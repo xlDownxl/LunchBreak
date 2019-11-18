@@ -21,6 +21,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   bool _editMode = false;
   @override
   Widget build(BuildContext context) {
+    var userId = Provider.of<User>(context, listen: false).id;
     final postId = ModalRoute.of(context).settings.arguments as String;
     final post = Provider.of<BoardPosts>(context).findById(postId);
 
@@ -36,14 +37,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           },
         ),
         IconButton(
-          icon: post.owner
+          icon: post.owner == userId
               ? Icon(Icons.edit)
               : Opacity(
                   child: Icon(Icons.edit),
                   opacity: 0.2,
                 ),
           onPressed: () {
-            if (post.owner) {
+            if (post.owner == userId) {
               setState(() {
                 Navigator.pushNamed(context, NewPostScreen.routeName,
                     arguments: post.id);
@@ -52,7 +53,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           },
         ),
         IconButton(
-          icon: post.owner
+          icon: post.owner == userId
               ? Icon(Icons.delete)
               : Opacity(
                   child: Icon(Icons.delete),
@@ -60,7 +61,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                 ),
           onPressed: () {
             setState(() {
-              if (post.owner) {
+              if (post.owner == userId) {
                 Provider.of<BoardPosts>(context).removePost(postId);
                 Navigator.pop(context);
               }

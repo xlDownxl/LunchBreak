@@ -13,6 +13,8 @@ import 'favorite_screen.dart';
 import '../design/socicon_icons.dart';
 import 'package:provider/provider.dart';
 import '../models/board_posts.dart';
+import '../models/user.dart';
+import 'package:flutter/services.dart';
 
 class BoardScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -39,6 +41,7 @@ class _BoardScreenState extends State<BoardScreen> {
 
   @override
   void initState() {
+    handleAppLifecycleState();
     super.initState();
   }
 
@@ -46,11 +49,6 @@ class _BoardScreenState extends State<BoardScreen> {
     setState(() {
       _selectedPageIndex = index;
     });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   void setupPushNotifications() {
@@ -80,6 +78,7 @@ class _BoardScreenState extends State<BoardScreen> {
   @override
   void didChangeDependencies() {
     if (init) {
+      userId = Provider.of<User>(context).id;
       setupPushNotifications();
       init = false;
     }
@@ -106,6 +105,26 @@ class _BoardScreenState extends State<BoardScreen> {
         ),
       );
     }
+  }
+
+  Future<void> _update() async {
+    await Provider.of<BoardPosts>(context).connectToFirebase(userId);
+  }
+
+  void handleAppLifecycleState() {
+    AppLifecycleState _lastLifecyleState;
+    // ignore: missing_return
+    SystemChannels.lifecycle.setMessageHandler((msg) {
+      print('SystemChannels> $msg');
+      switch (msg) {
+        case "AppLifecycleState.resumed":
+          _lastLifecyleState = AppLifecycleState.resumed;
+          print(_lastLifecyleState);
+          _update();
+          break;
+        default:
+      }
+    });
   }
 
   @override
@@ -136,7 +155,10 @@ class _BoardScreenState extends State<BoardScreen> {
     return Scaffold(
       key: _scaffoldstate,
       appBar: appBar,
-      body: children[_selectedPageIndex],
+      body: RefreshIndicator(
+        child: children[_selectedPageIndex],
+        onRefresh: _update,
+      ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           backgroundColor: Theme.of(context).primaryColor,

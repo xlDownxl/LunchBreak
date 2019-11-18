@@ -23,6 +23,7 @@ class _AddScreenBottomBarState extends State<AddScreenBottomBar> {
   void createEvent() {
     widget.form.currentState.save();
     //newPost = Provider.of<BoardPost>(context, listen: false);
+    //widget.newPost.owner=Provider.of<User>(context).id;  //TODO <= owner managen
     posts.createPost(widget.newPost, Provider.of<User>(context).id);
   }
 

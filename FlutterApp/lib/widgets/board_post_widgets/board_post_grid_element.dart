@@ -67,7 +67,7 @@ class _BoardPostGridElementState extends State<BoardPostGridElement> {
                 ),
                 Container(
                   height: constraints.maxHeight * 0.2,
-                  child: GridItemBottomBar(),
+                  child: GridItemBottomBar(post.id),
                 ),
               ],
             ),

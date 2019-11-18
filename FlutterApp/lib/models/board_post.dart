@@ -13,7 +13,7 @@ class BoardPost with ChangeNotifier {
   List<User> _users;
   //String _ownerId;
   bool _favorite;
-  bool _owner;
+  String _owner; //
   DateTime _date;
   bool _participating;
 
@@ -28,6 +28,7 @@ class BoardPost with ChangeNotifier {
       "location": _location,
       "users": {},
       "date": dateInDatabaseFormat,
+      "owner":_owner,
     };
   }
 
@@ -41,7 +42,7 @@ class BoardPost with ChangeNotifier {
     _users = [];
     _language = snapshot['language'] ?? '';
     _favorite = false;
-    _owner = false;
+    _owner = snapshot['owner'] ?? '';
     _date = DateTime.now(); //TODO implement time
     _participating =
         false; //TODO logic that takes the participated event key list from firebase and puts the right
@@ -116,7 +117,7 @@ class BoardPost with ChangeNotifier {
 
   BoardPost(String ownerId) {
     this._favorite = false;
-    this._owner = true;
+    this._owner = ownerId;
     this._date = DateTime.now();
     this._participating = true;
     this.memberLimit = 5;
@@ -132,7 +133,7 @@ class BoardPost with ChangeNotifier {
     this._language = "English";
     this._location = "Room 3000";
     this._memberLimit = 5;
-    this._owner = false;
+    this._owner = "me";
     this._users = [];
     this._favorite = false;
     this._participating = false;
@@ -183,9 +184,9 @@ class BoardPost with ChangeNotifier {
     _description = value;
   }
 
-  bool get owner => _owner;
+  String get owner => _owner;
 
-  set owner(bool value) {
+  set owner(String value) {
     _owner = value;
   }
 
