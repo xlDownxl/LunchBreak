@@ -34,7 +34,8 @@ class _NewPostScreenState extends State<NewPostScreen> {
         newPost = Provider.of<BoardPosts>(context).findById(postId);
       } else {
         _editMode = false;
-        newPost = BoardPost(Provider.of<User>(context).id);
+        newPost = BoardPost();
+        newPost.owner = Provider.of<User>(context).id;
       }
       init = false;
     }
@@ -53,49 +54,52 @@ class _NewPostScreenState extends State<NewPostScreen> {
         MediaQuery.of(context).padding.top;
 
     String ownerId = Provider.of<User>(context).id;
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
-        child: Container(
-          height: deviceHeight,
-          child: Column(
-            children: <Widget>[
-              Form(
-                key: _form,
-                child: Container(
-                  height: deviceHeight * 0.9,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(15),
-                          height: deviceHeight * 0.4,
-                          //fit: FlexFit.tight,
-                          child: TitlePictureWidget(newPost),
-                        ),
-                        Container(
-                          height: deviceHeight * 0.2,
-                          padding: EdgeInsets.only(bottom: 20),
-                          //constraints: BoxConstraints.expand(),
-                          child: AddScreenDescription(newPost),
-                        ),
-                        SizedBox(
-                          height: deviceHeight * 0.05,
-                        ),
-                        AddScreenInformationPicker(newPost),
-                      ],
+    return ChangeNotifierProvider.value(
+      value: newPost,
+      child: Scaffold(
+        appBar: appBar,
+        body: SingleChildScrollView(
+          child: Container(
+            height: deviceHeight,
+            child: Column(
+              children: <Widget>[
+                Form(
+                  key: _form,
+                  child: Container(
+                    height: deviceHeight * 0.9,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.all(15),
+                            height: deviceHeight * 0.4,
+                            //fit: FlexFit.tight,
+                            child: TitlePictureWidget(),
+                          ),
+                          Container(
+                            height: deviceHeight * 0.2,
+                            padding: EdgeInsets.only(bottom: 20),
+                            //constraints: BoxConstraints.expand(),
+                            child: AddScreenDescription(),
+                          ),
+                          SizedBox(
+                            height: deviceHeight * 0.05,
+                          ),
+                          AddScreenInformationPicker(),
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Container(
-                color: Theme.of(context).primaryColor,
-                height: deviceHeight * 0.1,
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: AddScreenBottomBar(_form, newPost, _editMode),
-              ),
-            ],
+                Container(
+                  color: Theme.of(context).primaryColor,
+                  height: deviceHeight * 0.1,
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: AddScreenBottomBar(_form, _editMode),
+                ),
+              ],
+            ),
           ),
         ),
       ),

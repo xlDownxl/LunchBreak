@@ -28,7 +28,7 @@ class BoardPost with ChangeNotifier {
       "location": _location,
       "users": {},
       "date": dateInDatabaseFormat,
-      "owner":_owner,
+      "owner": _owner,
     };
   }
 
@@ -115,9 +115,8 @@ class BoardPost with ChangeNotifier {
     }
   }
 
-  BoardPost(String ownerId) {
+  BoardPost() {
     this._favorite = false;
-    this._owner = ownerId;
     this._date = DateTime.now();
     this._participating = true;
     this.memberLimit = 5;

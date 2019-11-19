@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 import '../../models/board_post.dart';
 
 class AddScreenDescription extends StatelessWidget {
-  var newPost;
-  AddScreenDescription(this.newPost);
+  AddScreenDescription();
 
   @override
   Widget build(BuildContext context) {
+    var newPost = Provider.of<BoardPost>(context);
     return Bubble(
       margin: BubbleEdges.only(top: 14),
       //nipOffset: 50,

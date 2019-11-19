@@ -5,11 +5,11 @@ import '../../models/board_post.dart';
 import 'package:provider/provider.dart';
 
 class AddScreenInformationPicker extends StatelessWidget {
-  BoardPost newPost;
-  AddScreenInformationPicker(this.newPost);
+  AddScreenInformationPicker();
 
   @override
   Widget build(BuildContext context) {
+    var newPost = Provider.of<BoardPost>(context);
     return Card(
       elevation: 2,
       child: Container(

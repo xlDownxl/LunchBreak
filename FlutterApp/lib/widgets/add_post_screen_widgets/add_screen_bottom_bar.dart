@@ -7,9 +7,9 @@ import '../../models/user.dart';
 
 class AddScreenBottomBar extends StatefulWidget {
   final form;
-  var newPost;
+  //var newPost;
   bool _editMode;
-  AddScreenBottomBar(this.form, this.newPost, this._editMode);
+  AddScreenBottomBar(this.form, this._editMode);
 
   @override
   _AddScreenBottomBarState createState() => _AddScreenBottomBarState();
@@ -19,12 +19,14 @@ enum ConfirmAction { CANCEL, ACCEPT }
 
 class _AddScreenBottomBarState extends State<AddScreenBottomBar> {
   var posts;
+  var newPost;
 
   void createEvent() {
     widget.form.currentState.save();
     //newPost = Provider.of<BoardPost>(context, listen: false);
     //widget.newPost.owner=Provider.of<User>(context).id;  //TODO <= owner managen
-    posts.createPost(widget.newPost, Provider.of<User>(context).id);
+    posts.createPost(newPost, Provider.of<User>(context).id);
+    //posts.addPost(Provider.of<BoardPost>(context));
   }
 
   Future<ConfirmAction> _asyncConfirmDialog(BuildContext context) async {
@@ -57,6 +59,7 @@ class _AddScreenBottomBarState extends State<AddScreenBottomBar> {
 
   @override
   Widget build(BuildContext context) {
+    newPost = Provider.of<BoardPost>(context);
     posts = Provider.of<BoardPosts>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -129,8 +132,7 @@ class _AddScreenBottomBarState extends State<AddScreenBottomBar> {
                 createEvent(); //check firebase id generierung -> wenn push was macht dann die id generierung in createvent
                 //auslagern damit nur id kreiert wird wenn der kreieren button gedrückt wird
 
-                Navigator.pop(
-                    context, {"created": true, "postId": widget.newPost.id});
+                Navigator.pop(context, {"created": true, "postId": newPost.id});
               } else {
                 // TODO Update Event
               }

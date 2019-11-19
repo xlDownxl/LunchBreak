@@ -3,8 +3,7 @@ import '../../models/board_post.dart';
 import 'package:provider/provider.dart';
 
 class TitlePictureWidget extends StatefulWidget {
-  BoardPost newPost;
-  TitlePictureWidget(this.newPost);
+  TitlePictureWidget();
 
   @override
   _TitlePictureWidgetState createState() => _TitlePictureWidgetState();
@@ -15,6 +14,7 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var newPost = Provider.of<BoardPost>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -72,10 +72,10 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                       ),
                     ),
                     TextFormField(
-                      initialValue: widget.newPost.title,
+                      initialValue: newPost.title,
                       onSaved: (value) {
                         print(value);
-                        widget.newPost.title = value;
+                        newPost.title = value;
                       },
                     ),
                   ],
@@ -98,10 +98,10 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                       ),
                     ),
                     TextFormField(
-                      initialValue: widget.newPost.location,
+                      initialValue: newPost.location,
                       onSaved: (value) {
                         print(value);
-                        widget.newPost.location = value;
+                        newPost.location = value;
                       },
                     ),
                   ],
@@ -119,12 +119,11 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                       ),
                     ),
                     TextFormField(
-                      initialValue: widget.newPost.fee == null
-                          ? ""
-                          : widget.newPost.fee.toString(),
+                      initialValue:
+                          newPost.fee == null ? "" : newPost.fee.toString(),
                       onSaved: (value) {
                         print(value);
-                        widget.newPost.fee = double.parse(value);
+                        newPost.fee = double.parse(value);
                       },
                     ),
                   ],

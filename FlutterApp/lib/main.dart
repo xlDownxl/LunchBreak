@@ -8,7 +8,9 @@ import 'screens/feed_screen.dart';
 import 'screens/add_post_screen.dart';
 import 'models/board_posts.dart';
 import 'models/user.dart';
+import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
+import 'models/board_post.dart';
 
 void main() => runApp(MyApp());
 

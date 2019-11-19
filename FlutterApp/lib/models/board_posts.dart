@@ -11,6 +11,10 @@ class BoardPosts with ChangeNotifier {
     return _items;
   }
 
+  void addPost(post) {
+    _items.add(post);
+  }
+
   List<BoardPost> favorites() {
     return _items.where((post) {
       return post.favorite == true;
