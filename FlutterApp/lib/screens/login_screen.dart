@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/board_posts.dart';
 import '../models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:email_validator/email_validator.dart';
 
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -17,9 +18,12 @@ class _LoginPageState extends State<LoginPage> {
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
   bool _isLoading = false;
-  //var username;
+
   var password;
   var email;
+  var emailError = "";
+  var passwordError = "";
+
   final _formKey = GlobalKey<FormState>();
 
   void validateInput() {
@@ -54,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future register() {
     setState(() {
+      emailError = "";
       _isLoading = true;
     }); //TODO give possibility of a normal name
     return FirebaseAuth.instance
@@ -70,6 +75,16 @@ class _LoginPageState extends State<LoginPage> {
         _isLoading = false;
       });
       print(error);
+      switch (error.code) {
+        case "ERROR_INVALID_EMAIL":
+          emailError = "Invalid Email";
+          break;
+        case "ERROR_WEAK_PASSWORD":
+          passwordError = "Password hould have min. 6 Char.";
+          break;
+        default:
+          emailError = "Invalid Input";
+      }
     }); //TODO handle error
   }
 
@@ -96,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
   Future login() {
     setState(() {
       _isLoading = true;
+      emailError = "";
     }); //TODO give possibility of a normal name
     return FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password)
@@ -121,7 +137,24 @@ class _LoginPageState extends State<LoginPage> {
       });
       Navigator.pushReplacementNamed(context, BoardScreen.routeName);
     }).catchError((error) {
-      print(error);
+      print(error.toString() + "in error in login");
+      switch (error.code) {
+        case "ERROR_INVALID_EMAIL":
+          emailError = "Invalid Email";
+          break;
+        case "ERROR_USER_NOT_FOUND":
+          emailError = "User note found";
+          break;
+        case "ERROR_INVALID_EMAIL":
+          emailError = "Invalid Email";
+          break;
+        case "ERROR_WRONG_PASSWORD":
+          passwordError = "Wrong Passord";
+          break;
+        default:
+          emailError = "Invalid Inputs";
+          break;
+      }
       setState(() {
         _isLoading = false;
       });
@@ -143,7 +176,14 @@ class _LoginPageState extends State<LoginPage> {
         onSaved: (value) {
           email = value;
         },
+        validator: (val) =>
+            !EmailValidator.validate(val, true) ? 'Not a valid email.' : null,
+
         decoration: InputDecoration(
+          errorText: emailError,
+          errorStyle: TextStyle(
+            color: Colors.red,
+          ),
           hintText: 'Email',
           contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           border: OutlineInputBorder(
@@ -169,12 +209,16 @@ class _LoginPageState extends State<LoginPage> {
         autofocus: false,
         // initialValue: 'some password',
         obscureText: true,
+        validator: (val) =>
+            val.length < 4 ? 'Password should have min. 6 Chars.' : null,
         controller: passwordController,
         textInputAction: TextInputAction.done,
         onSaved: (value) {
           password = value;
         },
         decoration: InputDecoration(
+          errorText: passwordError,
+          errorStyle: TextStyle(color: Colors.red),
           hintText: 'Password',
           contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
           focusedBorder: OutlineInputBorder(
@@ -204,6 +248,7 @@ class _LoginPageState extends State<LoginPage> {
               : BorderSide(color: Theme.of(context).primaryColor, width: 1),
         ),
         onPressed: () {
+          _formKey.currentState.validate();
           _formKey.currentState.save();
           login();
           //Navigator.of(context).pushNamed(BoardScreen.routeName);
