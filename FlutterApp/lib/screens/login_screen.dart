@@ -6,25 +6,53 @@ import '../models/board_posts.dart';
 import '../models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginPage extends StatefulWidget {
+  static String tag = 'login-page';
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _LoginPageState createState() => new _LoginPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginPageState extends State<LoginPage> {
+  bool _activeButton = false;
+  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
   bool _isLoading = false;
-  var username;
+  //var username;
   var password;
   var email;
   final _formKey = GlobalKey<FormState>();
 
+  void validateInput() {
+    if (passwordController.text.isNotEmpty && emailController.text.isNotEmpty) {
+      setState(() {
+        _activeButton = true;
+      });
+    } else {
+      setState(() {
+        _activeButton = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    passwordController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    passwordController.addListener(() {
+      validateInput();
+    });
+    emailController.addListener(() {
+      validateInput();
+    });
+    super.initState();
+  }
+
   Future register() {
-    if (username == null) {
-      throw StepState.error;
-    }
-    if (username == "") {
-      throw StepState.error;
-    }
     setState(() {
       _isLoading = true;
     }); //TODO give possibility of a normal name
@@ -49,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var user = await FirebaseAuth.instance.currentUser();
 
     Provider.of<User>(context, listen: false).id = user.uid;
-    Provider.of<User>(context, listen: false).username = username;
+    //Provider.of<User>(context, listen: false).username = username;
 
     return FirebaseDatabase.instance
         .reference()
@@ -58,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
         .set({
       "email": user.email,
       "id": user.uid,
-      "username": username,
+      //"username": username,
     }).then((_) {
       return Provider.of<BoardPosts>(context, listen: false)
           .connectToFirebase(Provider.of<User>(context, listen: false).id);
@@ -80,9 +108,8 @@ class _LoginScreenState extends State<LoginScreen> {
           .child(user.uid)
           .once()
           .then((snapshot) {
-        var username = snapshot.value["username"];
+        //var username = snapshot.value["username"];
         var userProvider = Provider.of<User>(context, listen: false);
-        userProvider.username = username;
         userProvider.id = user.uid;
       });
 
@@ -103,66 +130,158 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+
+    final emailWidget = Container(
+      margin: EdgeInsets.symmetric(horizontal: deviceWidth * 0.15),
+      child: TextFormField(
+        autofocus: false,
+        // initialValue: 'some password',
+        style: TextStyle(color: Theme.of(context).accentColor),
+        controller: emailController,
+        textInputAction: TextInputAction.next,
+        onSaved: (value) {
+          email = value;
+        },
+        decoration: InputDecoration(
+          hintText: 'Email',
+          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: BorderSide(
+              width: 10,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: BorderSide(
+                style: BorderStyle.solid,
+                width: 4,
+                color: Theme.of(context).primaryColor),
+          ),
+        ),
+      ),
+    );
+
+    final passwordWidget = Container(
+      margin: EdgeInsets.symmetric(horizontal: deviceWidth * 0.15),
+      child: TextFormField(
+        autofocus: false,
+        // initialValue: 'some password',
+        obscureText: true,
+        controller: passwordController,
+        textInputAction: TextInputAction.done,
+        onSaved: (value) {
+          password = value;
+        },
+        decoration: InputDecoration(
+          hintText: 'Password',
+          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: BorderSide(
+                style: BorderStyle.solid,
+                width: 4,
+                color: Theme.of(context).primaryColor),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: BorderSide(style: BorderStyle.solid, width: 10),
+          ),
+        ),
+      ),
+    );
+
+    final loginButton = Container(
+      margin: EdgeInsets.symmetric(horizontal: deviceWidth * 0.3),
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      child: RaisedButton(
+        elevation: 12,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+          side: !_activeButton
+              ? BorderSide(color: Theme.of(context).accentColor, width: 1)
+              : BorderSide(color: Theme.of(context).primaryColor, width: 1),
+        ),
+        onPressed: () {
+          _formKey.currentState.save();
+          login();
+          //Navigator.of(context).pushNamed(BoardScreen.routeName);
+        },
+        padding: EdgeInsets.all(12),
+        color: _activeButton ? Theme.of(context).primaryColor : Colors.white,
+        child: Text(
+          'Log In',
+          style: TextStyle(
+            color:
+                !_activeButton ? Theme.of(context).accentColor : Colors.white,
+          ),
+        ),
+      ),
+    );
+
+    final signUpButton = Container(
+      margin: EdgeInsets.symmetric(horizontal: deviceWidth * 0.3),
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+          side: BorderSide(color: Theme.of(context).accentColor, width: 1),
+        ),
+        onPressed: () {
+          _formKey.currentState.save();
+          register();
+          //Navigator.of(context).pushNamed(BoardScreen.routeName);
+        },
+        elevation: 0,
+        padding: EdgeInsets.all(12),
+        color: Colors.white,
+        child: Text('Sign In',
+            style: TextStyle(
+              color: Theme.of(context).accentColor,
+            )),
+      ),
+    );
+
+    final forgotLabel = FlatButton(
+      child: Text(
+        'Forgot password?',
+        style: TextStyle(
+          color: Theme.of(context).accentColor,
+        ),
+      ),
+      onPressed: () {},
+    );
+
     return Scaffold(
-      appBar: AppBar(title: Text("Register")),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FlatButton(
-              onPressed: () {
-                _formKey.currentState.save();
-                register();
-              },
-              child: Text("Register"),
-              color: Theme.of(context).primaryColor,
+      appBar: AppBar(
+        title: Text("FST!Lunch"),
+      ),
+      backgroundColor: Colors.white,
+      body: Container(
+        //color: Theme.of(context).primaryColor,
+        child: Form(
+          key: _formKey,
+          child: Center(
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.only(left: 24.0, right: 24.0),
+              children: <Widget>[
+                //logo,
+                SizedBox(height: 48.0),
+                emailWidget,
+                SizedBox(height: 8.0),
+                passwordWidget,
+                SizedBox(height: 24.0),
+                loginButton,
+                forgotLabel,
+                SizedBox(
+                  height: 48,
+                ),
+                signUpButton,
+              ],
             ),
-            _isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Container(),
-            FlatButton(
-              onPressed: () {
-                _formKey.currentState.save();
-                login();
-              },
-              child: Text("Login"),
-              color: Theme.of(context).primaryColor,
-            ),
-            Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "email",
-                    ),
-                    initialValue: "lo22lkek@gmd.de",
-                    onSaved: (value) {
-                      email = value;
-                    },
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: "password"),
-                    initialValue: "123456",
-                    onSaved: (value) {
-                      password = value;
-                    },
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "username",
-                    ),
-                    initialValue: "damnboy",
-                    onSaved: (value) {
-                      username = value;
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
