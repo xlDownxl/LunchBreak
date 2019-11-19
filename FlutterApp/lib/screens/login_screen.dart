@@ -15,9 +15,12 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _activeButton = false;
-  final passwordController = TextEditingController();
-  final emailController = TextEditingController();
+  final passwordController = TextEditingController(text: "123456");
+  final emailController = TextEditingController(text: "dudkek@kek.de");
   bool _isLoading = false;
+
+  var emailNode = FocusNode();
+  var passwordNode = FocusNode();
 
   var password;
   var email;
@@ -59,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
   Future register() {
     setState(() {
       emailError = "";
+      passwordError = "";
       _isLoading = true;
     }); //TODO give possibility of a normal name
     return FirebaseAuth.instance
@@ -80,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
           emailError = "Invalid Email";
           break;
         case "ERROR_WEAK_PASSWORD":
-          passwordError = "Password hould have min. 6 Char.";
+          passwordError = "Password should be min. 6 Char.";
           break;
         default:
           emailError = "Invalid Input";
@@ -112,6 +116,7 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       _isLoading = true;
       emailError = "";
+      passwordError = "";
     }); //TODO give possibility of a normal name
     return FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password)
@@ -169,6 +174,10 @@ class _LoginPageState extends State<LoginPage> {
       margin: EdgeInsets.symmetric(horizontal: deviceWidth * 0.15),
       child: TextFormField(
         autofocus: false,
+        focusNode: emailNode,
+        onFieldSubmitted: (val) {
+          FocusScope.of(context).requestFocus(passwordNode);
+        },
         // initialValue: 'some password',
         style: TextStyle(color: Theme.of(context).accentColor),
         controller: emailController,
@@ -207,10 +216,16 @@ class _LoginPageState extends State<LoginPage> {
       margin: EdgeInsets.symmetric(horizontal: deviceWidth * 0.15),
       child: TextFormField(
         autofocus: false,
+        focusNode: passwordNode,
+        onFieldSubmitted: (val) {
+          passwordNode.unfocus();
+          _formKey.currentState.validate();
+          _formKey.currentState.save();
+          login();
+        },
         // initialValue: 'some password',
         obscureText: true,
-        validator: (val) =>
-            val.length < 4 ? 'Password should have min. 6 Chars.' : null,
+        //validator: (val) => val.length < 6 ? 'Password minimum 6 Chars.' : null,
         controller: passwordController,
         textInputAction: TextInputAction.done,
         onSaved: (value) {
