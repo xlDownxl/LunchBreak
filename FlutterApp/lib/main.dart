@@ -17,20 +17,6 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Map<int, Color> color = {
-      50: Color.fromRGBO(122, 122, 122, .1),
-      100: Color.fromRGBO(122, 122, 122, .2),
-      200: Color.fromRGBO(122, 122, 122, .3),
-      300: Color.fromRGBO(122, 122, 122, .4),
-      400: Color.fromRGBO(122, 122, 1229, .5),
-      500: Color.fromRGBO(122, 122, 122, .6),
-      600: Color.fromRGBO(122, 122, 122, .7),
-      700: Color.fromRGBO(122, 122, 122, .8),
-      800: Color.fromRGBO(122, 122, 122, .9),
-      900: Color.fromRGBO(122, 122, 122, 1),
-    };
-    MaterialColor colorCustom = MaterialColor(0xFF880E4F, color);
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(

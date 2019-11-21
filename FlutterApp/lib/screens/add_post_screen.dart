@@ -19,7 +19,8 @@ class NewPostScreen extends StatefulWidget {
 class _NewPostScreenState extends State<NewPostScreen> {
   var _form = GlobalKey<FormState>();
   bool showMemberPicker = false;
-
+  var posts;
+  var _autoValidate = false;
   BoardPost newPost;
   bool init = true;
   bool _editMode =
@@ -28,6 +29,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
   @override
   void didChangeDependencies() {
     if (init) {
+      posts = Provider.of<BoardPosts>(context);
       var postId = ModalRoute.of(context).settings.arguments;
       if (postId != null) {
         _editMode = true;
@@ -42,6 +44,16 @@ class _NewPostScreenState extends State<NewPostScreen> {
     super.didChangeDependencies();
   }
 
+  void createEvent() {
+    _form.currentState.save();
+    if (_form.currentState.validate()) {
+      posts.createPost(newPost, Provider.of<User>(context).id);
+      Navigator.pop(context, {"created": true, "postId": newPost.id});
+    } else {
+      _autoValidate = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var appBar = AppBar(
@@ -51,7 +63,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
 
     final deviceHeight = MediaQuery.of(context).size.height -
         appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top;
+        MediaQuery.of(context).padding.top; //-20 because vertical padding
 
     String ownerId = Provider.of<User>(context).id;
     return ChangeNotifierProvider.value(
@@ -59,46 +71,48 @@ class _NewPostScreenState extends State<NewPostScreen> {
       child: Scaffold(
         appBar: appBar,
         body: SingleChildScrollView(
-          child: Container(
-            height: deviceHeight,
-            child: Column(
-              children: <Widget>[
-                Form(
-                  key: _form,
-                  child: Container(
-                    height: deviceHeight * 0.9,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(15),
-                            height: deviceHeight * 0.4,
-                            //fit: FlexFit.tight,
-                            child: TitlePictureWidget(),
-                          ),
-                          Container(
-                            height: deviceHeight * 0.2,
-                            padding: EdgeInsets.only(bottom: 20),
-                            //constraints: BoxConstraints.expand(),
-                            child: AddScreenDescription(),
-                          ),
-                          SizedBox(
-                            height: deviceHeight * 0.05,
-                          ),
-                          AddScreenInformationPicker(),
-                        ],
-                      ),
-                    ),
+          child: Form(
+            key: _form,
+            child: Container(
+              height: deviceHeight,
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(15),
+                    height: deviceHeight * 0.5,
+                    //fit: FlexFit.tight,
+                    child: TitlePictureWidget(),
                   ),
-                ),
-                Container(
-                  color: Theme.of(context).primaryColor,
-                  height: deviceHeight * 0.1,
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: AddScreenBottomBar(_form, _editMode),
-                ),
-              ],
+                  SizedBox(
+                    height: deviceHeight * 0.05,
+                  ),
+                  Container(
+                    //color: Theme.of(context).primaryColor,
+                    padding: EdgeInsets.all(15),
+                    child: Container(
+                      width: double.infinity,
+                      child: Center(
+                          child: Text(
+                        "Map coming Soon!",
+                        style: TextStyle(fontSize: 20),
+                      )),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    height: deviceHeight * 0.35,
+                  ),
+                  Container(
+                    //color: Theme.of(context).primaryColor,
+                    height: deviceHeight * 0.1,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        border: Border(
+                            top: BorderSide(
+                                color: Theme.of(context).accentColor))),
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: AddScreenBottomBar(_editMode, createEvent),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

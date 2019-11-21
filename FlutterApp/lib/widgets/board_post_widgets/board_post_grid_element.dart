@@ -15,10 +15,6 @@ class BoardPostGridElement extends StatefulWidget {
 
 class _BoardPostGridElementState extends State<BoardPostGridElement> {
   var post;
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

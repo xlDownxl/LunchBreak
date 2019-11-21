@@ -6,10 +6,9 @@ import '../../models/board_posts.dart';
 import '../../models/user.dart';
 
 class AddScreenBottomBar extends StatefulWidget {
-  final form;
-  //var newPost;
+  final Function createEvent;
   bool _editMode;
-  AddScreenBottomBar(this.form, this._editMode);
+  AddScreenBottomBar(this._editMode, this.createEvent);
 
   @override
   _AddScreenBottomBarState createState() => _AddScreenBottomBarState();
@@ -20,14 +19,6 @@ enum ConfirmAction { CANCEL, ACCEPT }
 class _AddScreenBottomBarState extends State<AddScreenBottomBar> {
   var posts;
   var newPost;
-
-  void createEvent() {
-    widget.form.currentState.save();
-    //newPost = Provider.of<BoardPost>(context, listen: false);
-    //widget.newPost.owner=Provider.of<User>(context).id;  //TODO <= owner managen
-    posts.createPost(newPost, Provider.of<User>(context).id);
-    //posts.addPost(Provider.of<BoardPost>(context));
-  }
 
   Future<ConfirmAction> _asyncConfirmDialog(BuildContext context) async {
     return showDialog<ConfirmAction>(
@@ -65,6 +56,7 @@ class _AddScreenBottomBarState extends State<AddScreenBottomBar> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Flexible(
+          flex: 3,
           child: InkWell(
             onTap: () {
               _asyncConfirmDialog(context).then((result) {
@@ -73,71 +65,77 @@ class _AddScreenBottomBarState extends State<AddScreenBottomBar> {
                 }
               });
             },
-            child: Row(
-              children: <Widget>[
-                Icon(Icons.arrow_back),
-                Text(
-                  "Cancel",
-                  style: TextStyle(fontSize: 24),
-                ),
-              ],
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                  Text(
+                    "Cancel",
+                    style: TextStyle(fontSize: 30, color: Colors.white),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
         Flexible(
+          flex: 2,
           child: SizedBox(),
           fit: FlexFit.tight,
         ),
         Flexible(
-          child: OutlineButton(
-            //shape: RoundedRectangleBorder(
-            //  borderRadius: BorderRadius.circular(30.0)),
-            //highlightColor: Colors.black,
-            shape: StadiumBorder(),
-            textColor: Colors.blue,
-
-            borderSide: BorderSide(
-                color: Colors.blue, style: BorderStyle.solid, width: 1),
-            //shape: CircleBorder(side: BorderSide(style: BorderStyle.solid)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Flexible(
-                  flex: 3,
-                  child: Container(
-                    margin: EdgeInsets.only(right: 4),
-                    child: FittedBox(
-                      child: !widget._editMode
-                          ? Text(
-                              "Create",
-                              style: TextStyle(fontSize: 30),
-                            )
-                          : Text(
-                              "Save",
-                              style: TextStyle(fontSize: 30),
-                            ),
-                      fit: BoxFit.fill,
+          flex: 4,
+          child: Container(
+            padding: EdgeInsets.only(bottom: 10, top: 2),
+            child: RaisedButton(
+              shape: StadiumBorder(),
+              textColor: Colors.white,
+              color: Theme.of(context).accentColor,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Flexible(
+                    flex: 5,
+                    child: Container(
+                      margin: EdgeInsets.only(right: 8),
+                      child: FittedBox(
+                        child: !widget._editMode
+                            ? Text(
+                                "Create",
+                                style: TextStyle(fontSize: 26),
+                              )
+                            : Text(
+                                "Save",
+                                style: TextStyle(fontSize: 30),
+                              ),
+                        fit: BoxFit.scaleDown,
+                      ),
                     ),
                   ),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: Icon(BalloonNew.balloonicon),
-                  fit: FlexFit.loose,
-                ),
-              ],
+                  Flexible(
+                    flex: 2,
+                    child: Icon(
+                      BalloonNew.balloonicon,
+                      size: 40,
+                    ),
+                    fit: FlexFit.loose,
+                  ),
+                ],
+              ),
+              onPressed: () {
+                if (!widget._editMode) {
+                  widget.createEvent();
+                } else {
+                  // TODO Update Event
+                }
+              },
             ),
-            onPressed: () {
-              if (!widget._editMode) {
-                createEvent(); //check firebase id generierung -> wenn push was macht dann die id generierung in createvent
-                //auslagern damit nur id kreiert wird wenn der kreieren button gedrückt wird
-
-                Navigator.pop(context, {"created": true, "postId": newPost.id});
-              } else {
-                // TODO Update Event
-              }
-            },
-            color: Colors.red,
           ),
         ),
       ],

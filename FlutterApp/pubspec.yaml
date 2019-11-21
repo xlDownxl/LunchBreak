@@ -31,10 +31,9 @@ dependencies:
   bubble: ^1.1.9+1
   flutter_picker: ^1.1.0
   numberpicker: ^1.1.0
-
+  speech_bubble: ^0.0.5
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
 
 dev_dependencies:
   flutter_test:
@@ -53,8 +52,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - images/a_dot_burr.jpeg
+  assets:
+    - assets/icons/bubble.png
   #  - images/a_dot_ham.jpeg
 
 
@@ -73,6 +72,12 @@ flutter:
     - family: Socicon
       fonts:
         - asset: assets/icons/Socicon.ttf
+    - family: Meal
+      fonts:
+        - asset: assets/icons/Meal.ttf
+    - family: MealIcons
+      fonts:
+        - asset: assets/icons/MealIcons.ttf
     - family: BalloonIcon
       fonts:
         - asset: assets/icons/BalloonIcon.ttf

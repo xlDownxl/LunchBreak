@@ -5,7 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 class BoardPost with ChangeNotifier {
   String id;
   String _title;
-  double _fee;
+  String _fee;
   String _description;
   String _language; //TODO build language Enum
   int _memberLimit;
@@ -16,6 +16,7 @@ class BoardPost with ChangeNotifier {
   String _owner; //
   DateTime _date;
   bool _participating;
+  String _imageUrl;
 
   toJson() {
     return {
@@ -29,6 +30,7 @@ class BoardPost with ChangeNotifier {
       "users": {},
       "date": dateInDatabaseFormat,
       "owner": _owner,
+      "imageUrl": _imageUrl,
     };
   }
 
@@ -36,18 +38,19 @@ class BoardPost with ChangeNotifier {
     id = snapshot['id'] ?? '';
     _title = snapshot['title'] ?? '';
     _location = snapshot['location'] ?? '';
-    _fee = snapshot['fee'].toDouble() ?? '';
+    _fee = snapshot['fee'] ?? '';
     _description = snapshot['description'] ?? '';
     _memberLimit = snapshot['memberLimit'] ?? '';
     _users = [];
+    _imageUrl = snapshot['imageUrl'] ?? '';
     _language = snapshot['language'] ?? '';
     _favorite = false;
     _owner = snapshot['owner'] ?? '';
-    _date = DateTime.now(); //TODO implement time
+    _date = DateTime.fromMillisecondsSinceEpoch(
+        snapshot["date"]); //TODO implement time
     _participating =
         false; //TODO logic that takes the participated event key list from firebase and puts the right
-  } //participating attributes to true
-  //also the logic for changing it to true and in the database by click
+  }
   //TODO cancel button und back arrows überarbeiten
 
   void toggleFavorite(userId) async {
@@ -126,7 +129,7 @@ class BoardPost with ChangeNotifier {
     this._participating = true;
     //this.id = "idexample";
     this._title = "Example Title";
-    this._fee = 500;
+    this._fee = "0-500Yen";
     this._description =
         "This is a example description. This is a example description. This is a example description.";
     this._language = "English";
@@ -171,9 +174,9 @@ class BoardPost with ChangeNotifier {
     _location = value;
   }
 
-  double get fee => _fee;
+  String get fee => _fee;
 
-  set fee(double value) {
+  set fee(String value) {
     _fee = value;
   }
 
@@ -199,6 +202,12 @@ class BoardPost with ChangeNotifier {
 
   set memberLimit(int value) {
     _memberLimit = value;
+  }
+
+  String get imageUrl => _imageUrl;
+
+  set imageUrl(String value) {
+    _imageUrl = value;
   }
 
   bool get participating => _participating;

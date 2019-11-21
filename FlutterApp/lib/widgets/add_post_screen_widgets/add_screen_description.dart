@@ -4,27 +4,51 @@ import 'package:provider/provider.dart';
 import '../../models/board_post.dart';
 
 class AddScreenDescription extends StatelessWidget {
-  AddScreenDescription();
-
   @override
   Widget build(BuildContext context) {
     var newPost = Provider.of<BoardPost>(context);
-    return Bubble(
-      margin: BubbleEdges.only(top: 14),
-      //nipOffset: 50,
-      nipHeight: 30,
-      nipWidth: 10,
-      //alignment: Alignment.topLeft,
-      nip: BubbleNip.leftTop,
-      child: TextFormField(
-        initialValue: newPost.description,
-        onSaved: (value) {
-          newPost.description = value;
-        },
-        decoration: InputDecoration(
-          labelText: "Enter a Description",
+    return Container(
+      padding: EdgeInsets.only(bottom: 0, left: 10, right: 10),
+      child: LayoutBuilder(
+        builder: (_, constraints) => Stack(
+          children: [
+            Image.asset(
+              "assets/icons/bubble.png",
+              width: 300,
+            ),
+            Container(
+              padding:
+                  EdgeInsets.only(top: 30, bottom: 20, left: 20, right: 20),
+              child: TextFormField(
+                onSaved: (val) {
+                  newPost.description = val;
+                },
+                maxLines: 5,
+                style: TextStyle(
+                    fontSize: 20, color: Theme.of(context).accentColor),
+                decoration:
+                    InputDecoration.collapsed(hintText: "Enter a Description"),
+              ),
+            ),
+          ],
+          //width: 150,
+          //margin: EdgeInsets.all(10),
+          //padding: EdgeInsets.all(50),
+          /* child: Column(children: [
+            TextFormField(
+              decoration:
+                  InputDecoration.collapsed(hintText: "Enter a Description"),
+              maxLines: 4,
+            )
+          ]),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              alignment: Alignment.center,
+              fit: BoxFit.cover,
+              image: AssetImage("assets/icons/bubble.png"),
+            ),
+          ),*/
         ),
-        maxLines: 5,
       ),
     );
   }
