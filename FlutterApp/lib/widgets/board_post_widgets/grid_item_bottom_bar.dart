@@ -13,9 +13,9 @@ class GridItemBottomBar extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed(
-          PostDetailScreen.routeName, arguments: postId, //TODO pass post ID !!
+          PostDetailScreen.routeName,
+          arguments: postId,
         );
-        //arguments: product.id,);
       },
       child: Container(
         padding: EdgeInsets.only(bottom: 8, top: 3, right: 8),
@@ -26,8 +26,6 @@ class GridItemBottomBar extends StatelessWidget {
           ),
         ),
         child: Row(
-          //crossAxisAlignment: CrossAxisAlignment.stretch,
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
               flex: 2,

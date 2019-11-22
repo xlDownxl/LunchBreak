@@ -24,9 +24,25 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
   var _calendarIconFocus = false;
   var image;
 
-  //var titleFocus = FocusNode();
-  //var capactiyFocus = FocusNode();
-  //var locationFocus = FocusNode();
+  var titleFocus;
+  var capactiyFocus;
+  var locationFocus;
+
+  @override
+  void initState() {
+    titleFocus = FocusNode();
+    capactiyFocus = FocusNode();
+    locationFocus = FocusNode();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    titleFocus.dispose();
+    capactiyFocus.dispose();
+    locationFocus.dispose();
+    super.dispose();
+  }
 
   void presentDatePicker(newPost) {
     showDatePicker(
@@ -125,7 +141,7 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                     ),
                   ),
                   TextFormField(
-                    //focusNode: titleFocus,
+                    focusNode: titleFocus,
                     validator: (val) {
                       if (val.isNotEmpty) {
                         return null;
@@ -139,7 +155,7 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                         _calendarFocus = true;
                         _calendarIconFocus = true;
                       });
-                      //titleFocus.unfocus();
+                      titleFocus.unfocus();
                     },
                     style: TextStyle(color: Theme.of(context).accentColor),
                     textInputAction: TextInputAction.next,
@@ -220,7 +236,14 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                           color: _feeColor),
                       child: DropdownButtonFormField(
                         onSaved: (val) {
-                          //TODO
+                          newPost.fee = val;
+                        },
+                        validator: (val) {
+                          if (val != null) {
+                            return null;
+                          } else {
+                            return "Enter Fee";
+                          }
                         },
                         decoration: InputDecoration.collapsed(
                           hintText: "Choose Fee",
@@ -239,84 +262,87 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                           setState(() {
                             _selectedFee = val;
                             _feeColor = Colors.white;
-                            //FocusScope.of(context).requestFocus(capactiyFocus);
+                            FocusScope.of(context).requestFocus(capactiyFocus);
                           });
-                          newPost.fee = _selectedFee;
                         },
                         value: _selectedFee,
                       ),
                     ),
                   ),
-                  Flexible(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Flexible(
-                          child: Text(
-                            "Capacity",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Flexible(
+                        child: Text(
+                          "Capacity",
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Flexible(
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            onFieldSubmitted: (val) {
-                              // FocusScope.of(context)
-                              //   .requestFocus(locationFocus);
-                            },
-                            style:
-                                TextStyle(color: Theme.of(context).accentColor),
-                            textInputAction: TextInputAction.next,
-                            onSaved: (val) {
-                              newPost.memberLimit = int.parse(val);
-                            },
-                            validator: (val) {
-                              if (val.isNotEmpty) {
+                      ),
+                      Flexible(
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          onFieldSubmitted: (val) {
+                            FocusScope.of(context).requestFocus(locationFocus);
+                          },
+                          style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                          ),
+                          textInputAction: TextInputAction.next,
+                          onSaved: (val) {
+                            newPost.memberLimit = int.parse(val);
+                          },
+                          validator: (val) {
+                            if (val.isNotEmpty) {
+                              try {
+                                int.parse(val);
                                 return null;
-                              } else {
-                                return "Please Enter a Capacity";
+                              } on Exception catch (_) {
+                                return "Not a Number";
                               }
-                            },
-                            //focusNode: capactiyFocus,
-                            decoration: InputDecoration(
-                              hintText: "00",
-                              contentPadding:
-                                  EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(32.0),
-                                borderSide: BorderSide(
-                                  width: 10,
-                                ),
+                            } else {
+                              return "Enter Capacity";
+                            }
+                          },
+                          focusNode: capactiyFocus,
+                          decoration: InputDecoration(
+                            errorMaxLines: 2,
+                            hintText: "00",
+                            contentPadding:
+                                EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(32.0),
+                              borderSide: BorderSide(
+                                width: 10,
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(32.0),
-                                borderSide: BorderSide(
-                                    style: BorderStyle.solid,
-                                    width: 4,
-                                    color: Theme.of(context).primaryColor),
-                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(32.0),
+                              borderSide: BorderSide(
+                                  style: BorderStyle.solid,
+                                  width: 4,
+                                  color: Theme.of(context).primaryColor),
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   Flexible(
                     child: Text(
-                      "Locations",
+                      "Location",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
                   Flexible(
                     child: TextFormField(
                       onFieldSubmitted: (val) {
-                        //locationFocus.unfocus();
+                        locationFocus.unfocus();
                       },
                       validator: (val) {
                         if (val.isNotEmpty) {
                           return null;
                         } else {
-                          return "Please Enter a Location";
+                          return "Enter a Location";
                         }
                       },
                       style: TextStyle(color: Theme.of(context).accentColor),
@@ -324,8 +350,10 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                       onSaved: (val) {
                         newPost.location = val;
                       },
-                      //focusNode: locationFocus,
+                      focusNode: locationFocus,
                       decoration: InputDecoration(
+                        errorMaxLines: 2,
+                        errorStyle: TextStyle(fontSize: 10),
                         contentPadding:
                             EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                         border: OutlineInputBorder(

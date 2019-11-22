@@ -28,9 +28,9 @@ class _BoardPostGridElementState extends State<BoardPostGridElement> {
           },
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
+              color: Color(0xffFFF1DE),
               borderRadius: BorderRadius.all(
-                Radius.circular(20),
+                Radius.circular(40),
               ),
             ),
             child: Column(

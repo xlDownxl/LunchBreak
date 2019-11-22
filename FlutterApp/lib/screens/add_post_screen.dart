@@ -45,10 +45,19 @@ class _NewPostScreenState extends State<NewPostScreen> {
   }
 
   void createEvent() {
-    _form.currentState.save();
     if (_form.currentState.validate()) {
-      posts.createPost(newPost, Provider.of<User>(context).id);
-      Navigator.pop(context, {"created": true, "postId": newPost.id});
+      _form.currentState.save();
+
+      if (newPost.imageUrl == null) {
+        //TODO show error that no image selected
+        return;
+      } else if (newPost.date == null) {
+        //TODO show error that no Date selected
+        return;
+      } else {
+        posts.createPost(newPost, Provider.of<User>(context).id);
+        Navigator.pop(context, {"created": true, "postId": newPost.id});
+      }
     } else {
       _autoValidate = true;
     }
