@@ -27,12 +27,14 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
   var titleFocus;
   var capactiyFocus;
   var locationFocus;
+  var descriptionFocus;
 
   @override
   void initState() {
     titleFocus = FocusNode();
     capactiyFocus = FocusNode();
     locationFocus = FocusNode();
+    descriptionFocus = FocusNode();
     super.initState();
   }
 
@@ -41,6 +43,7 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
     titleFocus.dispose();
     capactiyFocus.dispose();
     locationFocus.dispose();
+    descriptionFocus.dispose();
     super.dispose();
   }
 
@@ -122,7 +125,7 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                   ),
                 ),
                 Expanded(
-                  child: AddScreenDescription(),
+                  child: AddScreenDescription(descriptionFocus),
                 ),
               ],
             ),
@@ -336,7 +339,8 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                   Flexible(
                     child: TextFormField(
                       onFieldSubmitted: (val) {
-                        locationFocus.unfocus();
+                        FocusScope.of(context).requestFocus(descriptionFocus);
+                        //locationFocus.unfocus();
                       },
                       validator: (val) {
                         if (val.isNotEmpty) {

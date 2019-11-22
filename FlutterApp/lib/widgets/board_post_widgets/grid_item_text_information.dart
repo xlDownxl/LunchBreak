@@ -9,47 +9,65 @@ class GridItemTextInformation extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.only(left: 3),
-      //margin: EdgeInsets.only(bottom: 5),
-      constraints: BoxConstraints.expand(),
-      child: Card(
-        color: Theme.of(context).accentColor,
-        elevation: 5,
-        child: Container(
-          padding: EdgeInsets.only(top: 1, right: 3, left: 3, bottom: 1),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              FittedBox(
-                fit: BoxFit.fill,
-                child: Text(
-                  post.title,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          Flexible(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Flexible(
+                  //fit: BoxFit.fill,
+                  child: FittedBox(
+                    child: Text(
+                      post.location,
+                      //post.location,
+                      style: TextStyle(
+                        color: Color(0xff707070),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              Divider(
-                thickness: 2,
-                color: Colors.black,
-                height: 10,
-              ),
-              Text(
-                "Where:",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              FittedBox(
-                child: Text(post.location),
-                fit: BoxFit.fill,
-              ),
-              Divider(
-                height: 5,
-              ),
-              Text(
-                "Fee",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(post.fee.toString())
-            ],
+                Flexible(
+                  child: FittedBox(
+                    child: Text(
+                      post.fee,
+                      style: TextStyle(
+                        color: Color(0xff707070),
+                      ),
+                    ),
+                  ),
+                  //fit: BoxFit.fill,
+                ),
+              ],
+            ),
           ),
-        ),
+          Flexible(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                FittedBox(
+                  fit: BoxFit.fill,
+                  child: Text(
+                    "More",
+                    style: TextStyle(
+                      color: Color(0xff707070),
+                    ),
+                  ),
+                ),
+                FittedBox(
+                  fit: BoxFit.fill,
+                  child: Icon(
+                    Icons.arrow_right,
+                    color: Color(0xff707070),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

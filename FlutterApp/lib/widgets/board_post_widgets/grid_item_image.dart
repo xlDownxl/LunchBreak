@@ -6,10 +6,13 @@ class GridItemImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var post = Provider.of<BoardPost>(context);
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 15),
-      child: Container(
+    return LayoutBuilder(
+      builder: (ctx, constraints) => Container(
+        margin: EdgeInsets.only(right: 5),
+        height: constraints.maxWidth * 0.85,
+        width: constraints.maxWidth * 0.85,
         decoration: BoxDecoration(
+          border: Border.all(),
           shape: BoxShape.circle,
           image: DecorationImage(
             fit: BoxFit.fill,

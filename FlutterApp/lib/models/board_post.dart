@@ -54,6 +54,7 @@ class BoardPost with ChangeNotifier {
   //TODO cancel button und back arrows überarbeiten
 
   void toggleFavorite(userId) async {
+    //TODO: Favorite status save only of quit app/log out
     if (!_favorite) {
       FirebaseDatabase.instance
           .reference()

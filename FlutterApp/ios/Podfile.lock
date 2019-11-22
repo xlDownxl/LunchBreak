@@ -120,6 +120,8 @@ PODS:
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
   - Protobuf (3.10.0)
+  - speech_bubble (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - FBSDKLoginKit
@@ -129,6 +131,7 @@ DEPENDENCIES:
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `.symlinks/flutter/ios`)
+  - speech_bubble (from `.symlinks/plugins/speech_bubble/ios`)
 
 SPEC REPOS:
   trunk:
@@ -165,14 +168,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: ".symlinks/flutter/ios"
+  speech_bubble:
+    :path: ".symlinks/plugins/speech_bubble/ios"
 
 SPEC CHECKSUMS:
   FBSDKCoreKit: e7dcac0aabcfb09d0166998edd95fe3b05a0ce5d
   FBSDKLoginKit: 1b0cf04df0370b37404213157b060d6666ede814
   Firebase: da031bc7012374e3bed17a6731b89327b29863b9
-  firebase_auth: 3735c80c0a290fd04a34e9bbbecbeec8f79a216a
-  firebase_core: ebf6a934345d646bf7820a6685427bb3741f01ed
-  firebase_database: 03cd65b8e4203286a337877bb3dd744f4817f71e
+  firebase_auth: d99b993c1405096e66c58211b1cd956c23eed1c5
+  firebase_core: 77196106dc5f61b425f58b2f8f050347db10e4e0
+  firebase_database: 9fb71952703b719484bc1de5347522a11b6ccc38
   firebase_messaging: b8543d17dd9825f4f24a585477f77db103e5228e
   FirebaseAnalytics: 4e53a7eb7b76bc703c4d9239bc964545e9b23361
   FirebaseAnalyticsInterop: d48b6ab67bcf016a05e55b71fc39c61c0cb6b7f3
@@ -193,6 +198,7 @@ SPEC CHECKSUMS:
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
+  speech_bubble: 51ae0c27684a0d858d4283cafd66591337a851c2
 
 PODFILE CHECKSUM: fe21fab59dfc9735272156db0b1f6a111c785564
 

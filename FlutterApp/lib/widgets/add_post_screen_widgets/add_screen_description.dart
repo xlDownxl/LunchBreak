@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 import '../../models/board_post.dart';
 
 class AddScreenDescription extends StatelessWidget {
+  final descriptionFocus;
+  AddScreenDescription(this.descriptionFocus);
+
   @override
   Widget build(BuildContext context) {
     var newPost = Provider.of<BoardPost>(context);
@@ -23,6 +26,10 @@ class AddScreenDescription extends StatelessWidget {
                 onSaved: (val) {
                   newPost.description = val;
                 },
+                onEditingComplete: () {
+                  descriptionFocus.unfocus();
+                },
+                focusNode: descriptionFocus,
                 maxLines: 5,
                 style: TextStyle(
                     fontSize: 20, color: Theme.of(context).accentColor),
@@ -31,23 +38,6 @@ class AddScreenDescription extends StatelessWidget {
               ),
             ),
           ],
-          //width: 150,
-          //margin: EdgeInsets.all(10),
-          //padding: EdgeInsets.all(50),
-          /* child: Column(children: [
-            TextFormField(
-              decoration:
-                  InputDecoration.collapsed(hintText: "Enter a Description"),
-              maxLines: 4,
-            )
-          ]),
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              alignment: Alignment.center,
-              fit: BoxFit.cover,
-              image: AssetImage("assets/icons/bubble.png"),
-            ),
-          ),*/
         ),
       ),
     );
