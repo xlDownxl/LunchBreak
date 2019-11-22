@@ -5,24 +5,13 @@ class ItemsAndMap extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (ctx, constraints) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                child: Text("Items"),
-              ),
+        return Container(
+          color: Theme.of(context).primaryColor,
+          child: Center(
+            child: Text(
+              "Map coming soon!",
             ),
-            Expanded(
-              child: Container(
-                //margin: EdgeInsets.all(20),
-                width: constraints.maxWidth * 0.5,
-                color: Colors.grey,
-                //height: deviceHeight * 0.3,
-                child: Text("map"),
-              ),
-            ),
-          ],
+          ),
         );
       },
     );

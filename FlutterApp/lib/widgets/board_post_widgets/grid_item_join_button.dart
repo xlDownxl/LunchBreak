@@ -13,11 +13,9 @@ class GridItemJoinButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(
-          PostDetailScreen.routeName,
-          arguments: postId,
-        );
+        print("Lol");
       },
+      behavior: HitTestBehavior.translucent,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),
         child: SizedBox(
@@ -28,7 +26,17 @@ class GridItemJoinButton extends StatelessWidget {
                 side: BorderSide(color: Colors.red)),
             color: Theme.of(context).primaryColor,
             elevation: 2,
-            onPressed: () {},
+            onPressed: () {
+              var post = Provider.of<BoardPost>(context);
+              post.toggleParticipating(Provider.of<User>(context).id);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext ctx) {
+                    return SimpleDialog(
+                      title: Text("Joined ${post.title}!"),
+                    );
+                  });
+            },
             child: Container(
               padding: EdgeInsets.all(5),
               child: Row(
@@ -52,13 +60,16 @@ class GridItemJoinButton extends StatelessWidget {
                     flex: 4,
                     fit: FlexFit.tight,
                     child: Container(
-                      padding: EdgeInsets.only(left: 2),
+                      padding: EdgeInsets.only(
+                        left: 2,
+                      ),
                       child: Text(
                         "JOIN",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 22,
-                            color: Colors.white),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),

@@ -2,62 +2,85 @@ import 'package:flutter/material.dart';
 import '../../design/balloon_new_icons.dart';
 
 class PostDetailBottomBar extends StatelessWidget {
+  Function joinEvent;
+  PostDetailBottomBar(this.joinEvent);
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         Flexible(
-          child: Row(
-            children: <Widget>[
-              Icon(Icons.arrow_back),
-              Text(
-                "Back",
-                style: TextStyle(fontSize: 24),
+          flex: 3,
+          child: InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: FittedBox(
+              fit: BoxFit.fill,
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                    size: 35,
+                  ),
+                  Text(
+                    "Back",
+                    style: TextStyle(fontSize: 30, color: Colors.white),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
         Flexible(
+          flex: 2,
           child: SizedBox(),
           fit: FlexFit.tight,
         ),
         Flexible(
-          child: OutlineButton(
-            //shape: RoundedRectangleBorder(
-            //  borderRadius: BorderRadius.circular(30.0)),
-            //highlightColor: Colors.black,
-            shape: StadiumBorder(),
-            textColor: Colors.blue,
-
-            borderSide: BorderSide(
-                color: Colors.blue, style: BorderStyle.solid, width: 1),
-            //shape: CircleBorder(side: BorderSide(style: BorderStyle.solid)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                FittedBox(
-                  child: Text(
-                    "Join",
-                    style: TextStyle(fontSize: 30),
+          flex: 4,
+          child: Container(
+            padding: EdgeInsets.only(bottom: 10, top: 2),
+            child: RaisedButton(
+              shape: StadiumBorder(),
+              textColor: Colors.white,
+              color: Theme.of(context).accentColor,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Flexible(
+                    flex: 2,
+                    child: Icon(
+                      BalloonNew.balloonicon,
+                      size: 40,
+                    ),
+                    fit: FlexFit.loose,
                   ),
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Icon(BalloonNew.balloonicon),
-              ],
+                  Flexible(
+                    flex: 5,
+                    child: Container(
+                      margin: EdgeInsets.only(right: 8),
+                      child: FittedBox(
+                        child: Text(
+                          "Join",
+                          style: TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        fit: BoxFit.scaleDown,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              onPressed: () {
+                joinEvent();
+              },
             ),
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext ctx) {
-                    return AlertDialog(
-                      title: Text("Joined the Event"),
-                    );
-                  });
-            },
-            color: Colors.red,
           ),
         ),
       ],

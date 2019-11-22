@@ -9,6 +9,7 @@ import '../widgets/post_detail_screen_widgets/post_detail_member_view.dart';
 import '../widgets/post_detail_screen_widgets/items_and_map.dart';
 import '../widgets/post_detail_screen_widgets/post_detail_bottom_bar.dart';
 import 'add_post_screen.dart';
+import '../models/board_post.dart';
 
 class PostDetailScreen extends StatefulWidget {
   static const routeName = "/post_detail";
@@ -19,11 +20,26 @@ class PostDetailScreen extends StatefulWidget {
 
 class _PostDetailScreenState extends State<PostDetailScreen> {
   bool _editMode = false;
+  BoardPost post;
+
+  void joinEvent() async {
+    post.toggleParticipating(Provider.of<User>(context).id);
+    await showDialog(
+        context: context,
+        builder: (BuildContext ctx) {
+          return SimpleDialog(
+            title: Text("Joined ${post.title}!"),
+          );
+        });
+    Navigator.pop(context);
+    //TODO hier snackbar anstatt popup
+  }
+
   @override
   Widget build(BuildContext context) {
     var userId = Provider.of<User>(context, listen: false).id;
     final postId = ModalRoute.of(context).settings.arguments as String;
-    final post = Provider.of<BoardPosts>(context).findById(postId);
+    post = Provider.of<BoardPosts>(context).findById(postId);
 
     var appBar = AppBar(
       title: Text("Post Details"),
@@ -83,43 +99,32 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         body: Column(
           children: <Widget>[
             Container(
-              width: double.infinity,
-              height: deviceHeight * 0.9,
-              padding: EdgeInsets.all(15),
-              child: Column(
-                children: <Widget>[
-                  Flexible(
-                    flex: 2,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Expanded(
-                          child: PostDetailImage(),
-                        ),
-                        Expanded(
-                          child: PostDetailText(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: PostDetailDescription(),
-                  ),
-                  Flexible(
-                    child: PostDetailMemberView(),
-                  ),
-                  Flexible(
-                    //fit: FlexFit.loose,
-                    child: ItemsAndMap(),
-                  ),
-                ],
-              ),
+              //width: double.infinity,
+              height: deviceHeight * 0.5,
+              //padding: EdgeInsets.all(15),
+              child: Row(children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    PostDetailImage(),
+                    PostDetailDescription()
+                  ],
+                ),
+                PostDetailText(),
+              ]),
+            ),
+            Container(
+              child: PostDetailMemberView(),
+              height: deviceHeight * 0.1,
+            ),
+            Container(
+              child: ItemsAndMap(),
+              height: deviceHeight * 0.3,
             ),
             Container(
               color: Theme.of(context).primaryColor,
               height: deviceHeight * 0.1,
               padding: EdgeInsets.symmetric(horizontal: 10),
-              child: PostDetailBottomBar(),
+              child: PostDetailBottomBar(joinEvent),
             ),
           ],
         ),
