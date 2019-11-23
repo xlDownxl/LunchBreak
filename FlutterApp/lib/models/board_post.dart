@@ -121,7 +121,7 @@ class BoardPost with ChangeNotifier {
 
   BoardPost() {
     this._favorite = false;
-    this._date = DateTime.now();
+    //this._date = DateTime.now();
     this._participating = true;
     this.memberLimit = 5;
   }

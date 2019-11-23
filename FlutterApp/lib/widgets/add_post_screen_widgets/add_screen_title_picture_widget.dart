@@ -49,11 +49,15 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
 
   void presentDatePicker(newPost) {
     showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2019),
-            lastDate: DateTime.now())
-        .then((pickedData) {
+      context: context,
+      firstDate: DateTime.now(),
+      initialDate: DateTime.now(),
+      lastDate: DateTime.now().add(
+        Duration(
+          days: 10,
+        ),
+      ),
+    ).then((pickedData) {
       if (pickedData == null) {
         return;
       }

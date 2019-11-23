@@ -21,6 +21,18 @@ class BoardPosts with ChangeNotifier {
     }).toList();
   }
 
+  List<BoardPost> getDate(DateTime date) {
+    return _items.where((post) {
+      if (post.date.year == date.year &&
+          post.date.month == date.month &&
+          post.date.day == date.day) {
+        return true;
+      } else {
+        return false;
+      }
+    }).toList();
+  }
+
   List<BoardPost> participating(userId) {
     return _items.where((post) {
       return post.participating || post.owner == userId;
@@ -100,7 +112,6 @@ class BoardPosts with ChangeNotifier {
   void createPost(post, String creator) {
     var ref = FirebaseDatabase.instance.reference().child("Posts").push();
     post.id = ref.key;
-    post.date = DateTime.now(); //TODO datumseingabe
     ref.set(post.toJson()).then((_) {
       _items.add(post);
       notifyListeners();

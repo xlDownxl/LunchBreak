@@ -20,6 +20,8 @@ class _BoardPostGridElementState extends State<BoardPostGridElement> {
   Widget build(BuildContext context) {
     post = Provider.of<BoardPost>(context);
     return Container(
+      height: 200,
+      width: 200,
       decoration: BoxDecoration(
         color: Color(0xffFFF1DE),
         borderRadius: BorderRadius.all(

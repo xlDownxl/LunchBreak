@@ -6,8 +6,8 @@ import 'add_post_screen.dart';
 import 'feed_screen.dart';
 import '../models/board_post.dart';
 import 'friend_list_screen.dart';
-import 'board_today_screen.dart';
-import 'board_created_events_screen.dart';
+import 'all_posts_screen.dart';
+import 'today_posts_Screen.dart';
 import 'board_my_posts_screen.dart';
 import 'favorite_screen.dart';
 import '../design/socicon_icons.dart';
@@ -30,8 +30,8 @@ class _BoardScreenState extends State<BoardScreen> {
       new GlobalKey<ScaffoldState>();
 
   List<Widget> _children(deviceHeight) => [
-        BoardBaseScreen(deviceHeight),
-        BoardEventCreatedScreen(),
+        AllPostsScreen(deviceHeight),
+        TodayPostsScreen(deviceHeight),
         BoardMyPostsScreen(deviceHeight),
         FavoriteScreen(deviceHeight),
       ];
@@ -88,22 +88,24 @@ class _BoardScreenState extends State<BoardScreen> {
   Future navigateToSubPage(context) async {
     var created = await Navigator.pushNamed(context, NewPostScreen.routeName)
         as Map<String, Object>;
-    if (created["created"]) {
-      _scaffoldstate.currentState.showSnackBar(
-        SnackBar(
-          content: Text(
-            'Added new Event!',
+    if (created != null) {
+      if (created["created"]) {
+        _scaffoldstate.currentState.showSnackBar(
+          SnackBar(
+            content: Text(
+              'Added new Event!',
+            ),
+            duration: Duration(seconds: 3),
+            action: SnackBarAction(
+              label: 'UNDO',
+              onPressed: () {
+                Provider.of<BoardPosts>(context, listen: false)
+                    .removePost(created["postId"]);
+              },
+            ),
           ),
-          duration: Duration(seconds: 3),
-          action: SnackBarAction(
-            label: 'UNDO',
-            onPressed: () {
-              Provider.of<BoardPosts>(context, listen: false)
-                  .removePost(created["postId"]);
-            },
-          ),
-        ),
-      );
+        );
+      }
     }
   }
 
@@ -130,7 +132,7 @@ class _BoardScreenState extends State<BoardScreen> {
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Stock Alarm'),
+      title: Text('Events'),
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.more),
