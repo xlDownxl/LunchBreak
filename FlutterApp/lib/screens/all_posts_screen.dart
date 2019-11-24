@@ -21,16 +21,53 @@ class _AllPostsScreenState extends State<AllPostsScreen> {
     var currentDate = DateTime.now();
     List<List<BoardPost>> postLists = [];
 
-    for (var i = 0; i < 3; i++) {
+    /* for (var i = 0; i < 3; i++) {
       postLists.add(Provider.of<BoardPosts>(context).getDate(currentDate));
       currentDate = currentDate.add(Duration(days: 1));
-    }
-    //postList = Provider.of<BoardPosts>(context).getDate(currentDate);
+    }*/
+    //var postList = Provider.of<BoardPosts>(context).items();
 
     return Container(
       padding: const EdgeInsets.all(10.0),
       height: widget.deviceHeight,
-      child: CustomScrollView(
+      child: ListView.separated(
+        separatorBuilder: (context, index) => Divider(
+          color: Colors.black,
+        ),
+        itemCount: 4,
+        itemBuilder: (ctx, index) => Container(
+          child: IgnorePointer(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: 80, // Set as you want or you can remove it also.
+                maxHeight: double.infinity,
+              ),
+              child: Container(
+                child: GridView(
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 2 / 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                  ),
+                  children: <Widget>[
+                    ...Provider.of<BoardPosts>(context)
+                        .getDate(DateTime.now().add(Duration(days: index)))
+                        .map((post) => ChangeNotifierProvider.value(
+                              child: BoardPostGridElement(),
+                              value: post,
+                            ))
+                        .toList(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+
+      /*CustomScrollView(
         slivers: <Widget>[
           SliverGrid(
             key: UniqueKey(),
@@ -120,7 +157,7 @@ class _AllPostsScreenState extends State<AllPostsScreen> {
             ),
           ),
         ],
-      ),
+      ),*/
     );
   }
 }
