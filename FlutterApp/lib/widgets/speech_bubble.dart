@@ -125,7 +125,7 @@ class SpeechBubble extends StatelessWidget {
           side: BorderSide(color: this.borderColor),
           borderRadius: BorderRadius.circular(20)),
       color: this.color,
-      elevation: 2,
+      elevation: 10,
       child: Container(
         height: this.height,
         width: this.width,

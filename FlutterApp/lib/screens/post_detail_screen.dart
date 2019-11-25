@@ -99,26 +99,46 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         body: Column(
           children: <Widget>[
             Container(
-              //width: double.infinity,
-              height: deviceHeight * 0.5,
-              //padding: EdgeInsets.all(15),
-              child: Row(children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    PostDetailImage(),
-                    PostDetailDescription()
-                  ],
-                ),
-                PostDetailText(),
-              ]),
-            ),
-            Container(
-              child: PostDetailMemberView(),
-              height: deviceHeight * 0.1,
-            ),
-            Container(
-              child: ItemsAndMap(),
-              height: deviceHeight * 0.3,
+              height: deviceHeight * 0.9,
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: <Widget>[
+                  Flexible(
+                    child: Container(
+                      child: Row(children: <Widget>[
+                        Flexible(
+                          child: Column(
+                            children: <Widget>[
+                              Flexible(
+                                child: PostDetailImage(),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  child: PostDetailDescription(),
+                                  padding: EdgeInsets.all(10),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Flexible(child: PostDetailText()),
+                      ]),
+                    ),
+                    flex: 3,
+                  ),
+                  Flexible(
+                    child: Container(
+                      child: PostDetailMemberView(),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: Container(
+                      child: ItemsAndMap(),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Container(
               color: Theme.of(context).primaryColor,

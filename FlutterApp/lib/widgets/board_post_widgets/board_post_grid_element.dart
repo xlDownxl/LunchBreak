@@ -19,33 +19,25 @@ class _BoardPostGridElementState extends State<BoardPostGridElement> {
   @override
   Widget build(BuildContext context) {
     post = Provider.of<BoardPost>(context);
-    return /*Container(
-      decoration: BoxDecoration(
+    return InkWell(
+      onTap: () {
+        Navigator.of(context)
+            .pushNamed(PostDetailScreen.routeName, arguments: post.id);
+      },
+      child: Card(
+        elevation: 5,
         color: Color(0xffFFF1DE),
-        borderRadius: BorderRadius.all(
-          Radius.circular(40),
+        shape: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.white, width: 0),
+          borderRadius: BorderRadius.circular(
+            40,
+          ),
         ),
-      ),
-      padding: EdgeInsets.all(10),*/
-        Card(
-      elevation: 5,
-      color: Color(0xffFFF1DE),
-      shape: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.white, width: 0),
-        borderRadius: BorderRadius.circular(
-          40,
-        ),
-      ),
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.of(context)
-                    .pushNamed(PostDetailScreen.routeName, arguments: post.id);
-              },
-              child: Column(
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
@@ -99,9 +91,9 @@ class _BoardPostGridElementState extends State<BoardPostGridElement> {
                     ),
                   ),
                 ],
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
