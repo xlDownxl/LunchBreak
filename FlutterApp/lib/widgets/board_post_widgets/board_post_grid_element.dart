@@ -19,80 +19,90 @@ class _BoardPostGridElementState extends State<BoardPostGridElement> {
   @override
   Widget build(BuildContext context) {
     post = Provider.of<BoardPost>(context);
-    return Container(
-      height: 200,
-      width: 200,
+    return /*Container(
       decoration: BoxDecoration(
         color: Color(0xffFFF1DE),
         borderRadius: BorderRadius.all(
           Radius.circular(40),
         ),
       ),
-      padding: EdgeInsets.all(10),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.of(context)
-                  .pushNamed(PostDetailScreen.routeName, arguments: post.id);
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  height: constraints.maxHeight * 0.18,
-                  child: LayoutBuilder(
-                    builder: (ctx, constraints) => Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: constraints.maxWidth * 0.2,
-                          child: GridItemFavoriteIcon(),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(
-                            right: 3,
-                            left: 1,
-                            top: 2,
+      padding: EdgeInsets.all(10),*/
+        Card(
+      elevation: 5,
+      color: Color(0xffFFF1DE),
+      shape: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.white, width: 0),
+        borderRadius: BorderRadius.circular(
+          40,
+        ),
+      ),
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(PostDetailScreen.routeName, arguments: post.id);
+              },
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    height: constraints.maxHeight * 0.18,
+                    child: LayoutBuilder(
+                      builder: (ctx, constraints) => Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: constraints.maxWidth * 0.2,
+                            child: GridItemFavoriteIcon(),
                           ),
-                          child: FittedBox(
-                            child: Text(
-                              post.title,
-                              style: TextStyle(
-                                color: Color(0xff707070),
-                                fontWeight: FontWeight.bold,
+                          Container(
+                            padding: EdgeInsets.only(
+                              right: 3,
+                              left: 1,
+                              top: 2,
+                            ),
+                            child: FittedBox(
+                              child: Text(
+                                post.title,
+                                style: TextStyle(
+                                  color: Color(0xff707070),
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
+                            width: constraints.maxWidth * 0.8,
                           ),
-                          width: constraints.maxWidth * 0.8,
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: constraints.maxHeight * 0.59,
+                    child: Row(
+                      children: <Widget>[
+                        Flexible(
+                          child: GridItemImage(),
+                        ),
+                        Flexible(
+                          child: GridItemTextInformation(),
                         ),
                       ],
                     ),
                   ),
-                ),
-                Container(
-                  height: constraints.maxHeight * 0.59,
-                  child: Row(
-                    children: <Widget>[
-                      Flexible(
-                        child: GridItemImage(),
-                      ),
-                      Flexible(
-                        child: GridItemTextInformation(),
-                      ),
-                    ],
+                  Container(
+                    height: constraints.maxHeight * 0.23,
+                    child: GridItemJoinButton(
+                      post.id,
+                    ),
                   ),
-                ),
-                Container(
-                  height: constraints.maxHeight * 0.23,
-                  child: GridItemJoinButton(
-                    post.id,
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

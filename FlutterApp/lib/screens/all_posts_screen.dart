@@ -4,6 +4,7 @@ import 'package:FST.LunchApp/widgets/board_post_widgets/board_post_grid_element.
 import '../models/board_posts.dart';
 import '../models/board_post.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 class AllPostsScreen extends StatefulWidget {
   final deviceHeight;
@@ -17,54 +18,114 @@ class AllPostsScreen extends StatefulWidget {
 class _AllPostsScreenState extends State<AllPostsScreen> {
   @override
   Widget build(BuildContext context) {
-    //final List<BoardPost> postList = [BoardPost(), BoardPost(), BoardPost()];
     var currentDate = DateTime.now();
-    List<List<BoardPost>> postLists = [];
-
-    /* for (var i = 0; i < 3; i++) {
-      postLists.add(Provider.of<BoardPosts>(context).getDate(currentDate));
-      currentDate = currentDate.add(Duration(days: 1));
-    }*/
-    //var postList = Provider.of<BoardPosts>(context).items();
 
     return Container(
       padding: const EdgeInsets.all(10.0),
       height: widget.deviceHeight,
-      child: ListView.separated(
-        separatorBuilder: (context, index) => Divider(
-          color: Colors.black,
-        ),
-        itemCount: 4,
-        itemBuilder: (ctx, index) => Container(
-          child: IgnorePointer(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                minHeight: 80, // Set as you want or you can remove it also.
-                maxHeight: double.infinity,
-              ),
-              child: Container(
-                child: GridView(
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 2 / 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    "Today",
+                    //"Mai 24",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Theme.of(context).accentColor,
+                    ),
                   ),
-                  children: <Widget>[
-                    ...Provider.of<BoardPosts>(context)
-                        .getDate(DateTime.now().add(Duration(days: index)))
-                        .map((post) => ChangeNotifierProvider.value(
-                              child: BoardPostGridElement(),
-                              value: post,
-                            ))
-                        .toList(),
-                  ],
+                ),
+              ),
+              Flexible(
+                child: Container(
+                  margin: EdgeInsets.only(left: 10),
+                  child: Divider(
+                    color: Theme.of(context).accentColor,
+                    thickness: 2,
+                    height: 5,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: ListView.separated(
+              separatorBuilder: (ctx, index) => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        DateFormat.MMMMd().format(
+                          currentDate.add(
+                            Duration(
+                              days: index,
+                            ),
+                          ),
+                        ),
+                        //"Mai 24",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 10),
+                      child: Divider(
+                        color: Theme.of(context).accentColor,
+                        thickness: 2,
+                        height: 5,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              itemCount: 4,
+              itemBuilder: (ctx, index) => Container(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: 80, // Set as you want or you can remove it also.
+                    maxHeight: double.infinity,
+                  ),
+                  child: Container(
+                    child: GridView(
+                      primary: false,
+                      shrinkWrap: true,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 2 / 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                      ),
+                      children: <Widget>[
+                        ...Provider.of<BoardPosts>(context)
+                            .getDate(DateTime.now().add(Duration(days: index)))
+                            .map((post) => ChangeNotifierProvider.value(
+                                  child: BoardPostGridElement(),
+                                  value: post,
+                                ))
+                            .toList(),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
+        ],
       ),
 
       /*CustomScrollView(
