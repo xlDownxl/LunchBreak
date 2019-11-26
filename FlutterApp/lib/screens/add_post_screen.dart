@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../models/user.dart';
 import 'package:flutter/foundation.dart';
 import '../models/board_posts.dart';
+import '../widgets/google_maps.dart';
 
 class NewPostScreen extends StatefulWidget {
   static const routeName = "/new_post";
@@ -72,9 +73,8 @@ class _NewPostScreenState extends State<NewPostScreen> {
 
     final deviceHeight = MediaQuery.of(context).size.height -
         appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top; //-20 because vertical padding
+        MediaQuery.of(context).padding.top;
 
-    String ownerId = Provider.of<User>(context).id;
     return ChangeNotifierProvider.value(
       value: newPost,
       child: Scaffold(
@@ -96,19 +96,28 @@ class _NewPostScreenState extends State<NewPostScreen> {
                     height: deviceHeight * 0.05,
                   ),
                   Container(
-                    //color: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.all(15),
+                    padding: EdgeInsets.all(20),
+                    child: GoogleMaps(),
+                    height: deviceHeight * 0.35,
+                  ),
+                  //color: Theme.of(context).primaryColor,
+                  /*padding: EdgeInsets.all(15),
                     child: Container(
                       width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        color: Theme.of(context).primaryColor,
+                      ),
                       child: Center(
                           child: Text(
                         "Map coming Soon!",
                         style: TextStyle(fontSize: 20),
                       )),
-                      color: Theme.of(context).primaryColor,
                     ),
                     height: deviceHeight * 0.35,
-                  ),
+                  ),*/
                   Container(
                     //color: Theme.of(context).primaryColor,
                     height: deviceHeight * 0.1,

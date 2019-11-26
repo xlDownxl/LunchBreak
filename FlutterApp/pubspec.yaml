@@ -38,6 +38,7 @@ dependencies:
   flutter_login: ^1.0.4
   transformer_page_view: ^0.1.6
   flushbar: ^1.9.1
+  rounded_modal: ^1.0.1
 
 dev_dependencies:
   flutter_test:

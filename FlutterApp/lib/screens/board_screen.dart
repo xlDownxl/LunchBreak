@@ -30,8 +30,8 @@ class _BoardScreenState extends State<BoardScreen> {
       new GlobalKey<ScaffoldState>();
 
   List<Widget> _children(deviceHeight) => [
-        AllPostsScreen(deviceHeight),
         TodayPostsScreen(deviceHeight),
+        AllPostsScreen(deviceHeight),
         BoardMyPostsScreen(deviceHeight),
         FavoriteScreen(deviceHeight),
       ];
@@ -168,23 +168,25 @@ class _BoardScreenState extends State<BoardScreen> {
             navigateToSubPage(context); //TODO
           }),
       bottomNavigationBar: BottomNavigationBar(
-        //unselectedItemColor: Colors.white,
-        selectedItemColor: Theme.of(context).accentColor,
+        unselectedItemColor: Colors.grey,
+        selectedItemColor: Theme.of(context).primaryColor,
         currentIndex: _selectedPageIndex,
         type: BottomNavigationBarType.fixed,
         onTap: _selectPage,
+        elevation: 10,
+        iconSize: 26,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             title: Text('Today'),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Socicon.event),
-            title: Text('My Events'),
+            icon: Icon(Socicon.bullhorn),
+            title: Text('Overview'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Socicon.bullhorn),
-            title: Text('Created Events'),
+            title: Text('My Events'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.star),

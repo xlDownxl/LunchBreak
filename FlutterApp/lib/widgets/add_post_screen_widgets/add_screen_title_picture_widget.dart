@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../models/board_post.dart';
 import 'package:provider/provider.dart';
-import '../../design/socicon_icons.dart';
-import 'package:bubble/bubble.dart';
-import 'package:FST.LunchApp/design/meal_icons.dart';
 import 'package:FST.LunchApp/design/meal_icons_icons.dart';
 import 'add_screen_description.dart';
 import 'package:intl/intl.dart';
@@ -15,7 +12,6 @@ class TitlePictureWidget extends StatefulWidget {
 }
 
 class _TitlePictureWidgetState extends State<TitlePictureWidget> {
-  bool _uploadedPicture = false;
   DateTime _selectedDate;
   var init = true;
   var _selectedFee;
@@ -82,12 +78,20 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
   void _choosePicture(BuildContext ctx, newPost) async {
     var imageUrl = await showModalBottomSheet(
       context: ctx,
+      // backgroundColor: Color(0xffFFF1DE),
+      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        side:
+            BorderSide(color: Colors.black, width: 2, style: BorderStyle.solid),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0),
+          bottomLeft: Radius.circular(30.0),
+          bottomRight: Radius.circular(30.0),
+        ),
+      ),
       builder: (_) {
-        return GestureDetector(
-          onTap: () {},
-          child: PictureChoice(),
-          behavior: HitTestBehavior.opaque,
-        );
+        return PictureChoice();
       },
     );
     setState(() {
@@ -100,7 +104,6 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
   Widget build(BuildContext context) {
     var newPost = Provider.of<BoardPost>(context);
 
-    //newPost.fee = _selectedFee;
     return Container(
       padding: EdgeInsets.only(top: 10),
       child: Row(
@@ -114,12 +117,13 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                     onTap: () => _choosePicture(context, newPost),
                     child: image != null
                         ? Center(
-                            child: new Container(
-                                decoration: new BoxDecoration(
+                            child: Container(
+                                margin: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    image: new DecorationImage(
+                                    image: DecorationImage(
                                         fit: BoxFit.cover,
-                                        image: new NetworkImage(image)))),
+                                        image: NetworkImage(image)))),
                           )
                         : Icon(
                             MealIcons.aggga,
@@ -129,7 +133,10 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                   ),
                 ),
                 Expanded(
-                  child: AddScreenDescription(descriptionFocus),
+                  child: Container(
+                    child: AddScreenDescription(descriptionFocus),
+                    padding: EdgeInsets.only(top: 10),
+                  ),
                 ),
               ],
             ),
@@ -344,7 +351,6 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                     child: TextFormField(
                       onFieldSubmitted: (val) {
                         FocusScope.of(context).requestFocus(descriptionFocus);
-                        //locationFocus.unfocus();
                       },
                       validator: (val) {
                         if (val.isNotEmpty) {

@@ -6,7 +6,7 @@ import '../widgets/post_detail_screen_widgets/post_detail_image.dart';
 import '../widgets/post_detail_screen_widgets/post_detail_text.dart';
 import '../widgets/post_detail_screen_widgets/post_detail_description.dart';
 import '../widgets/post_detail_screen_widgets/post_detail_member_view.dart';
-import '../widgets/post_detail_screen_widgets/items_and_map.dart';
+import '../widgets/google_maps.dart';
 import '../widgets/post_detail_screen_widgets/post_detail_bottom_bar.dart';
 import 'add_post_screen.dart';
 import '../models/board_post.dart';
@@ -128,7 +128,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
                   Flexible(
                     flex: 2,
                     child: Container(
-                      child: ItemsAndMap(),
+                      child: GoogleMaps(),
                     ),
                   ),
                 ],

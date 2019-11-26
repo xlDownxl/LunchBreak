@@ -33,17 +33,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<String> _login(LoginData data) async {
-    var code = await loginUser(data);
+    var code = await _loginUser(data);
     switch (code) {
       case "ERROR_INVALID_EMAIL":
         return "Invalid Email";
-
       case "ERROR_USER_NOT_FOUND":
         return "User note found";
-
       case "ERROR_INVALID_EMAIL":
         return "Invalid Email";
-
       case "ERROR_WRONG_PASSWORD":
         return "Wrong Passord";
       default:
