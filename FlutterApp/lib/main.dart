@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:FST.LunchApp/deprecated/deprecated_login_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/board_screen.dart';
 import 'screens/post_detail_screen.dart';
@@ -8,9 +7,7 @@ import 'screens/feed_screen.dart';
 import 'screens/add_post_screen.dart';
 import 'models/board_posts.dart';
 import 'models/user.dart';
-import 'package:provider/provider.dart';
 import 'screens/login_screen.dart';
-import 'models/board_post.dart';
 
 void main() => runApp(MyApp());
 
