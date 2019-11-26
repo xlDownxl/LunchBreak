@@ -24,15 +24,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   void joinEvent() async {
     post.toggleParticipating(Provider.of<User>(context).id);
-    await showDialog(
-        context: context,
-        builder: (BuildContext ctx) {
-          return SimpleDialog(
-            title: Text("Joined ${post.title}!"),
-          );
-        });
-    Navigator.pop(context);
-    //TODO hier snackbar anstatt popup
+    Navigator.pop(context,
+        {"id": post.id, "title": post.title, "action": post.participating});
+    //TODO Snackbar
   }
 
   @override

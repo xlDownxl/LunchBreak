@@ -77,6 +77,7 @@ class BoardPost with ChangeNotifier {
       this._favorite = false;
       notifyListeners();
     }
+    notifyListeners();
   }
 
   void toggleParticipating(userId) {
@@ -99,6 +100,7 @@ class BoardPost with ChangeNotifier {
       });
 
       _participating = true;
+      notifyListeners();
     } else {
       FirebaseDatabase.instance
           .reference()
@@ -116,7 +118,9 @@ class BoardPost with ChangeNotifier {
           .remove();
 
       _participating = false;
+      notifyListeners();
     }
+    notifyListeners();
   }
 
   BoardPost() {

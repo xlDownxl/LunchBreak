@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import '../../design/balloon_new_icons.dart';
+import 'package:provider/provider.dart';
+import '../../models/board_post.dart';
 
 class PostDetailBottomBar extends StatelessWidget {
-  Function joinEvent;
+  final Function joinEvent;
   PostDetailBottomBar(this.joinEvent);
 
   @override
   Widget build(BuildContext context) {
+    var post = Provider.of<BoardPost>(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -64,13 +67,21 @@ class PostDetailBottomBar extends StatelessWidget {
                     child: Container(
                       margin: EdgeInsets.only(right: 8),
                       child: FittedBox(
-                        child: Text(
-                          "Join",
-                          style: TextStyle(
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: !post.participating
+                            ? Text(
+                                "Join",
+                                style: TextStyle(
+                                  fontSize: 35,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : Text(
+                                "Leave",
+                                style: TextStyle(
+                                  fontSize: 35,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                         fit: BoxFit.scaleDown,
                       ),
                     ),

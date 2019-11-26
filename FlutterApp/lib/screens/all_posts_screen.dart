@@ -23,78 +23,112 @@ class _AllPostsScreenState extends State<AllPostsScreen> {
     return Container(
       padding: const EdgeInsets.all(10.0),
       height: widget.deviceHeight,
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    "Today",
-                    //"Mai 24",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Theme.of(context).accentColor,
-                    ),
-                  ),
-                ),
-              ),
-              Flexible(
-                child: Container(
-                  margin: EdgeInsets.only(left: 10),
-                  child: Divider(
-                    color: Theme.of(context).accentColor,
-                    thickness: 2,
-                    height: 5,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: ListView.separated(
-              separatorBuilder: (ctx, index) => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        DateFormat.MMMMd().format(
-                          currentDate.add(
-                            Duration(
-                              days: index,
-                            ),
-                          ),
-                        ),
-                        //"Mai 24",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Theme.of(context).accentColor,
-                        ),
+      child: ListView.separated(
+        separatorBuilder: (ctx, index) => Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  DateFormat.MMMMd().format(
+                    currentDate.add(
+                      Duration(
+                        days: index,
                       ),
                     ),
                   ),
-                  Flexible(
-                    child: Container(
-                      margin: EdgeInsets.only(left: 10),
-                      child: Divider(
-                        color: Theme.of(context).accentColor,
-                        thickness: 2,
-                        height: 5,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
+              ),
+            ),
+            Flexible(
+              child: Container(
+                margin: EdgeInsets.only(left: 10),
+                child: Divider(
+                  color: Theme.of(context).accentColor,
+                  thickness: 2,
+                  height: 5,
+                ),
+              ),
+            ),
+          ],
+        ),
+        itemCount: 4,
+        itemBuilder: (ctx, index) => index == 0
+            ? Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            "Today",
+                            //"Mai 24",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Theme.of(context).accentColor,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 10),
+                          child: Divider(
+                            color: Theme.of(context).accentColor,
+                            thickness: 2,
+                            height: 5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight:
+                            80, // Set as you want or you can remove it also.
+                        maxHeight: double.infinity,
+                      ),
+                      child: Container(
+                        child: GridView(
+                          primary: false,
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 2 / 2,
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                          ),
+                          children: <Widget>[
+                            ...Provider.of<BoardPosts>(context)
+                                .getDate(
+                                    DateTime.now().add(Duration(days: index)))
+                                .map((post) => ChangeNotifierProvider.value(
+                                      child: BoardPostGridElement(),
+                                      value: post,
+                                    ))
+                                .toList(),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ],
-              ),
-              itemCount: 4,
-              itemBuilder: (ctx, index) => Container(
+              )
+            : Container(
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                     minHeight: 80, // Set as you want or you can remove it also.
@@ -123,9 +157,6 @@ class _AllPostsScreenState extends State<AllPostsScreen> {
                   ),
                 ),
               ),
-            ),
-          ),
-        ],
       ),
 
       /*CustomScrollView(

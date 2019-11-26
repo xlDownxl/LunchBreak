@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="dedd5228-1332-43e3-bb0a-65209f4bcfd7" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/FlutterApp/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/FlutterApp/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlutterApp/lib/screens/post_detail_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/FlutterApp/lib/screens/post_detail_screen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlutterApp/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/FlutterApp/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlutterApp/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/FlutterApp/pubspec.yaml" afterDir="false" />
-    </list>
+    <list default="true" id="dedd5228-1332-43e3-bb0a-65209f4bcfd7" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,9 +21,24 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="FST-LunchApp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FST-LunchApp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FST-LunchApp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FST-LunchApp" type="462c0819:PsiDirectoryNode" />
+              <item name="FlutterApp" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -66,7 +76,7 @@
     <frame x="0" y="0" width="1280" height="800" extended-state="6" />
     <layout>
       <window_info id="Captures" order="0" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.34006462" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.3457189" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import '../../screens/post_detail_screen.dart';
 import '../../models/board_post.dart';
 import 'package:provider/provider.dart';
-
+import '../../models/board_posts.dart';
 import 'grid_item_join_button.dart';
 import 'grid_item_text_information.dart';
 import 'grid_item_image.dart';
 import 'grid_item_favorite_icon.dart';
+import '../../models/user.dart';
 
 class BoardPostGridElement extends StatefulWidget {
   @override
@@ -20,9 +21,33 @@ class _BoardPostGridElementState extends State<BoardPostGridElement> {
   Widget build(BuildContext context) {
     post = Provider.of<BoardPost>(context);
     return InkWell(
-      onTap: () {
-        Navigator.of(context)
-            .pushNamed(PostDetailScreen.routeName, arguments: post.id);
+      onTap: () async {
+        var joined = await Navigator.of(context)
+            .pushNamed(PostDetailScreen.routeName, arguments: post.id) as Map;
+        //TODO remove all snackbars
+        if (joined != null) {
+          final snackBar = SnackBar(
+            content: joined["action"]
+                ? Text(
+                    'Joined ${joined["title"]}',
+                    style: TextStyle(fontSize: 20),
+                  )
+                : Text(
+                    'Left ${joined["title"]}',
+                    style: TextStyle(fontSize: 20),
+                  ),
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () {
+                Provider.of<BoardPosts>(context, listen: false)
+                    .findById(joined["id"])
+                    .toggleParticipating(
+                        Provider.of<User>(context, listen: false).id);
+              },
+            ),
+          );
+          Scaffold.of(context).showSnackBar(snackBar);
+        }
       },
       child: Card(
         elevation: 5,
