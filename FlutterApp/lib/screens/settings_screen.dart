@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import '../widgets/kf_drawer.dart';
 
-class FriendList extends KFDrawerContent {
-  static const routeName = "/friends";
+class Settings extends KFDrawerContent {
+  static const routeName = "/settings";
   @override
-  _FriendListState createState() => _FriendListState();
+  _SettingsState createState() => _SettingsState();
 }
 
-class _FriendListState extends State<FriendList> {
+class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -16,7 +16,7 @@ class _FriendListState extends State<FriendList> {
         borderRadius: BorderRadius.all(Radius.circular(32.0)),
         child: Column(
           children: <Widget>[
-            Text("Friends"),
+            Text("User Settings"),
             Material(
               shadowColor: Colors.transparent,
               color: Colors.transparent,

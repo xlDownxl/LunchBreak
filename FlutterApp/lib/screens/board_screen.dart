@@ -12,8 +12,10 @@ import '../models/board_posts.dart';
 import '../models/user.dart';
 import 'package:flutter/services.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
+import '../widgets/kf_drawer.dart';
+import 'package:FST.LunchApp/utils/class_builder.dart';
 
-class BoardScreen extends StatefulWidget {
+class BoardScreen extends KFDrawerContent {
   static const routeName = "/home";
 
   @override
@@ -35,12 +37,7 @@ class _BoardScreenState extends State<BoardScreen> {
 
   var init = true;
   var userId;
-
-  @override
-  void initState() {
-    handleAppLifecycleState();
-    super.initState();
-  }
+  KFDrawerController _drawerController;
 
   void _selectPage(int index) {
     setState(() {
@@ -48,35 +45,10 @@ class _BoardScreenState extends State<BoardScreen> {
     });
   }
 
-  void setupPushNotifications() {
-    /*  _firebaseMessaging.configure(
-      // ignore: missing_return
-      onMessage: (Map<String, dynamic> message) {
-        print('on message $message');
-        showDialog(
-            context: context,
-            builder: (BuildContext ctx) {
-              return AlertDialog(
-                title: Text("ALARM"),
-              );
-            });
-      },
-      // ignore: missing_return
-      onResume: (Map<String, dynamic> message) {
-        print('on resume $message');
-      },
-      // ignore: missing_return
-      onLaunch: (Map<String, dynamic> message) {
-        print('on launch $message');
-      },
-    );*/
-  }
-
   @override
   void didChangeDependencies() {
     if (init) {
       userId = Provider.of<User>(context).id;
-      setupPushNotifications();
       init = false;
     }
     super.didChangeDependencies();
@@ -110,27 +82,24 @@ class _BoardScreenState extends State<BoardScreen> {
     await Provider.of<BoardPosts>(context).connectToFirebase(userId);
   }
 
-  void handleAppLifecycleState() {
-    AppLifecycleState _lastLifecyleState;
-    // ignore: missing_return
-    SystemChannels.lifecycle.setMessageHandler((msg) {
-      print('SystemChannels> $msg');
-      switch (msg) {
-        case "AppLifecycleState.resumed":
-          _lastLifecyleState = AppLifecycleState.resumed;
-          print(_lastLifecyleState);
-          _update();
-          break;
-        default:
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
       title: Text('Events'),
       actions: <Widget>[
+        SafeArea(
+          child: Material(
+            shadowColor: Colors.transparent,
+            color: Colors.transparent,
+            child: IconButton(
+              icon: Icon(
+                Icons.menu,
+                color: Colors.black,
+              ),
+              onPressed: widget.onMenuPressed,
+            ),
+          ),
+        ),
         IconButton(
           icon: Icon(Icons.more),
           onPressed: () {
@@ -140,7 +109,7 @@ class _BoardScreenState extends State<BoardScreen> {
         IconButton(
           icon: Icon(Icons.list),
           onPressed: () {
-            Navigator.pushNamed(context, FriendListScreen.routeName);
+            //Navigator.pushNamed(context, FriendListScreen.routeName);
           },
         ),
       ],
@@ -151,83 +120,45 @@ class _BoardScreenState extends State<BoardScreen> {
         MediaQuery.of(context).padding.top;
     final List<Widget> children = _children(deviceHeight);
 
-    return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
+    Widget mainPage = RefreshIndicator(
+      child: children[_selectedPageIndex],
+      onRefresh: _update,
+    );
 
-          children: <Widget>[
-            Consumer<User>(
-              builder: (_, user, child) => Container(
-                height: 270,
-                child: UserAccountsDrawerHeader(
-                  onDetailsPressed: () {},
-                  accountName: Text(user.username),
-                  accountEmail: Text(user.email),
-                  currentAccountPicture: CircleAvatar(
-                    backgroundColor:
-                        Theme.of(context).platform == TargetPlatform.iOS
-                            ? Colors.blue
-                            : Colors.white,
-                    child: CircleAvatar(
-                      child: Image.asset("assets/images/Download.jpeg"),
-                    ),
-                  ),
-                ),
-              ),
+    return SafeArea(
+      child: Scaffold(
+        key: _scaffoldstate,
+        appBar: appBar,
+        body: mainPage,
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            backgroundColor: Theme.of(context).primaryColor,
+            onPressed: () {
+              navigateToSubPage(context); //TODO
+            }),
+        bottomNavigationBar: TitledBottomNavigationBar(
+          currentIndex: _selectedPageIndex,
+          onTap: _selectPage,
+          activeColor: Theme.of(context).primaryColor,
+          items: [
+            TitledNavigationBarItem(
+              icon: Icons.home,
+              title: 'Today',
             ),
-            ListTile(
-              title: Text('Item 1'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
+            TitledNavigationBarItem(
+              icon: Icons.calendar_today,
+              title: 'Calendar',
             ),
-            ListTile(
-              title: Text('Item 2'),
-              onTap: () {
-                // Update the state of the app.
-                // ...
-              },
+            TitledNavigationBarItem(
+              icon: Socicon.bullhorn,
+              title: 'My Events',
+            ),
+            TitledNavigationBarItem(
+              icon: Icons.star,
+              title: 'Favorites',
             ),
           ],
         ),
-      ),
-      key: _scaffoldstate,
-      appBar: appBar,
-      body: RefreshIndicator(
-        child: children[_selectedPageIndex],
-        onRefresh: _update,
-      ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          backgroundColor: Theme.of(context).primaryColor,
-          onPressed: () {
-            navigateToSubPage(context); //TODO
-          }),
-      bottomNavigationBar: TitledBottomNavigationBar(
-        currentIndex: _selectedPageIndex,
-        onTap: _selectPage,
-        activeColor: Theme.of(context).primaryColor,
-        items: [
-          TitledNavigationBarItem(
-            icon: Icons.home,
-            title: 'Today',
-          ),
-          TitledNavigationBarItem(
-            icon: Icons.calendar_today,
-            title: 'Calendar',
-          ),
-          TitledNavigationBarItem(
-            icon: Socicon.bullhorn,
-            title: 'My Events',
-          ),
-          TitledNavigationBarItem(
-            icon: Icons.star,
-            title: 'Favorites',
-          ),
-        ],
       ),
     );
   }

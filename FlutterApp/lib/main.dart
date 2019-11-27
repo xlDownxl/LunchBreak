@@ -8,8 +8,12 @@ import 'screens/add_post_screen.dart';
 import 'models/board_posts.dart';
 import 'models/user.dart';
 import 'screens/login_screen.dart';
+import 'utils/class_builder.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  ClassBuilder.registerClasses();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -32,12 +36,11 @@ class MyApp extends StatelessWidget {
         ),
         home: LoginPage(),
         routes: {
+          LoginPage.routeName: (ctx) => LoginPage(),
           BoardScreen.routeName: (ctx) => BoardScreen(),
           FeedScreen.routeName: (ctx) => FeedScreen(),
-          FriendListScreen.routeName: (ctx) => FriendListScreen(),
-          PostDetailScreen.routeName: (ctx) {
-            return PostDetailScreen();
-          },
+          FriendList.routeName: (ctx) => FriendList(),
+          PostDetailScreen.routeName: (ctx) => PostDetailScreen(),
           NewPostScreen.routeName: (ctx) => NewPostScreen(),
         },
       ),

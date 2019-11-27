@@ -6,9 +6,13 @@ import '../models/board_posts.dart';
 import '../models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_login/flutter_login.dart';
+import '../widgets/kf_drawer.dart';
+import '../utils/class_builder.dart';
+import 'drawer_screen.dart';
 
-class LoginPage extends StatefulWidget {
-  static String tag = 'login-page';
+class LoginPage extends KFDrawerContent {
+  static const routeName = "/login";
+
   @override
   _LoginPageState createState() => new _LoginPageState();
 }
@@ -34,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<String> _login(LoginData data) async {
+    return null;
     var code = await _loginUser(data);
     switch (code) {
       case "ERROR_INVALID_EMAIL":
@@ -106,15 +111,21 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return FlutterLogin(
-      title: 'FST!Lunch',
-      //logo: 'assets/images/Download.jpeg',
-      onLogin: _login,
-      onSignup: _register,
-      onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacementNamed(BoardScreen.routeName);
-      },
-      onRecoverPassword: _recoverPassword,
+    return SafeArea(
+      child: FlutterLogin(
+        title: 'FST!Lunch',
+        //logo: 'assets/images/Download.jpeg',
+        onLogin: _login,
+        onSignup: _register,
+        onSubmitAnimationCompleted: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => DrawerScreen(),
+            ),
+          );
+        },
+        onRecoverPassword: _recoverPassword,
+      ),
     );
   }
 }
