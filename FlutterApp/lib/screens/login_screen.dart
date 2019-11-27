@@ -17,6 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   Future setupUserInFirebase(context) async {
     var user = await FirebaseAuth.instance.currentUser();
     Provider.of<User>(context, listen: false).id = user.uid;
+    Provider.of<User>(context, listen: false).email = user.email;
 
     return FirebaseDatabase.instance
         .reference()
@@ -62,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
           .then((snapshot) {
         var userProvider = Provider.of<User>(context, listen: false);
         userProvider.id = user.uid;
+        userProvider.email = user.email;
       });
 
       await Provider.of<BoardPosts>(context, listen: false)

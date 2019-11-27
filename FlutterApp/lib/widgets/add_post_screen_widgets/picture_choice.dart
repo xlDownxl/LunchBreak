@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
 const links = [
-  "https://www.gannett-cdn.com/presto/2019/08/01/USAT/94f76657-241d-4eff-b654-9ad772fdd23f-impossiblewhopper.jpg?auto=webp&crop=705,397,x1,y205&format=pjpg&width=1200",
-  "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/190208-delish-ramen-horizontal-093-1550096715.jpg?crop=1xw:0.9995002498750624xh;center,top&resize=480:*",
-  "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/190208-delish-ramen-horizontal-093-1550096715.jpg?crop=1xw:0.9995002498750624xh;center,top&resize=480:*",
-  "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/190208-delish-ramen-horizontal-093-1550096715.jpg?crop=1xw:0.9995002498750624xh;center,top&resize=480:*",
-  "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/190208-delish-ramen-horizontal-093-1550096715.jpg?crop=1xw:0.9995002498750624xh;center,top&resize=480:*",
+  "assets/images/pic1.jpeg",
+  "assets/images/pic2.jpeg",
+  "assets/images/pic3.jpeg",
+  "assets/images/pic4.jpeg",
+  "assets/images/pic5.png",
+  "assets/images/pic6.jpeg",
+  "assets/images/pic7.jpeg",
+  "assets/images/pic8.jpeg",
+  "assets/images/pic9.jpeg",
 ];
 
 class PictureChoice extends StatelessWidget {
@@ -37,7 +41,7 @@ class PictureChoice extends StatelessWidget {
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(70),
-                  child: Image.network(
+                  child: Image.asset(
                     link,
                     fit: BoxFit.cover,
                   ),

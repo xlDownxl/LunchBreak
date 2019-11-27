@@ -4,4 +4,8 @@ class User with ChangeNotifier {
   String username;
   String email;
   String id;
+
+  User() {
+    this.username = "clown";
+  }
 }

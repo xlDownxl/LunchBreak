@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-//import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:FST.LunchApp/widgets/board_post_widgets/board_post_grid_element.dart';
 import 'add_post_screen.dart';
 import 'feed_screen.dart';
-import '../models/board_post.dart';
 import 'friend_list_screen.dart';
 import 'all_posts_screen.dart';
 import 'today_posts_Screen.dart';
@@ -15,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../models/board_posts.dart';
 import '../models/user.dart';
 import 'package:flutter/services.dart';
+import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 
 class BoardScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -155,6 +152,48 @@ class _BoardScreenState extends State<BoardScreen> {
     final List<Widget> children = _children(deviceHeight);
 
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          // Important: Remove any padding from the ListView.
+          padding: EdgeInsets.zero,
+
+          children: <Widget>[
+            Consumer<User>(
+              builder: (_, user, child) => Container(
+                height: 270,
+                child: UserAccountsDrawerHeader(
+                  onDetailsPressed: () {},
+                  accountName: Text(user.username),
+                  accountEmail: Text(user.email),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundColor:
+                        Theme.of(context).platform == TargetPlatform.iOS
+                            ? Colors.blue
+                            : Colors.white,
+                    child: CircleAvatar(
+                      child: Image.asset("assets/images/Download.jpeg"),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text('Item 1'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+            ListTile(
+              title: Text('Item 2'),
+              onTap: () {
+                // Update the state of the app.
+                // ...
+              },
+            ),
+          ],
+        ),
+      ),
       key: _scaffoldstate,
       appBar: appBar,
       body: RefreshIndicator(
@@ -167,30 +206,26 @@ class _BoardScreenState extends State<BoardScreen> {
           onPressed: () {
             navigateToSubPage(context); //TODO
           }),
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Theme.of(context).primaryColor,
+      bottomNavigationBar: TitledBottomNavigationBar(
         currentIndex: _selectedPageIndex,
-        type: BottomNavigationBarType.fixed,
         onTap: _selectPage,
-        elevation: 10,
-        iconSize: 26,
+        activeColor: Theme.of(context).primaryColor,
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text('Today'),
+          TitledNavigationBarItem(
+            icon: Icons.home,
+            title: 'Today',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Socicon.bullhorn),
-            title: Text('Overview'),
+          TitledNavigationBarItem(
+            icon: Icons.calendar_today,
+            title: 'Calendar',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Socicon.bullhorn),
-            title: Text('My Events'),
+          TitledNavigationBarItem(
+            icon: Socicon.bullhorn,
+            title: 'My Events',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            title: Text('Favorites'),
+          TitledNavigationBarItem(
+            icon: Icons.star,
+            title: 'Favorites',
           ),
         ],
       ),
