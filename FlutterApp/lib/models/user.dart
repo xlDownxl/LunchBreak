@@ -6,12 +6,8 @@ class User with ChangeNotifier {
   String email;
   String id;
 
-  User() {}
-
   void setUsername(String username) {
-    
-    FirebaseAuth.instance.signOut().then((_)=>this.username = username;);
-    //TODO FIREBASE
+    FirebaseAuth.instance.signOut().then((_) => this.username = username);
   }
 
   Future resetUser() {
