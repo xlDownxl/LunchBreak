@@ -5,6 +5,8 @@ import '../widgets/kf_drawer.dart';
 import '../utils/class_builder.dart';
 import 'friend_list_screen.dart';
 import 'login_screen.dart';
+import 'package:provider/provider.dart';
+import '../models/user.dart';
 
 import 'feed_screen.dart';
 import 'settings_screen.dart';
@@ -88,96 +90,114 @@ class _DrawerScreenState extends State<DrawerScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: KFDrawer(
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: KFDrawer(
 //        borderRadius: 0.0,
 //        shadowBorderRadius: 0.0,
-        menuPadding: EdgeInsets.all(10.0),
+            menuPadding: EdgeInsets.all(10.0),
 //        scrollable: true,
-        controller: _drawerController,
-        header: Align(
-          alignment: Alignment.centerLeft,
-          child: InkWell(
-            onTap: () {
-              Navigator.pushReplacementNamed(context, Settings.routeName);
-            },
-            child: Container(
-              padding: EdgeInsets.only(left: 20, right: 20, top: 50),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    width: 130,
-                    height: 130,
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white, width: 3),
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: AssetImage("assets/images/pic1.jpeg"),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            controller: _drawerController,
+            header: Align(
+              alignment: Alignment.centerLeft,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, Settings.routeName);
+                },
+                child: Container(
+                  padding: EdgeInsets.only(left: 20, right: 20, top: 50),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        "User Name",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
+                      Container(
+                        width: 130,
+                        height: 130,
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 3),
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: AssetImage("assets/images/pic1.jpeg"),
+                          ),
                         ),
                       ),
                       SizedBox(
                         height: 10,
                       ),
-                      Text(
-                        "dsfsfsdf@eff.de",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                        ),
+                      Consumer<User>(
+                        builder: (_, user, child) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              user.username != null
+                                  ? Text(
+                                      user.username,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                      ),
+                                    )
+                                  : Container(),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                user.email,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                        child: null,
                       ),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
 
-        footer: KFDrawerItem(
-          text: Text(
-            'SIGN OUT',
-            style: TextStyle(
-                color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
-          ),
-          icon: Icon(
-            Icons.input,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, LoginPage.routeName);
-          },
-        ),
-        decoration: BoxDecoration(
-
-            /*gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color.fromRGBO(255, 255, 255, 1.0),
-              Color.fromRGBO(44, 72, 171, 1.0)
-            ],
-            tileMode: TileMode.repeated,
-          ),*/
-
+            footer: KFDrawerItem(
+              text: Text(
+                'SIGN OUT',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold),
+              ),
+              icon: Icon(
+                Icons.input,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Provider.of<User>(context, listen: false)
+                    .resetUser()
+                    .then((val) {
+                  Navigator.pushReplacementNamed(context, LoginPage.routeName);
+                });
+              },
             ),
+            decoration: BoxDecoration(
+
+                /*gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color.fromRGBO(255, 255, 255, 1.0),
+                  Color.fromRGBO(44, 72, 171, 1.0)
+                ],
+                tileMode: TileMode.repeated,
+              ),*/
+
+                ),
+          ),
+        ),
       ),
     );
   }

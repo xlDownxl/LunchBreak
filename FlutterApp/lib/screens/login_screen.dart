@@ -38,7 +38,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<String> _login(LoginData data) async {
-    return null;
     var code = await _loginUser(data);
     switch (code) {
       case "ERROR_INVALID_EMAIL":
@@ -49,8 +48,10 @@ class _LoginPageState extends State<LoginPage> {
         return "Invalid Email";
       case "ERROR_WRONG_PASSWORD":
         return "Wrong Passord";
-      default:
+      case "success":
         return null;
+      default:
+        return "Invalid Inputs";
     }
   }
 
@@ -87,6 +88,8 @@ class _LoginPageState extends State<LoginPage> {
         return "Invalid Email";
       case "ERROR_WEAK_PASSWORD":
         return "Password should be min. 6 Char.";
+      case "success":
+        return null;
       default:
         return "Invalid Input";
     }
@@ -97,6 +100,7 @@ class _LoginPageState extends State<LoginPage> {
         .createUserWithEmailAndPassword(
             email: data.name, password: data.password)
         .then((_) async {
+      //Provider.of<User>(context, listen: false).isNew = true;
       await setupUserInFirebase(context);
       return "success";
     }).catchError((error) => error.code);

@@ -14,6 +14,8 @@ import 'package:flutter/services.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import '../widgets/kf_drawer.dart';
 import 'package:FST.LunchApp/utils/class_builder.dart';
+import 'package:after_layout/after_layout.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class BoardScreen extends KFDrawerContent {
   static const routeName = "/home";
@@ -22,8 +24,10 @@ class BoardScreen extends KFDrawerContent {
   _BoardScreenState createState() => _BoardScreenState();
 }
 
-class _BoardScreenState extends State<BoardScreen> {
+class _BoardScreenState extends State<BoardScreen>
+    with AfterLayoutMixin<BoardScreen> {
   int _selectedPageIndex = 0;
+  final _formKey = GlobalKey<FormState>();
 
   final GlobalKey<ScaffoldState> _scaffoldstate =
       new GlobalKey<ScaffoldState>();
@@ -37,7 +41,7 @@ class _BoardScreenState extends State<BoardScreen> {
 
   var init = true;
   var userId;
-  KFDrawerController _drawerController;
+  var user;
 
   void _selectPage(int index) {
     setState(() {
@@ -46,9 +50,59 @@ class _BoardScreenState extends State<BoardScreen> {
   }
 
   @override
+  void afterFirstLayout(BuildContext context) {
+    if (user.username == null) {
+      _displayDialog(context);
+    }
+  }
+
+  Future _displayDialog(BuildContext context) async {
+    Alert(
+        context: context,
+        title: "Welcome to FST Lunch",
+        content: Column(
+          children: <Widget>[
+            Text("Please Enter your Name!"),
+            Form(
+              key: _formKey,
+              child: TextFormField(
+                validator: (val) {
+                  if (val.isNotEmpty) {
+                    return null;
+                  } else {
+                    return "Please type your Name";
+                  }
+                },
+                onSaved: (val) {
+                  user.setUsername(val);
+                },
+                decoration: InputDecoration(hintText: "Name"), //maybe add icon
+              ),
+            ),
+          ],
+        ),
+        buttons: [
+          DialogButton(
+            color: Theme.of(context).primaryColor,
+            onPressed: () {
+              if (_formKey.currentState.validate()) {
+                _formKey.currentState.save();
+                Navigator.of(context).pop();
+              }
+            },
+            child: Text(
+              "Submit",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ]).show();
+  }
+
+  @override
   void didChangeDependencies() {
     if (init) {
-      userId = Provider.of<User>(context).id;
+      user = Provider.of<User>(context);
+      userId = user.id;
       init = false;
     }
     super.didChangeDependencies();
@@ -129,7 +183,12 @@ class _BoardScreenState extends State<BoardScreen> {
       child: Scaffold(
         key: _scaffoldstate,
         appBar: appBar,
-        body: mainPage,
+        body: Consumer<User>(
+          child: mainPage,
+          builder: (_, user, child) {
+            return child;
+          },
+        ),
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
             backgroundColor: Theme.of(context).primaryColor,
