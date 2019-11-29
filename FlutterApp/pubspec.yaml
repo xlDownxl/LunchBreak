@@ -26,7 +26,7 @@ dependencies:
 
   firebase_core: ^0.4.0+9
   firebase_messaging: ^5.1.6
-  firebase_auth: ^0.14.0+5
+  firebase_auth: 0.15.0+1
   firebase_database: ^3.0.7
   bubble: ^1.1.9+1
   flutter_picker: ^1.1.0

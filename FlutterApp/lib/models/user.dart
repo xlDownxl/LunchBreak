@@ -6,6 +6,7 @@ class User with ChangeNotifier {
   String username;
   String email;
   String id;
+  //var token;
 
   void setUsername(String username) async {
     await FirebaseDatabase.instance
