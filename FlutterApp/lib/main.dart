@@ -9,13 +9,44 @@ import 'models/board_posts.dart';
 import 'models/user.dart';
 import 'screens/login_screen.dart';
 import 'utils/class_builder.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'screens/drawer_screen.dart';
 
 void main() {
   ClassBuilder.registerClasses();
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User user = User();
+  FirebaseUser fbUser;
+
+  @override
+  void initState() {
+    print("kek");
+    getUser().then((fbuser) {
+      if (fbuser != null) {
+        print("fbuser not null");
+        user.email = fbuser.email;
+        user.id = fbuser.uid;
+        user.username = "geladen"; //TODO load and read username from database
+        print("userstring" + user.email);
+      }
+    });
+
+    super.initState();
+  }
+
+  Future<FirebaseUser> getUser() async {
+    return await auth.currentUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -23,8 +54,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           builder: (_) => BoardPosts(),
         ),
-        ChangeNotifierProvider(
-          builder: (_) => User(),
+        ChangeNotifierProvider.value(
+          value: user,
         ),
       ],
       child: MaterialApp(
@@ -34,7 +65,7 @@ class MyApp extends StatelessWidget {
           accentColor: Color(0xff707070),
           fontFamily: 'Verdana',
         ),
-        home: LoginPage(),
+        home: fbUser == null ? LoginPage() : DrawerScreen(),
         routes: {
           LoginPage.routeName: (ctx) => LoginPage(),
           BoardScreen.routeName: (ctx) => BoardScreen(),
