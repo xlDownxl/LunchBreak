@@ -30,7 +30,6 @@ class _LoginPageState extends State<LoginPage> {
         .set({
       "email": user.email,
       "id": user.uid,
-      //"username": username,
     }).then((_) {
       return Provider.of<BoardPosts>(context, listen: false)
           .connectToFirebase(Provider.of<User>(context, listen: false).id);

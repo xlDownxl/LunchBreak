@@ -58,6 +58,10 @@ class _BoardScreenState extends State<BoardScreen>
 
   Future _displayDialog(BuildContext context) async {
     Alert(
+        style: AlertStyle(
+          isOverlayTapDismiss: false,
+          isCloseButton: false,
+        ),
         context: context,
         title: "Welcome to FST Lunch",
         content: Column(

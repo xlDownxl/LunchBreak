@@ -89,10 +89,15 @@ class _DrawerScreenState extends State<DrawerScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyAppBar(
+
+          //title: Text("drawer"),
+          ),
       backgroundColor: Theme.of(context).primaryColor,
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery.of(context).size.height -
+              MediaQuery.of(context).padding.top,
           child: KFDrawer(
 //        borderRadius: 0.0,
 //        shadowBorderRadius: 0.0,
@@ -106,58 +111,79 @@ class _DrawerScreenState extends State<DrawerScreen>
                   Navigator.pushReplacementNamed(context, Settings.routeName);
                 },
                 child: Container(
-                  padding: EdgeInsets.only(left: 20, right: 20, top: 50),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        width: 130,
-                        height: 130,
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white, width: 3),
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: AssetImage("assets/images/pic1.jpeg"),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Consumer<User>(
-                        builder: (_, user, child) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              user.username != null
-                                  ? Text(
-                                      user.username,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25,
-                                      ),
-                                    )
-                                  : Container(),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                user.email,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25,
+                  padding: EdgeInsets.only(left: 20, right: 20, top: 30),
+                  child: LayoutBuilder(
+                    builder: (_, constraints) => Container(
+                      width: constraints.maxWidth * 0.5,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            height: constraints.maxHeight * 0.5,
+                            child: LayoutBuilder(
+                              builder: (_, constraints) => Container(
+                                width: constraints.maxHeight,
+                                height: constraints.maxHeight,
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  border:
+                                      Border.all(color: Colors.white, width: 3),
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image:
+                                        AssetImage("assets/images/pic1.jpeg"),
+                                  ),
                                 ),
                               ),
-                            ],
-                          );
-                        },
-                        child: null,
+                            ),
+                          ),
+                          Container(
+                            height: constraints.maxHeight * 0.5,
+                            child: Consumer<User>(
+                              builder: (_, user, child) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Flexible(
+                                      child: FittedBox(
+                                        child: Text(
+                                          //user.username,
+                                          "username",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 25,
+                                          ),
+                                        ),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: SizedBox(),
+                                    ),
+                                    Flexible(
+                                      child: FittedBox(
+                                        fit: BoxFit.fill,
+                                        child: Text(
+                                          user.email,
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 25,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                              child: null,
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -201,4 +227,14 @@ class _DrawerScreenState extends State<DrawerScreen>
       ),
     );
   }
+}
+
+class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AppBar();
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(0);
 }
