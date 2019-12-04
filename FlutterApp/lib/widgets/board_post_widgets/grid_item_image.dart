@@ -16,7 +16,7 @@ class GridItemImage extends StatelessWidget {
           shape: BoxShape.circle,
           image: DecorationImage(
             fit: BoxFit.fill,
-            image: NetworkImage(post.imageUrl),
+            image: AssetImage(post.imageUrl),
           ),
         ),
       ),

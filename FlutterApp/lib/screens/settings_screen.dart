@@ -10,27 +10,25 @@ class Settings extends KFDrawerContent {
 class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      body: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(32.0)),
-        child: Column(
-          children: <Widget>[
-            Text("User Settings"),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Settings"),
+          actions: <Widget>[
             Material(
               shadowColor: Colors.transparent,
               color: Colors.transparent,
               child: IconButton(
                 icon: Icon(
                   Icons.menu,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
                 onPressed: widget.onMenuPressed,
               ),
             ),
           ],
         ),
-      ),
-    ));
+        body: Center(
+          child: Text("Coming Soon!"),
+        ));
   }
 }

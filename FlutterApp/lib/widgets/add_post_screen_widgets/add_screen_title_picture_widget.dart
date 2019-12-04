@@ -118,12 +118,15 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                     child: image != null
                         ? Center(
                             child: Container(
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(image)))),
+                              margin: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(image),
+                                ),
+                              ),
+                            ),
                           )
                         : Icon(
                             MealIcons.aggga,

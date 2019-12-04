@@ -89,15 +89,10 @@ class _DrawerScreenState extends State<DrawerScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(
-
-          //title: Text("drawer"),
-          ),
       backgroundColor: Theme.of(context).primaryColor,
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height -
-              MediaQuery.of(context).padding.top,
+          height: MediaQuery.of(context).size.height,
           child: KFDrawer(
 //        borderRadius: 0.0,
 //        shadowBorderRadius: 0.0,

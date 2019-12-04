@@ -40,7 +40,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<String> _login(LoginData data) async {
-    var code = await _loginUser(data);
+    var code = await Future.any(
+      [
+        _loginUser(data),
+        Future.delayed(
+          const Duration(seconds: 8),
+        ),
+      ],
+    );
     switch (code) {
       case "ERROR_INVALID_EMAIL":
         return "Invalid Email";

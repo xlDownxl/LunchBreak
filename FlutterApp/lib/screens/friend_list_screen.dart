@@ -10,27 +10,25 @@ class FriendList extends KFDrawerContent {
 class _FriendListState extends State<FriendList> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      body: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(32.0)),
-        child: Column(
-          children: <Widget>[
-            Text("Friends"),
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Friend List"),
+          actions: <Widget>[
             Material(
               shadowColor: Colors.transparent,
               color: Colors.transparent,
               child: IconButton(
                 icon: Icon(
                   Icons.menu,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
                 onPressed: widget.onMenuPressed,
               ),
             ),
           ],
         ),
-      ),
-    ));
+        body: Center(
+          child: Text("Coming Soon!"),
+        ));
   }
 }

@@ -11,24 +11,25 @@ class FeedScreen extends KFDrawerContent {
 class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(body: Column(
-
-        children: <Widget>[
-          Material(
-            shadowColor: Colors.transparent,
-            color: Colors.transparent,
-            child: IconButton(
-              icon: Icon(
-                Icons.menu,
-                color: Colors.black,
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Activity Feed"),
+          actions: <Widget>[
+            Material(
+              shadowColor: Colors.transparent,
+              color: Colors.transparent,
+              child: IconButton(
+                icon: Icon(
+                  Icons.menu,
+                  color: Colors.white,
+                ),
+                onPressed: widget.onMenuPressed,
               ),
-              onPressed: widget.onMenuPressed,
             ),
-          ),
-          Text("feed"),
-        ],
-      )),
-    );
+          ],
+        ),
+        body: Center(
+          child: Text("Coming Soon!"),
+        ));
   }
 }
