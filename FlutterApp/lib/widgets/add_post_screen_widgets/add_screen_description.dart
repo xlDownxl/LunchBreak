@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bubble/bubble.dart';
+
 import 'package:provider/provider.dart';
 import '../../models/board_post.dart';
 import '../speech_bubble.dart';
@@ -14,6 +14,7 @@ class AddScreenDescription extends StatefulWidget {
 
 class _AddScreenDescriptionState extends State<AddScreenDescription> {
   Color borderColor = Colors.black;
+  double borderWidth = 1;
 
   @override
   void initState() {
@@ -21,10 +22,12 @@ class _AddScreenDescriptionState extends State<AddScreenDescription> {
       if (widget.descriptionFocus.hasFocus) {
         setState(() {
           borderColor = Colors.red;
+          borderWidth = 3;
         });
       } else {
         setState(() {
           borderColor = Colors.black;
+          borderWidth = 1;
         });
       }
     });
@@ -41,6 +44,7 @@ class _AddScreenDescriptionState extends State<AddScreenDescription> {
           color: Colors.white,
           borderColor: borderColor,
           nipHeight: 15,
+          borderWidth: borderWidth,
           nipLocation: NipLocation.TOP,
           height: constraints.maxHeight,
           width: constraints.maxWidth,

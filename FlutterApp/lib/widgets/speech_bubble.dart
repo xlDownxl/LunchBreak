@@ -23,6 +23,7 @@ class SpeechBubble extends StatelessWidget {
       {Key key,
       @required this.child,
       @required this.borderColor,
+      @required this.borderWidth,
       this.nipLocation: NipLocation.BOTTOM,
       this.color: Colors.redAccent,
       this.borderRadius: 4.0,
@@ -36,6 +37,8 @@ class SpeechBubble extends StatelessWidget {
   final Widget child;
 
   final Color borderColor;
+
+  final double borderWidth;
 
   /// The location of the nip of the speech bubble.
   ///
@@ -122,8 +125,9 @@ class SpeechBubble extends StatelessWidget {
   Widget speechBubble() {
     return Material(
       shape: RoundedRectangleBorder(
-          side: BorderSide(color: this.borderColor),
-          borderRadius: BorderRadius.circular(20)),
+        side: BorderSide(color: this.borderColor, width: borderWidth),
+        borderRadius: BorderRadius.circular(20),
+      ),
       color: this.color,
       elevation: 10,
       child: Container(
@@ -145,8 +149,8 @@ class SpeechBubble extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               border: Border(
-                left: BorderSide(color: this.borderColor),
-                top: BorderSide(color: this.borderColor),
+                left: BorderSide(color: this.borderColor, width: borderWidth),
+                top: BorderSide(color: this.borderColor, width: borderWidth),
               ),
             ),
             height: nipHeight,

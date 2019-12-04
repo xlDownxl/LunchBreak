@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'add_post_screen.dart';
 import 'feed_screen.dart';
-import 'friend_list_screen.dart';
 import 'all_posts_screen.dart';
 import 'today_posts_Screen.dart';
 import 'board_my_posts_screen.dart';
@@ -10,10 +9,8 @@ import '../design/socicon_icons.dart';
 import 'package:provider/provider.dart';
 import '../models/board_posts.dart';
 import '../models/user.dart';
-import 'package:flutter/services.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import '../widgets/kf_drawer.dart';
-import 'package:FST.LunchApp/utils/class_builder.dart';
 import 'package:after_layout/after_layout.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -38,6 +35,8 @@ class _BoardScreenState extends State<BoardScreen>
         BoardMyPostsScreen(deviceHeight),
         FavoriteScreen(deviceHeight),
       ];
+
+  var titles = ["Today's Events", "Calendar", "My Events", "Favorites"];
 
   var init = true;
   var userId;
@@ -143,7 +142,7 @@ class _BoardScreenState extends State<BoardScreen>
   @override
   Widget build(BuildContext context) {
     final appBar = AppBar(
-      title: Text('Events'),
+      title: Text(titles[_selectedPageIndex]),
       actions: <Widget>[
         SafeArea(
           child: Material(

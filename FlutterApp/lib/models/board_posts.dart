@@ -86,10 +86,17 @@ class BoardPosts with ChangeNotifier {
         });
       }
     });
+    var now = DateTime.now();
+    var snapshot = await FirebaseDatabase.instance
+        .reference()
+        .child("Posts")
+        .orderByChild("date")
+        .startAt(DateTime(now.year, now.month, now.day).millisecondsSinceEpoch)
+        .once();
 
-    var snapshot =
+    /*var snapshot =
         await FirebaseDatabase.instance.reference().child("Posts").once();
-
+*/
     if (snapshot.value != null) {
       snapshot.value.forEach((key, value) async {
         BoardPost newPost = BoardPost.fromMap(value, userId);

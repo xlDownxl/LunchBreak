@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'board_screen.dart';
+
 import 'package:provider/provider.dart';
 import '../models/board_posts.dart';
 import '../models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_login/flutter_login.dart';
 import '../widgets/kf_drawer.dart';
-import '../utils/class_builder.dart';
+
 import 'drawer_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends KFDrawerContent {
   static const routeName = "/login";
@@ -58,61 +57,13 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<String> _loginHelper() async {
-    await FirebaseDatabase.instance
-        .reference()
-        .child("Users")
-        .child(fbUser.uid)
-        .once()
-        .then((snapshot) {
-      var userProvider = Provider.of<User>(context, listen: false);
-      userProvider.id = fbUser.uid;
-      userProvider.email = fbUser.email;
-    });
-
-    await Provider.of<BoardPosts>(context, listen: false)
-        .connectToFirebase(Provider.of<User>(context, listen: false).id);
-
-    return "success";
-  }
-
   Future<String> _loginUser(data) async {
     var userProvider = Provider.of<User>(context, listen: false);
-    //userProvider.token = "h";
-    //SharedPreferences prefs = await SharedPreferences.getInstance();
-    //var loadToken = prefs.getString('token') ?? "";
 
-    /* return FirebaseAuth.instance
-        .signInWithCustomToken(token: userProvider.token.token)
-        .then((he) async {
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: Text("hat geklappt" + he.toString()),
-        ),
-      );
-      fbUser = await FirebaseAuth.instance.currentUser();
-      await FirebaseDatabase.instance
-          .reference()
-          .child("Users")
-          .child(fbUser.uid)
-          .once()
-          .then((snapshot) {
-        userProvider.id = fbUser.uid;
-        userProvider.email = fbUser.email;
-      });
-
-      await Provider.of<BoardPosts>(context, listen: false)
-          .connectToFirebase(Provider.of<User>(context, listen: false).id);
-
-      return "success";
-    }).catchError((_) {*/
     return FirebaseAuth.instance
         .signInWithEmailAndPassword(email: data.name, password: data.password)
         .then((_) async {
       fbUser = await FirebaseAuth.instance.currentUser();
-      var token = await fbUser.getIdToken();
-      //await prefs.setString('token', token);
 
       await FirebaseDatabase.instance
           .reference()
@@ -162,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<String> _recoverPassword(String name) async {
     print('Name: $name');
-    await Future.delayed(Duration(seconds: 1)).then((_) {
+    return Future.delayed(Duration(seconds: 1)).then((_) {
       return "Not implemented yet";
     });
   }

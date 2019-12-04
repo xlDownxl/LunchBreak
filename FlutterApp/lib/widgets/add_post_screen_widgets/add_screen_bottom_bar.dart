@@ -3,11 +3,10 @@ import '../../design/balloon_new_icons.dart';
 import 'package:provider/provider.dart';
 import '../../models/board_post.dart';
 import '../../models/board_posts.dart';
-import '../../models/user.dart';
 
 class AddScreenBottomBar extends StatefulWidget {
   final Function createEvent;
-  bool _editMode;
+  final bool _editMode;
   AddScreenBottomBar(this._editMode, this.createEvent);
 
   @override

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import '../widgets/add_post_screen_widgets/add_screen_title_picture_widget.dart';
 import '../widgets/add_post_screen_widgets/add_screen_bottom_bar.dart';
-import '../widgets/add_post_screen_widgets/add_screen_information_pickers.dart';
-import '../widgets/add_post_screen_widgets/add_screen_description.dart';
 import '../models/board_post.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart';
-import 'package:flutter/foundation.dart';
 import '../models/board_posts.dart';
 import '../widgets/google_maps.dart';
 
@@ -21,7 +18,6 @@ class _NewPostScreenState extends State<NewPostScreen> {
   var _form = GlobalKey<FormState>();
   bool showMemberPicker = false;
   var posts;
-  var _autoValidate = false;
   BoardPost newPost;
   bool init = true;
   bool _editMode =
@@ -59,9 +55,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
         posts.createPost(newPost, Provider.of<User>(context).id);
         Navigator.pop(context, {"created": true, "postId": newPost.id});
       }
-    } else {
-      _autoValidate = true;
-    }
+    } else {}
   }
 
   @override

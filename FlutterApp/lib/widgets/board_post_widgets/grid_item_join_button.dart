@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../screens/post_detail_screen.dart';
+
 import 'package:provider/provider.dart';
 import '../../models/board_post.dart';
 import '../../models/user.dart';
@@ -8,11 +8,10 @@ import '../../design/balloon_new_icons.dart';
 class GridItemJoinButton extends StatelessWidget {
   final postId;
   GridItemJoinButton(this.postId);
-  var post;
 
   @override
   Widget build(BuildContext context) {
-    post = Provider.of<BoardPost>(context);
+    var post = Provider.of<BoardPost>(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: SizedBox(

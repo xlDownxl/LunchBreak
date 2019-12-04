@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:bubble/bubble.dart';
 import '../../models/board_post.dart';
 import 'package:provider/provider.dart';
 import '../speech_bubble.dart';
@@ -14,6 +13,7 @@ class PostDetailDescription extends StatelessWidget {
         child: SpeechBubble(
           borderColor: Colors.black,
           color: Colors.white,
+          borderWidth: 1,
           nipHeight: 15,
           width: constraints.maxWidth,
           height: constraints.maxHeight,
