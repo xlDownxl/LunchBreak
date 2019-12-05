@@ -1,24 +1,30 @@
 import 'package:flutter/material.dart';
+//import 'package:location/location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:async';
 
-class GoogleMaps extends StatelessWidget {
+class GoogleMaps extends StatefulWidget {
+  @override
+  _GoogleMapsState createState() => _GoogleMapsState();
+}
+
+class _GoogleMapsState extends State<GoogleMaps> {
+  Completer<GoogleMapController> _controller = Completer();
+
+  static const LatLng _center = const LatLng(45.521563, -122.677433);
+
+  void _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (ctx, constraints) {
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
-            ),
-            color: Theme.of(context).primaryColor,
-          ),
-          child: Center(
-            child: Text(
-              "Map coming soon!",
-            ),
-          ),
-        );
-      },
+    return GoogleMap(
+      onMapCreated: _onMapCreated,
+      initialCameraPosition: CameraPosition(
+        target: const LatLng(0, 0),
+        zoom: 2,
+      ),
     );
   }
 }
