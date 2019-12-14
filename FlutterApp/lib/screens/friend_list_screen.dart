@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/kf_drawer.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class FriendList extends KFDrawerContent {
   static const routeName = "/friends";
@@ -8,6 +9,17 @@ class FriendList extends KFDrawerContent {
 }
 
 class _FriendListState extends State<FriendList> {
+
+   var _fb =FirebaseDatabase.instance.reference();
+
+   @override
+  void initState() {
+    FirebaseDatabase.instance.reference().child("Users").once().then((users){
+      print(users.value);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

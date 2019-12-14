@@ -28,12 +28,12 @@ class _LoginPageState extends State<LoginPage> {
 
     return FirebaseDatabase.instance
         .reference()
-        .child("Users")
+        .child("User_Data")
         .child(user.uid)
         .set({
       "email": user.email,
       "id": user.uid,
-    }).then((_) {
+    }).then((_){
       return Provider.of<BoardPosts>(context, listen: false)
           .connectToFirebase(Provider.of<User>(context, listen: false).id);
     });
@@ -70,18 +70,7 @@ class _LoginPageState extends State<LoginPage> {
     return FirebaseAuth.instance
         .signInWithEmailAndPassword(email: data.name, password: data.password)
         .then((_) async {
-      fbUser = await FirebaseAuth.instance.currentUser();
-
-      await FirebaseDatabase.instance
-          .reference()
-          .child("Users")
-          .child(fbUser.uid)
-          .once()
-          .then((snapshot) {
-        userProvider.id = fbUser.uid;
-        userProvider.email = fbUser.email;
-        //userProvider.token = token;
-      });
+      userProvider.getUserFromDB();
 
       await Provider.of<BoardPosts>(context, listen: false)
           .connectToFirebase(Provider.of<User>(context, listen: false).id);

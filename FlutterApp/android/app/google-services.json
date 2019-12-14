@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "555445943723",
+    "firebase_url": "https://fst-lunchapp.firebaseio.com",
+    "project_id": "fst-lunchapp",
+    "storage_bucket": "fst-lunchapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555445943723:android:32898625780d5c045726ee",
+        "android_client_info": {
+          "package_name": "fst.fst_lunch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "555445943723-3be1b8npupgacuvj9qmsact2jmdm2519.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvB_4j_9jbAu1tyjSNSjlmJ00LBPmDf3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "555445943723-3be1b8npupgacuvj9qmsact2jmdm2519.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "555445943723-0j3l90fon3um0b0t7mci5pr70pn5bbag.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "fst.fstLunch"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

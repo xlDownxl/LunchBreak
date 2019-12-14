@@ -41,6 +41,8 @@ dependencies:
   after_layout: ^1.0.7+2
   rflutter_alert: ^1.0.3
   shared_preferences: ^0.5.4+6
+  image_picker: ^0.6.0+17
+  firebase_storage: ^3.0.3
 
 dev_dependencies:
   flutter_test:

@@ -25,6 +25,8 @@
       <excludeFolder url="file://$MODULE_DIR$/FlutterApp/ios/.symlinks/plugins/speech_bubble/build" />
       <excludeFolder url="file://$MODULE_DIR$/FlutterApp/ios/.symlinks/plugins/speech_bubble/example/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/FlutterApp/ios/.symlinks/plugins/speech_bubble/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/FlutterApp/maptries/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/FlutterApp/maptries/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

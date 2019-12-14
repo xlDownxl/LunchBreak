@@ -58,7 +58,7 @@ class BoardPost with ChangeNotifier {
     if (!_favorite) {
       FirebaseDatabase.instance
           .reference()
-          .child("Users")
+          .child("User_Data")
           .child(userId)
           .child("favorites")
           .update({
@@ -69,7 +69,7 @@ class BoardPost with ChangeNotifier {
     } else {
       FirebaseDatabase.instance
           .reference()
-          .child("Users")
+          .child("User_Data")
           .child(userId)
           .child("favorites")
           .child(this.id)
@@ -84,7 +84,7 @@ class BoardPost with ChangeNotifier {
     if (!_participating) {
       FirebaseDatabase.instance
           .reference()
-          .child("Users")
+          .child("User_Data")
           .child(userId)
           .child("participations")
           .update({
@@ -104,7 +104,7 @@ class BoardPost with ChangeNotifier {
     } else {
       FirebaseDatabase.instance
           .reference()
-          .child("Users")
+          .child("User_Data")
           .child(userId)
           .child("participations")
           .child(this.id)

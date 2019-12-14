@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+          import 'package:flutter/material.dart';
 import 'add_post_screen.dart';
 import 'feed_screen.dart';
 import 'all_posts_screen.dart';
@@ -11,10 +11,11 @@ import '../models/board_posts.dart';
 import '../models/user.dart';
 import 'package:titled_navigation_bar/titled_navigation_bar.dart';
 import '../widgets/kf_drawer.dart';
-import 'package:after_layout/after_layout.dart';
+import 'package:after_layout/after_layout.dart';                                              
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-class BoardScreen extends KFDrawerContent {
+
+          class BoardScreen extends KFDrawerContent {
   static const routeName = "/home";
 
   @override
@@ -100,6 +101,8 @@ class _BoardScreenState extends State<BoardScreen>
           )
         ]).show();
   }
+
+
 
   @override
   void didChangeDependencies() {

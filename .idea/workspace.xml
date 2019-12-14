@@ -22,28 +22,34 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="FST-LunchApp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="FST-LunchApp" type="462c0819:PsiDirectoryNode" />
+              <item name="FSTLunch" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FSTLunch" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="FST-LunchApp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="FST-LunchApp" type="462c0819:PsiDirectoryNode" />
+              <item name="FSTLunch" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FSTLunch" type="462c0819:PsiDirectoryNode" />
               <item name="FlutterApp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FSTLunch" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FSTLunch" type="462c0819:PsiDirectoryNode" />
+              <item name="FlutterApp" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/FlutterApp" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
@@ -73,10 +79,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1280" height="800" extended-state="6" />
+    <frame x="0" y="0" width="1920" height="1080" extended-state="6" />
     <layout>
       <window_info id="Captures" order="0" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.3457189" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.3496802" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />

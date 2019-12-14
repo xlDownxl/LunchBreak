@@ -47,7 +47,7 @@ class BoardPosts with ChangeNotifier {
 
     FirebaseDatabase.instance //TODO catch errors
         .reference()
-        .child("Users")
+        .child("User_Data")
         .child(userId)
         .child("participations")
         .once()
@@ -61,7 +61,7 @@ class BoardPosts with ChangeNotifier {
 
     FirebaseDatabase.instance
         .reference()
-        .child("Users")
+        .child("User_Data")
         .child(userId)
         .child("ownedPosts")
         .once()
@@ -75,7 +75,7 @@ class BoardPosts with ChangeNotifier {
 
     FirebaseDatabase.instance
         .reference()
-        .child("Users")
+        .child("User_Data")
         .child(userId)
         .child("favorites")
         .once()
@@ -135,7 +135,7 @@ class BoardPosts with ChangeNotifier {
       FirebaseDatabase
           .instance //add the event to ur own events in which u participate
           .reference()
-          .child("Users")
+          .child("User_Data")
           .child(creator)
           .child("participations")
           .update({

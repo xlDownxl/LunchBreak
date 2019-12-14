@@ -7,10 +7,15 @@ import 'friend_list_screen.dart';
 import 'login_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart';
-
+import 'dart:math';
 import 'feed_screen.dart';
 import 'settings_screen.dart';
 import 'package:FST.LunchApp/design/socicon_icons.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as Path;
+import 'package:firebase_database/firebase_database.dart';
 
 class DrawerScreen extends StatefulWidget {
   static const routeName = "/drawer";
@@ -22,9 +27,43 @@ class DrawerScreen extends StatefulWidget {
 class _DrawerScreenState extends State<DrawerScreen>
     with TickerProviderStateMixin {
   KFDrawerController _drawerController;
+  File _image;
+  String _uploadedFileURL;
+  bool _loadingImage=false;
+  var user;
+
+
+
+  Future chooseFile() async {
+    await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
+      _image=image;
+      uploadFile();
+    });
+  }
+
+  Future uploadFile() async {
+    setState(() {
+      _loadingImage=true;
+    });
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref().child("User_Data").child(Provider.of<User>(context,listen: false).id)
+        .child('profile_pic');
+    StorageUploadTask uploadTask = storageReference.putFile(_image);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    storageReference.getDownloadURL().then((fileURL) {
+      setState(() {
+        _loadingImage=false;
+        user.image = fileURL;
+      });
+
+
+    });
+  }
 
   @override
   void initState() {
+
     super.initState();
     _drawerController = KFDrawerController(
       initialPage: ClassBuilder.fromString('BoardScreen'),
@@ -88,6 +127,7 @@ class _DrawerScreenState extends State<DrawerScreen>
 
   @override
   Widget build(BuildContext context) {
+    user=Provider.of<User>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: SingleChildScrollView(
@@ -106,35 +146,42 @@ class _DrawerScreenState extends State<DrawerScreen>
                   Navigator.pushReplacementNamed(context, Settings.routeName);
                 },
                 child: Container(
-                  padding: EdgeInsets.only(left: 20, right: 20, top: 30),
+                  padding: EdgeInsets.only(left: 20, right: 20, top: 40),
                   child: LayoutBuilder(
                     builder: (_, constraints) => Container(
                       width: constraints.maxWidth * 0.5,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          Container(
-                            height: constraints.maxHeight * 0.5,
-                            child: LayoutBuilder(
-                              builder: (_, constraints) => Container(
-                                width: constraints.maxHeight,
-                                height: constraints.maxHeight,
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.white, width: 3),
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image:
-                                        AssetImage("assets/images/pic1.jpeg"),
-                                  ),
+                          InkWell(
+                            onTap: (){
+                              chooseFile();
+                            },
+                            child: Container(
+                              height: constraints.maxHeight * 0.5,
+                              child: Stack(
+                                children:[
+                                  Center(
+                                    child: LayoutBuilder(
+                                    builder: (_, constraints) => user.image!=null?
+                                     CircleAvatar(
+                                      radius: min(constraints.maxHeight,  constraints.maxWidth)/2,
+
+                                      backgroundImage:
+                                                 NetworkImage(user.image),
+                                      backgroundColor: Colors.transparent,
+                                       ):Container(color: Colors.amber,),
+
                                 ),
-                              ),
+                                  ),
+                                 _loadingImage? CircularProgressIndicator():Container(),
+                              ],
+                              )
                             ),
                           ),
+                          SizedBox(height: constraints.maxHeight * 0.05,),
                           Container(
-                            height: constraints.maxHeight * 0.5,
+                            height: constraints.maxHeight * 0.45,
                             child: Consumer<User>(
                               builder: (_, user, child) {
                                 return Column(
