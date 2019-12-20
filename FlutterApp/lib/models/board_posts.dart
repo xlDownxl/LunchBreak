@@ -3,6 +3,7 @@ import 'user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BoardPosts with ChangeNotifier {
   List<BoardPost> _items = [];
@@ -45,7 +46,29 @@ class BoardPosts with ChangeNotifier {
     var _ownedPosts = [];
     var _favorites = [];
 
-    FirebaseDatabase.instance //TODO catch errors
+    Firestore.instance.collection("User_Data").document(userId).get().then((user_data){
+      var partPosts=user_data.data["participations"];
+      if (partPosts != null) {
+        partPosts.forEach((key, value) {
+          _participations.add(key);
+        });
+      }
+      var _oPosts=user_data.data["ownedPosts"];
+      if (_oPosts != null) {
+        _oPosts.forEach((key, value) {
+          _ownedPosts.add(key);
+        });
+      }
+      var _favs=user_data.data["favorites"];
+      if (_favs.value != null) {
+        _favs.value.forEach((key, value) {
+          _favorites.add(key);
+        });
+      }
+
+    });
+
+   /* FirebaseDatabase.instance //TODO catch errors
         .reference()
         .child("User_Data")
         .child(userId)
@@ -85,8 +108,27 @@ class BoardPosts with ChangeNotifier {
           _favorites.add(key);
         });
       }
+    });*/
+    //var now = DateTime.now();
+
+
+    await Firestore.instance.collection("Posts").getDocuments().then((posts){
+      if(posts.documents!=null){
+        posts.documents.forEach((document){
+          //var value=document.data
+          BoardPost newPost = BoardPost.fromMap(document.data, userId);
+
+          if (_participations.contains(newPost.id)) {
+            newPost.participating = true;
+          }
+          if (_favorites.contains(newPost.id)) {
+            newPost.favorite = true;
+          }
+          _items.add(newPost);
+        });
+      }
     });
-    var now = DateTime.now();
+    /*
     var snapshot = await FirebaseDatabase.instance
         .reference()
         .child("Posts")
@@ -112,12 +154,22 @@ class BoardPosts with ChangeNotifier {
         }
         _items.add(newPost);
       });
-    }
+    }*/
     notifyListeners();
   }
 
   void createPost(post, String creator) {
-    var ref = FirebaseDatabase.instance.reference().child("Posts").push();
+
+    var doc =Firestore.instance.collection("Posts").document();
+    post.id = doc.documentID;
+    doc.setData(post.toJson()).then((_) {
+      _items.add(post);
+      notifyListeners();
+      doc.updateData({"participants":FieldValue.arrayUnion([creator])});
+      Firestore.instance.collection("User_Data").document(creator).updateData({"participations":FieldValue.arrayUnion([post.id])});
+    });
+
+   /* var ref = FirebaseDatabase.instance.reference().child("Posts").push();
     post.id = ref.key;
     ref.set(post.toJson()).then((_) {
       _items.add(post);
@@ -142,6 +194,7 @@ class BoardPosts with ChangeNotifier {
         post.id: post.dateInDatabaseFormat,
       });
     }).catchError((error) => print(error));
+    */
   }
 
   BoardPost findById(String id) {
@@ -156,6 +209,12 @@ class BoardPosts with ChangeNotifier {
   }
 
   void removePost(String postId) async {
+    Firestore.instance.collection("Posts").document(postId).delete().then((_){
+      _items.removeWhere((post) {
+        return post.id == postId;
+      });
+    });
+    /*
     var ref = FirebaseDatabase.instance.reference();
 
     await ref.child("Posts").child(postId).remove().then((_) {
@@ -164,7 +223,7 @@ class BoardPosts with ChangeNotifier {
       });
     }).catchError((error) {
       print(error);
-    });
+    });*/
     notifyListeners();
   }
 }

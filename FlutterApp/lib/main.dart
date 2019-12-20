@@ -11,6 +11,7 @@ import 'screens/login_screen.dart';
 import 'utils/class_builder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'screens/drawer_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() {
   ClassBuilder.registerClasses();
@@ -35,8 +36,9 @@ class _MyAppState extends State<MyApp> {
         print("fbuser not null");
         user.email = fbuser.email;
         user.id = fbuser.uid;
-        user.username = "geladen"; //TODO load and read username from database
-        print("userstring" + user.email);
+        Firestore.instance.collection("User_Data").document(fbUser.uid).get().then((snap){
+          user.username = snap.data["username"];
+        });
       }
     });
 

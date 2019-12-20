@@ -1,7 +1,7 @@
 import 'user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_database/firebase_database.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 class BoardPost with ChangeNotifier {
   String id;
   String _title;
@@ -10,7 +10,7 @@ class BoardPost with ChangeNotifier {
   String _language; //TODO build language Enum
   int _memberLimit;
   String _location;
-  List<User> _users;
+  List _users;
   //String _ownerId;
   bool _favorite;
   String _owner; //
@@ -39,22 +39,29 @@ class BoardPost with ChangeNotifier {
     _title = snapshot['title'] ?? '';
     _location = snapshot['location'] ?? '';
     _fee = snapshot['fee'] ?? '';
+
     _description = snapshot['description'] ?? '';
-    _memberLimit = snapshot['memberLimit'] ?? '';
-    _users = [];
+    _memberLimit = snapshot['memberLimit'] ?? 5;
+    _users = snapshot["participants"] ?? []; //TODO load array
     _imageUrl = snapshot['imageUrl'] ?? '';
     _language = snapshot['language'] ?? '';
     _favorite = false;
     _owner = snapshot['owner'] ?? '';
     _date = DateTime.fromMillisecondsSinceEpoch(
-        snapshot["date"]); //TODO implement time
+        snapshot["date"]);
     _participating =
-        false; //TODO logic that takes the participated event key list from firebase and puts the right
+        false;
   }
-  //TODO cancel button und back arrows überarbeiten
 
   void toggleFavorite(userId) async {
-    //TODO: Favorite status save only of quit app/log out
+    if (!_favorite) {
+    Firestore.instance.collection("User_Data").document(userId).updateData({"favorites":FieldValue.arrayUnion([this.id])});
+    } else {
+      Firestore.instance.collection("User_Data").document(userId).updateData(
+          {"favorites": FieldValue.arrayRemove([this.id])});
+    }
+
+    /*
     if (!_favorite) {
       FirebaseDatabase.instance
           .reference()
@@ -77,12 +84,15 @@ class BoardPost with ChangeNotifier {
       this._favorite = false;
       notifyListeners();
     }
+    */
     notifyListeners();
   }
 
   void toggleParticipating(userId) {
     if (!_participating) {
-      FirebaseDatabase.instance
+      Firestore.instance.collection("User_Data").document(userId).updateData({"participations":FieldValue.arrayUnion([this.id])});
+      Firestore.instance.collection("Posts").document(id).updateData({"participants":FieldValue.arrayUnion([userId])});
+    /*  FirebaseDatabase.instance
           .reference()
           .child("User_Data")
           .child(userId)
@@ -98,11 +108,13 @@ class BoardPost with ChangeNotifier {
           .update({
         userId: 1,
       });
-
+*/
       _participating = true;
       notifyListeners();
     } else {
-      FirebaseDatabase.instance
+      Firestore.instance.collection("User_Data").document(userId).updateData({"participations":FieldValue.arrayRemove([this.id])});
+      Firestore.instance.collection("Posts").document(id).updateData({"participants":FieldValue.arrayRemove([userId])});
+    /*  FirebaseDatabase.instance
           .reference()
           .child("User_Data")
           .child(userId)
@@ -116,6 +128,7 @@ class BoardPost with ChangeNotifier {
           .child("participants")
           .child(userId)
           .remove();
+          */
 
       _participating = false;
       notifyListeners();
@@ -128,23 +141,6 @@ class BoardPost with ChangeNotifier {
     //this._date = DateTime.now();
     this._participating = true;
     this.memberLimit = 5;
-  }
-
-  BoardPost.getExample() {
-    this._participating = true;
-    //this.id = "idexample";
-    this._title = "Example Title";
-    this._fee = "0-500Yen";
-    this._description =
-        "This is a example description. This is a example description. This is a example description.";
-    this._language = "English";
-    this._location = "Room 3000";
-    this._memberLimit = 5;
-    this._owner = "me";
-    this._users = [];
-    this._favorite = false;
-    this._participating = false;
-    this.date = DateTime.now();
   }
 
   int get dateInDatabaseFormat {
@@ -221,9 +217,9 @@ class BoardPost with ChangeNotifier {
     _participating = value;
   }
 
-  List<User> get users => _users;
+  List get users => _users;
 
-  set users(List<User> value) {
+  set users(List value) {
     _users = value;
   }
 }

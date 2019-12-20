@@ -7,6 +7,7 @@ import '../models/user.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_login/flutter_login.dart';
 import '../widgets/kf_drawer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'drawer_screen.dart';
 
@@ -23,10 +24,18 @@ class _LoginPageState extends State<LoginPage> {
 
   Future setupUserInFirebase(context) async {
     var user = await FirebaseAuth.instance.currentUser();
-    Provider.of<User>(context, listen: false).id = user.uid;
     Provider.of<User>(context, listen: false).email = user.email;
+    Provider.of<User>(context, listen: false).id = user.uid;
 
-    return FirebaseDatabase.instance
+    return Firestore.instance.collection("User_Data").document(user.uid).setData({
+      "email": user.email,
+      "id": user.uid,
+    }).then((_){
+      return Provider.of<BoardPosts>(context, listen: false)
+          .connectToFirebase(user.uid);
+    });
+
+  /*  return FirebaseDatabase.instance
         .reference()
         .child("User_Data")
         .child(user.uid)
@@ -36,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
     }).then((_){
       return Provider.of<BoardPosts>(context, listen: false)
           .connectToFirebase(Provider.of<User>(context, listen: false).id);
-    });
+    });*/
   }
 
   Future<String> _login(LoginData data) async {
@@ -66,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<String> _loginUser(data) async {
     var userProvider = Provider.of<User>(context, listen: false);
-
+    //TODO if user not in database -> create him
     return FirebaseAuth.instance
         .signInWithEmailAndPassword(email: data.name, password: data.password)
         .then((_) async {

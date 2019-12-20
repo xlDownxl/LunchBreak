@@ -157,44 +157,46 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  TextFormField(
-                    focusNode: titleFocus,
-                    validator: (val) {
-                      if (val.isNotEmpty) {
-                        return null;
-                      } else {
-                        return "Please Enter a Title";
-                      }
-                    },
-                    autofocus: true,
-                    onFieldSubmitted: (val) {
-                      setState(() {
-                        _calendarFocus = true;
-                        _calendarIconFocus = true;
-                      });
-                      titleFocus.unfocus();
-                    },
-                    style: TextStyle(color: Theme.of(context).accentColor),
-                    textInputAction: TextInputAction.next,
-                    onSaved: (val) {
-                      newPost.title = val;
-                    },
-                    decoration: InputDecoration(
-                      //errorText: "",
-                      contentPadding:
-                          EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(32.0),
-                        borderSide: BorderSide(
-                          width: 10,
+                  Flexible(
+                    child: TextFormField(
+                      focusNode: titleFocus,
+                      validator: (val) {
+                        if (val.isNotEmpty) {
+                          return null;
+                        } else {
+                          return "Please Enter a Title";
+                        }
+                      },
+                      autofocus: true,
+                      onFieldSubmitted: (val) {
+                        setState(() {
+                          _calendarFocus = true;
+                          _calendarIconFocus = true;
+                        });
+                        titleFocus.unfocus();
+                      },
+                      style: TextStyle(color: Theme.of(context).accentColor),
+                      textInputAction: TextInputAction.next,
+                      onSaved: (val) {
+                        newPost.title = val;
+                      },
+                      decoration: InputDecoration(
+                        //errorText: "",
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: BorderSide(
+                            width: 10,
+                          ),
                         ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(32.0),
-                        borderSide: BorderSide(
-                            style: BorderStyle.solid,
-                            width: 4,
-                            color: Theme.of(context).primaryColor),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                          borderSide: BorderSide(
+                              style: BorderStyle.solid,
+                              width: 4,
+                              color: Theme.of(context).primaryColor),
+                        ),
                       ),
                     ),
                   ),
@@ -251,38 +253,41 @@ class _TitlePictureWidgetState extends State<TitlePictureWidget> {
                           borderRadius: BorderRadius.circular(20.0),
                           border: Border.all(color: Colors.blueGrey),
                           color: _feeColor),
-                      child: DropdownButtonFormField(
-                        onSaved: (val) {
-                          newPost.fee = val;
-                        },
-                        validator: (val) {
-                          if (val != null) {
-                            return null;
-                          } else {
-                            return "Enter Fee";
-                          }
-                        },
-                        decoration: InputDecoration.collapsed(
-                          hintText: "Choose Fee",
-                          hintStyle: TextStyle(
-                            color: Colors.white,
+                      child: Center(
+                        child: DropdownButtonFormField(
+
+                          onSaved: (val) {
+                            newPost.fee = val;
+                          },
+                          validator: (val) {
+                            if (val != null) {
+                              return null;
+                            } else {
+                              return "Enter Fee";
+                            }
+                          },
+                          decoration: InputDecoration.collapsed(
+                            hintText: "Choose Fee",
+                            hintStyle: TextStyle(
+                              color: Colors.white,
+                            ),
                           ),
+                          items: ["0-500 Yen", "500-1000 Yen", "1000+ Yen"]
+                              .map((item) {
+                            return DropdownMenuItem(
+                              value: item,
+                              child: Text(item),
+                            );
+                          }).toList(),
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedFee = val;
+                              _feeColor = Colors.white;
+                              FocusScope.of(context).requestFocus(capactiyFocus);
+                            });
+                          },
+                          value: _selectedFee,
                         ),
-                        items: ["0-500 Yen", "500-1000 Yen", "1000+ Yen"]
-                            .map((item) {
-                          return DropdownMenuItem(
-                            value: item,
-                            child: Text(item),
-                          );
-                        }).toList(),
-                        onChanged: (val) {
-                          setState(() {
-                            _selectedFee = val;
-                            _feeColor = Colors.white;
-                            FocusScope.of(context).requestFocus(capactiyFocus);
-                          });
-                        },
-                        value: _selectedFee,
                       ),
                     ),
                   ),

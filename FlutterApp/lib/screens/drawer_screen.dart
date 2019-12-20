@@ -128,8 +128,21 @@ class _DrawerScreenState extends State<DrawerScreen>
   @override
   Widget build(BuildContext context) {
     user=Provider.of<User>(context);
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+    return  Container(
+        decoration: BoxDecoration(
+        gradient: LinearGradient(
+        begin: Alignment.topRight,
+        end: Alignment.bottomLeft,
+        stops: [0.1, 0.5, 0.7, 0.9],
+        colors: [
+        Colors.yellow[800],
+        Colors.orange[700],
+        Colors.orange[600],
+        Colors.blue[400],
+        ],),
+    ),
+    child: Scaffold(
+      backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
@@ -174,7 +187,9 @@ class _DrawerScreenState extends State<DrawerScreen>
 
                                 ),
                                   ),
-                                 _loadingImage? CircularProgressIndicator():Container(),
+                                 Center(child: _loadingImage? CircularProgressIndicator(
+                                   backgroundColor: Theme.of(context).primaryColor,
+                                 ):Container()),
                               ],
                               )
                             ),
@@ -266,6 +281,7 @@ class _DrawerScreenState extends State<DrawerScreen>
                 ),
           ),
         ),
+      ),
       ),
     );
   }

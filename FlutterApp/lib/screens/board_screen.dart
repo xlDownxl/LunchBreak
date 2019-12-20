@@ -147,17 +147,15 @@ class _BoardScreenState extends State<BoardScreen>
     final appBar = AppBar(
       title: Text(titles[_selectedPageIndex]),
       actions: <Widget>[
-        SafeArea(
-          child: Material(
-            shadowColor: Colors.transparent,
-            color: Colors.transparent,
-            child: IconButton(
-              icon: Icon(
-                Icons.menu,
-                color: Colors.white,
-              ),
-              onPressed: widget.onMenuPressed,
+        Material(
+          shadowColor: Colors.transparent,
+          color: Colors.transparent,
+          child: IconButton(
+            icon: Icon(
+              Icons.menu,
+              color: Colors.white,
             ),
+            onPressed: widget.onMenuPressed,
           ),
         ),
       ],
@@ -173,43 +171,58 @@ class _BoardScreenState extends State<BoardScreen>
       onRefresh: _update,
     );
 
-    return Scaffold(
-      key: _scaffoldstate,
-      appBar: appBar,
-      body: Consumer<User>(
-        child: mainPage,
-        builder: (_, user, child) {
-          return child;
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          backgroundColor: Theme.of(context).primaryColor,
-          onPressed: () {
-            navigateToSubPage(context); //TODO
-          }),
-      bottomNavigationBar: TitledBottomNavigationBar(
-        currentIndex: _selectedPageIndex,
-        onTap: _selectPage,
-        activeColor: Theme.of(context).primaryColor,
-        items: [
-          TitledNavigationBarItem(
-            icon: Icons.home,
-            title: 'Today',
-          ),
-          TitledNavigationBarItem(
-            icon: Icons.calendar_today,
-            title: 'Calendar',
-          ),
-          TitledNavigationBarItem(
-            icon: Socicon.bullhorn,
-            title: 'My Events',
-          ),
-          TitledNavigationBarItem(
-            icon: Icons.star,
-            title: 'Favorites',
-          ),
-        ],
+    return Container(
+        decoration: BoxDecoration(
+        gradient: LinearGradient(
+        begin: Alignment.topRight,
+        end: Alignment.bottomLeft,
+        stops: [0.1, 0.5, 0.7, 0.9],
+        colors: [
+        Colors.yellow[800],
+        Colors.orange[700],
+        Colors.orange[600],
+        Colors.red[400],
+        ],),
+        ),
+      child: Scaffold(
+        key: _scaffoldstate,
+        appBar: appBar,
+        backgroundColor: Colors.transparent,
+        body: Consumer<User>(
+          child: mainPage,
+          builder: (_, user, child) {
+            return child;
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            backgroundColor: Theme.of(context).primaryColor,
+            onPressed: () {
+              navigateToSubPage(context); //TODO
+            }),
+        bottomNavigationBar: TitledBottomNavigationBar(
+          currentIndex: _selectedPageIndex,
+          onTap: _selectPage,
+          activeColor: Theme.of(context).primaryColor,
+          items: [
+            TitledNavigationBarItem(
+              icon: Icons.home,
+              title: 'Today',
+            ),
+            TitledNavigationBarItem(
+              icon: Icons.calendar_today,
+              title: 'Calendar',
+            ),
+            TitledNavigationBarItem(
+              icon: Socicon.bullhorn,
+              title: 'My Events',
+            ),
+            TitledNavigationBarItem(
+              icon: Icons.star,
+              title: 'Favorites',
+            ),
+          ],
+        ),
       ),
     );
   }
