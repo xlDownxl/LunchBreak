@@ -6,6 +6,7 @@ The central focus of this app is to organize Lunchtime in social groups. The ide
 # Stack
 The central core is a Flutter app running on both IOs and Android. Backend functionality, database, security as well as distribution are all done with Firebase.
 
+<img src="https://github.com/xlDownxl/FST-LunchApp/blob/master/demo_video.giff" width="400" height="790">
 
 # Demo 
 ![Demo Video](demo_video.gif)
