@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -12,26 +11,12 @@ class User with ChangeNotifier {
   FirebaseUser fbUser;
 
   void setUsername(String username) async {
-
     await Firestore.instance.collection("User_Data").document(id).updateData({"username": username}).then((_) async {
       await Firestore.instance.collection("Users").document("Usernames").setData({id:username}).then((_){
         this.username = username;
+        notifyListeners();
       });
     }).catchError((error) => print(error));
-    /*
-    await FirebaseDatabase.instance
-        .reference()
-        .child("User_Data")
-        .child(id)
-        .set({"username": username}).then((_) async {
-      await FirebaseDatabase.instance
-          .reference()
-          .child("Users")
-          .update({id:username}).then((_){
-        this.username = username;
-      });
-
-    }).catchError((error) => print(error)); */
   }
 
   Future resetUser() {
@@ -42,7 +27,6 @@ class User with ChangeNotifier {
     });
   }
 
-
   Future getUserFromDB()async{
     fbUser = await FirebaseAuth.instance.currentUser();
     id = fbUser.uid;
@@ -52,15 +36,15 @@ class User with ChangeNotifier {
     return Firestore.instance.collection("User_Data").document(fbUser.uid).get().then((user){
       email = user.data["email"] ??"";
       username = user.data["username"] ??"";
+      notifyListeners();
     });
- /* return FirebaseDatabase.instance
-      .reference()
-      .child("User_Data")
-      .child(fbUser.uid)
-      .once()
-      .then((snapshot) {
-    id = fbUser.uid;
-    email = fbUser.email;
-  });*/
+  }
+
+  Future loginUser(data) async{
+    await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: data.name, password: data.password)
+        .then((_) async {
+      getUserFromDB();
+    }).catchError((error) => error.code);
   }
 }

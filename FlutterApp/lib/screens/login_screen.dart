@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import '../models/board_posts.dart';
 import '../models/user.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_login/flutter_login.dart';
 import '../widgets/kf_drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -34,18 +33,6 @@ class _LoginPageState extends State<LoginPage> {
       return Provider.of<BoardPosts>(context, listen: false)
           .connectToFirebase(user.uid);
     });
-
-  /*  return FirebaseDatabase.instance
-        .reference()
-        .child("User_Data")
-        .child(user.uid)
-        .set({
-      "email": user.email,
-      "id": user.uid,
-    }).then((_){
-      return Provider.of<BoardPosts>(context, listen: false)
-          .connectToFirebase(Provider.of<User>(context, listen: false).id);
-    });*/
   }
 
   Future<String> _login(LoginData data) async {
@@ -76,17 +63,11 @@ class _LoginPageState extends State<LoginPage> {
   Future<String> _loginUser(data) async {
     var userProvider = Provider.of<User>(context, listen: false);
     //TODO if user not in database -> create him
-    return FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: data.name, password: data.password)
-        .then((_) async {
-      userProvider.getUserFromDB();
-
+    return userProvider.loginUser(data).then((_)async{
       await Provider.of<BoardPosts>(context, listen: false)
-          .connectToFirebase(Provider.of<User>(context, listen: false).id);
-
+          .connectToFirebase(userProvider.id);
       return "success";
-    }).catchError((error) => error.code);
-    //});
+    });
   }
 
   Future<String> _register(LoginData data) async {
@@ -125,21 +106,19 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: FlutterLogin(
-        title: 'FST!Lunch',
-        //logo: 'assets/images/Download.jpeg',
-        onLogin: _login,
-        onSignup: _register,
-        onSubmitAnimationCompleted: () {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (ctx) => DrawerScreen(),
-            ),
-          );
-        },
-        onRecoverPassword: _recoverPassword,
-      ),
+    return FlutterLogin(
+      title: 'FST!Lunch',
+      //logo: 'assets/images/Download.jpeg',
+      onLogin: _login,
+      onSignup: _register,
+      onSubmitAnimationCompleted: () {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (ctx) => DrawerScreen(),
+          ),
+        );
+      },
+      onRecoverPassword: _recoverPassword,
     );
   }
 }

@@ -12,6 +12,7 @@ import 'utils/class_builder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'screens/drawer_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'screens/settings_screen.dart';
 
 void main() {
   ClassBuilder.registerClasses();
@@ -30,7 +31,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    print("kek");
     getUser().then((fbuser) {
       if (fbuser != null) {
         print("fbuser not null");
@@ -41,7 +41,6 @@ class _MyAppState extends State<MyApp> {
         });
       }
     });
-
     super.initState();
   }
 
@@ -75,6 +74,7 @@ class _MyAppState extends State<MyApp> {
           FriendList.routeName: (ctx) => FriendList(),
           PostDetailScreen.routeName: (ctx) => PostDetailScreen(),
           NewPostScreen.routeName: (ctx) => NewPostScreen(),
+          Settings.routeName: (ctx) => Settings(),
         },
       ),
     );

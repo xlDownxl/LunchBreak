@@ -1,6 +1,5 @@
-import 'user.dart';
+
 import 'package:flutter/foundation.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 class BoardPost with ChangeNotifier {
   String id;

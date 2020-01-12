@@ -1,8 +1,5 @@
 import 'board_post.dart';
-import 'user.dart';
 import 'package:flutter/foundation.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BoardPosts with ChangeNotifier {
@@ -46,20 +43,20 @@ class BoardPosts with ChangeNotifier {
     var _ownedPosts = [];
     var _favorites = [];
 
-    Firestore.instance.collection("User_Data").document(userId).get().then((user_data){
-      var partPosts=user_data.data["participations"];
+    Firestore.instance.collection("User_Data").document(userId).get().then((userData){
+      var partPosts=userData.data["participations"];
       if (partPosts != null) {
         partPosts.forEach((key, value) {
           _participations.add(key);
         });
       }
-      var _oPosts=user_data.data["ownedPosts"];
+      var _oPosts=userData.data["ownedPosts"];
       if (_oPosts != null) {
         _oPosts.forEach((key, value) {
           _ownedPosts.add(key);
         });
       }
-      var _favs=user_data.data["favorites"];
+      var _favs=userData.data["favorites"];
       if (_favs.value != null) {
         _favs.value.forEach((key, value) {
           _favorites.add(key);

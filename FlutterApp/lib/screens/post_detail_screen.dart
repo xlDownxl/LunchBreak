@@ -19,7 +19,7 @@ class PostDetailScreen extends StatefulWidget {
 }
 
 class _PostDetailScreenState extends State<PostDetailScreen> {
-  bool _editMode = false;
+  //bool _editMode = false; //TODO
   BoardPost post;
 
   void joinEvent() async {
@@ -29,13 +29,8 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     //TODO Snackbar
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var userId = Provider.of<User>(context, listen: false).id;
-    final postId = ModalRoute.of(context).settings.arguments as String;
-    post = Provider.of<BoardPosts>(context).findById(postId);
-
-    var appBar = AppBar(
+  PreferredSizeWidget buildAppBar(userId,postId){
+    return AppBar(
       title: Text("Post Details"),
       actions: <Widget>[
         IconButton(
@@ -50,9 +45,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           icon: post.owner == userId
               ? Icon(Icons.edit)
               : Opacity(
-                  child: Icon(Icons.edit),
-                  opacity: 0.2,
-                ),
+            child: Icon(Icons.edit),
+            opacity: 0.2,
+          ),
           onPressed: () {
             if (post.owner == userId) {
               setState(() {
@@ -66,9 +61,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           icon: post.owner == userId
               ? Icon(Icons.delete)
               : Opacity(
-                  child: Icon(Icons.delete),
-                  opacity: 0.2,
-                ),
+            child: Icon(Icons.delete),
+            opacity: 0.2,
+          ),
           onPressed: () {
             setState(() {
               if (post.owner == userId) {
@@ -80,6 +75,15 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
         ),
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var userId = Provider.of<User>(context, listen: false).id;
+    final postId = ModalRoute.of(context).settings.arguments as String;
+    post = Provider.of<BoardPosts>(context).findById(postId);
+
+    var appBar = buildAppBar(userId,postId);
 
     final deviceHeight = MediaQuery.of(context).size.height -
         appBar.preferredSize.height -

@@ -10,7 +10,7 @@ class FriendList extends KFDrawerContent {
 
 class _FriendListState extends State<FriendList> {
 
-   var _fb =FirebaseDatabase.instance.reference();
+   //var _fb =FirebaseDatabase.instance.reference();
 
    @override
   void initState() {

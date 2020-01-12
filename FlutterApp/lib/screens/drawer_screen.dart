@@ -14,12 +14,9 @@ import 'package:FST.LunchApp/design/socicon_icons.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as Path;
-import 'package:firebase_database/firebase_database.dart';
 
 class DrawerScreen extends StatefulWidget {
   static const routeName = "/drawer";
-
   @override
   _DrawerScreenState createState() => _DrawerScreenState();
 }
@@ -28,11 +25,8 @@ class _DrawerScreenState extends State<DrawerScreen>
     with TickerProviderStateMixin {
   KFDrawerController _drawerController;
   File _image;
-  String _uploadedFileURL;
   bool _loadingImage=false;
   var user;
-
-
 
   Future chooseFile() async {
     await ImagePicker.pickImage(source: ImageSource.gallery).then((image) {
@@ -56,8 +50,6 @@ class _DrawerScreenState extends State<DrawerScreen>
         _loadingImage=false;
         user.image = fileURL;
       });
-
-
     });
   }
 
@@ -130,27 +122,14 @@ class _DrawerScreenState extends State<DrawerScreen>
     user=Provider.of<User>(context);
     return  Container(
         decoration: BoxDecoration(
-        gradient: LinearGradient(
-        begin: Alignment.topRight,
-        end: Alignment.bottomLeft,
-        stops: [0.1, 0.5, 0.7, 0.9],
-        colors: [
-        Colors.yellow[800],
-        Colors.orange[700],
-        Colors.orange[600],
-        Colors.blue[400],
-        ],),
     ),
     child: Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).primaryColor,
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
           child: KFDrawer(
-//        borderRadius: 0.0,
-//        shadowBorderRadius: 0.0,
             menuPadding: EdgeInsets.all(10.0),
-//        scrollable: true,
             controller: _drawerController,
             header: Align(
               alignment: Alignment.centerLeft,
@@ -206,7 +185,7 @@ class _DrawerScreenState extends State<DrawerScreen>
                                       child: FittedBox(
                                         child: Text(
                                           //user.username,
-                                          "username",
+                                          user.username!=null?user.username:" ",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
@@ -259,7 +238,7 @@ class _DrawerScreenState extends State<DrawerScreen>
                 color: Colors.white,
               ),
               onPressed: () {
-                Provider.of<User>(context, listen: false)
+                user
                     .resetUser()
                     .then((val) {
                   Navigator.pushReplacementNamed(context, LoginPage.routeName);
@@ -267,17 +246,6 @@ class _DrawerScreenState extends State<DrawerScreen>
               },
             ),
             decoration: BoxDecoration(
-
-                /*gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color.fromRGBO(255, 255, 255, 1.0),
-                  Color.fromRGBO(44, 72, 171, 1.0)
-                ],
-                tileMode: TileMode.repeated,
-              ),*/
-
                 ),
           ),
         ),

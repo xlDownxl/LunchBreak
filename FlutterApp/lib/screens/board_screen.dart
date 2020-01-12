@@ -1,6 +1,5 @@
-          import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'add_post_screen.dart';
-import 'feed_screen.dart';
 import 'all_posts_screen.dart';
 import 'today_posts_Screen.dart';
 import 'board_my_posts_screen.dart';
@@ -173,16 +172,7 @@ class _BoardScreenState extends State<BoardScreen>
 
     return Container(
         decoration: BoxDecoration(
-        gradient: LinearGradient(
-        begin: Alignment.topRight,
-        end: Alignment.bottomLeft,
-        stops: [0.1, 0.5, 0.7, 0.9],
-        colors: [
-        Colors.yellow[800],
-        Colors.orange[700],
-        Colors.orange[600],
-        Colors.red[400],
-        ],),
+
         ),
       child: Scaffold(
         key: _scaffoldstate,
