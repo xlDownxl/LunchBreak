@@ -10,6 +10,10 @@ The central core is a Flutter App running on both IOs and Android. The backend i
 User Data is secured by using Firebase Rules to restrict access on foreign user's database entries. Also writing access to other peoples events is forbidden expect the participant list, where the user can only add himself.
 
 # The App
+<img src="https://github.com/xlDownxl/LunchBreak/blob/master/images/Screenshot_20200112-223033.jpg" width="250" height="500"> <img src="https://github.com/xlDownxl/LunchBreak/blob/master/images/Screenshot_20200112-223103.jpg" width="250" height="500"><img src="https://github.com/xlDownxl/LunchBreak/blob/master/images/Screenshot_20200112-223141.jpg" width="250" height="500"> 
 
-# Demo 
+<img src="https://github.com/xlDownxl/LunchBreak/blob/master/images/Screenshot_20200112-223309.jpg" width="250" height="500"> <img src="https://github.com/xlDownxl/LunchBreak/blob/master/images/Screenshot_20200112-223333.jpg" width="250" height="500">
+
+
+# Demo Video
 Go to: https://github.com/xlDownxl/LunchBreak/blob/master/demo_video.gif
